@@ -161,12 +161,33 @@ url = "https://www.moneyweb.co.za/feed/"
 [[headlines.feeds]]
 name = "BusinessTech"
 url = "https://businesstech.co.za/news/feed/"
-# First live run: HTTP 403 with the default user agent (bot blocking). Trying a browser one.
-user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+# Live test: HTTP 403 from GitHub's runners even with a browser User-Agent (the site blocks them).
+enabled = false
 
 [[headlines.feeds]]
 name = "Daily Maverick"
 url = "https://www.dailymaverick.co.za/dmrss/"
+keyword_only = true
+
+# TRIAL FEEDS: URLs guessed from common WordPress/aggregator patterns, being tested in a dry run.
+# Anything that fails is removed afterwards.
+[[headlines.feeds]]
+name = "Daily Investor"
+url = "https://dailyinvestor.com/feed/"
+
+[[headlines.feeds]]
+name = "MyBroadband"
+url = "https://mybroadband.co.za/news/feed"
+keyword_only = true
+
+[[headlines.feeds]]
+name = "The Citizen"
+url = "https://www.citizen.co.za/business/feed/"
+keyword_only = true
+
+[[headlines.feeds]]
+name = "Google News SA economy"
+url = "https://news.google.com/rss/search?q=South+Africa+economy+OR+%22Reserve+Bank%22+OR+%22repo+rate%22+when:2d&hl=en-ZA&gl=ZA&ceid=ZA:en"
 keyword_only = true
 
 # Business Day publishes a list of its feeds at https://www.businessday.co.za/information/rss-feeds/
