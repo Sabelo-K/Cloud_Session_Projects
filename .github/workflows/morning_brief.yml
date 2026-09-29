@@ -27,17 +27,26 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install -r requirements.txt
+      - id: install
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          pip install -r requirements.txt
+          # The optional headline summary needs the Anthropic SDK; only install it if you set the secret.
+          if [ -n "$ANTHROPIC_API_KEY" ]; then pip install -r requirements-llm.txt; fi
       - name: Build and send the brief
+        id: brief
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # optional; only used if [summary] enabled
           LOG_LEVEL: ${{ inputs.dry_run && 'DEBUG' || 'INFO' }}
         run: python -m jobs.morning_brief ${{ inputs.dry_run && '--dry-run' || '' }}
       # Keeps today's YouTube numbers so tomorrow's brief can show the change. Skipped on dry runs.
       # Runs even if the Telegram step failed: the snapshot is still valid data.
       - name: Commit YouTube history
+        id: commit
         if: ${{ !cancelled() && inputs.dry_run != true }}
         run: |
           if [ -n "$(git status --porcelain data/)" ]; then
@@ -45,7 +54,21 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/
             git commit -m "chore: YouTube stats snapshot $(date -u +%F)"
-            git push
+            git push || { git pull --rebase && git push; }
           else
             echo "No history changes to commit."
           fi
+      # Last resort: if the job broke before the script could send anything (dependency install,
+      # Python crash), tell Telegram so a missing brief isn't a silent surprise. Skipped when only
+      # the history commit failed (the brief was already sent) and on dry runs.
+      - name: Alert on failure
+        if: ${{ failure() && steps.commit.outcome != 'failure' && inputs.dry_run != true }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          curl -sS --max-time 20 "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ Morning brief failed to run. Details: ${RUN_URL}" \
+            > /dev/null || true

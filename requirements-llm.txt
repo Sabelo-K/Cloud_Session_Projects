@@ -1,0 +1,2 @@
+# Only needed if [summary] enabled = true (see README)
+anthropic>=1.0,<2

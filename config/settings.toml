@@ -3,6 +3,9 @@
 [brief]
 # Soft cap on message length. If the message is longer, blank separator lines are dropped.
 max_lines = 30
+# A section that takes longer than this is abandoned (shown as unavailable) so the message still
+# goes out on time.
+section_timeout_seconds = 120
 
 [weather]
 enabled = true
@@ -25,6 +28,10 @@ enabled = true
 # Extra dates (YYYY-MM-DD) the JSE was closed that the `holidays` package doesn't know about,
 # e.g. a one-off declared holiday. Weekends and ZA public holidays are already handled.
 extra_jse_closed_dates = []
+# Yahoo usually fails all-or-nothing, so after this many failures in a row the remaining tickers
+# are skipped, and the section never spends longer than the budget.
+max_consecutive_failures = 3
+budget_seconds = 60
 
 # market = "JSE"  -> uses the JSE session calendar (weekdays minus ZA public holidays)
 # market = "24H"  -> futures; weekdays only
@@ -174,3 +181,12 @@ enabled = false
 [watch]
 enabled = true
 file = "config/events.toml"
+
+# ---------------------------------------------------------------------------------------------
+# OPTIONAL, OFF BY DEFAULT: a one-sentence summary above the headlines, written by Claude.
+# This is the ONLY paid feature (a few cents a month; needs an ANTHROPIC_API_KEY secret and your
+# own Anthropic API credit; it is not covered by any free tier). Only headline titles are sent.
+# Any failure just omits the sentence.
+[summary]
+enabled = false
+model = "claude-opus-5-5"      # any Claude model ID works; a smaller one is cheaper

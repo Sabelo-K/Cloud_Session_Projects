@@ -9,6 +9,7 @@ from __future__ import annotations
 import difflib
 import html
 import logging
+import os
 import re
 from dataclasses import dataclass
 from datetime import timedelta
@@ -16,6 +17,7 @@ from urllib.parse import urlparse
 
 from brief.config import Settings
 from brief.http import get_bytes
+from brief import summary
 from brief.rss import FeedItem, parse_feed
 from brief.runner import OK, PARTIAL, Context, SectionResult
 from brief.util import DataError, describe, esc
@@ -28,6 +30,7 @@ STOPWORDS = frozenset("a an the of to in on at for and as by is are was with fro
                       "said over into its it be will new".split())
 TITLE_WEIGHT, SUMMARY_WEIGHT = 3, 1
 TITLE_CHARS = 100
+MIN_ITEMS = 3
 
 
 @dataclass(frozen=True)
@@ -117,6 +120,21 @@ def _is_web_link(url: str) -> bool:
     return urlparse(url).scheme in ("http", "https")
 
 
+def _maybe_summarise(settings: Settings, titles: list[str]) -> tuple[str | None, str]:
+    """(sentence, problem). Feature is off unless [summary] enabled = true; never raises."""
+    cfg = settings.get("summary", {})
+    if not cfg.get("enabled", False) or not titles:
+        return None, ""
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    if not api_key:
+        return None, "summary enabled but ANTHROPIC_API_KEY is not set"
+    try:
+        sentence = summary.summarise(titles, cfg, api_key)
+    except Exception as exc:  # noqa: BLE001 - the summary is a garnish; the headlines still go out
+        return None, f"summary failed ({describe(exc)})"
+    return sentence, "" if sentence else "summary came back empty"
+
+
 def run(settings: Settings, ctx: Context) -> SectionResult:
     cfg = settings["headlines"]
     feeds = [Feed.from_config(f) for f in cfg["feeds"] if f.get("enabled", True)]
@@ -155,7 +173,13 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
                     threshold=cfg.get("similarity", 0.5))
     lines = [render_headline(c) for c in chosen] or ["No recent headlines."]
     detail = "; ".join(f"{k} ({v})" for k, v in failures.items())
+    sentence, summary_problem = _maybe_summarise(settings, [c.item.title for c in chosen])
+    if sentence:
+        lines.insert(0, f"<i>{esc(sentence)}</i>")
+    if summary_problem:
+        detail = "; ".join(filter(None, [detail, summary_problem]))
     result = SectionResult("headlines", "SA economy", lines,
-                           status=PARTIAL if failures else OK, detail=detail)
+                           status=PARTIAL if detail else OK, detail=detail)
     result.heading = "<b>SA economy</b>"
+    result.trimmable = max(0, len(chosen) - MIN_ITEMS)   # spec: always keep at least 3 if we have them
     return result

@@ -13,6 +13,7 @@ from brief.http import get_json
 from brief.runner import OK, PARTIAL, Context, SectionResult
 from brief.util import DataError, describe, esc, fmt_change, fmt_day, fmt_num, pct_change
 
+STALE_AFTER_DAYS = 4   # ECB skips weekends + a few holidays; older than this means the feed is stuck
 LOOKBACK_DAYS = 10  # wide enough to always span two ECB publication days, even over holidays
 
 
@@ -76,4 +77,9 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
     result.heading = f"<b>Rand</b> · ECB {fmt_day(heading_date)}"
     if failures:
         result.detail = "; ".join(f"{b}: {m}" for b, m in failures.items())
+    age = (ctx.today - heading_date).days
+    if age > STALE_AFTER_DAYS:
+        result.heading = f"<b>Rand</b> · ECB {fmt_day(heading_date)} (stale: {age} days old)"
+        result.status = PARTIAL
+        result.detail = "; ".join(filter(None, [result.detail, f"ECB data is {age} days old"]))
     return result

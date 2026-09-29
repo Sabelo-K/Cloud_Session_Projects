@@ -9,6 +9,10 @@ Rules that keep the numbers honest:
 * If the JSE did not trade yesterday (weekend / public holiday), its instruments collapse into
   one 'JSE closed yesterday' line instead of presenting an old change as new.
 * If data for a session that should exist is missing, the line is labelled with its real date.
+
+Yahoo failures tend to be all-or-nothing (rate limit, block), so after `max_consecutive_failures`
+failures in a row the rest are skipped, and `budget_seconds` caps total time. Either way the
+section returns promptly instead of retrying every ticker.
 """
 from __future__ import annotations
 
@@ -106,6 +110,11 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
     failures: dict[str, str] = {}
     attempted = 0
     jse_note_written = False
+    started = time.monotonic()
+    budget = cfg.get("budget_seconds", 60)
+    max_streak = cfg.get("max_consecutive_failures", 3)
+    streak = 0
+    skip_reason = ""
 
     for inst in instruments:
         if inst.market == "JSE" and jse_closed_reason:
@@ -115,15 +124,25 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
                 jse_note_written = True
             continue
         attempted += 1
+        if not skip_reason and streak >= max_streak:
+            skip_reason = f"skipped after {streak} consecutive failures (Yahoo looks down)"
+        elif not skip_reason and time.monotonic() - started >= budget:
+            skip_reason = f"skipped: {budget:g}s time budget used up"
+        if skip_reason:
+            failures[inst.label] = f"{inst.symbol} {skip_reason}"
+            lines.append(f"{esc(inst.label)}  unavailable")
+            continue
         calendar = jse if inst.market == "JSE" else futures
         try:
             quote = make_quote(inst, yahoo_history(inst.symbol), today)
             log.debug("markets %s (%s): close=%s prev=%s session=%s", inst.label, inst.symbol,
                       quote.close, quote.prev_close, quote.session)
             lines.append(render_quote(quote, calendar.previous_session(today)))
+            streak = 0
         except Exception as exc:  # noqa: BLE001 - one bad ticker must not drop the others
             failures[inst.label] = f"{inst.symbol} {describe(exc)}"
             lines.append(f"{esc(inst.label)}  unavailable")
+            streak += 1
 
     detail = "; ".join(f"{k} ({v})" for k, v in failures.items())
     if attempted and len(failures) == attempted:

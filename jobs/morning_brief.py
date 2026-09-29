@@ -16,7 +16,7 @@ from brief.config import ConfigError, load_dotenv, load_settings, require_env
 from brief.header import build_header
 from brief.sections import SECTIONS
 from brief.telegram import TelegramError, send_message
-from brief.util import SAST, now_sast
+from brief.util import SAST, describe, esc, fmt_date_long, now_sast
 
 log = logging.getLogger("morning_brief")
 
@@ -44,9 +44,17 @@ def main(argv: list[str] | None = None) -> int:
 
     settings = load_settings()
     now = datetime.combine(args.date, time(7, 0), tzinfo=SAST) if args.date else now_sast()
-    message, results = build_message(settings, now, dry_run=args.dry_run)
-    runner.write_step_summary(results)
-    runner.annotate_failures(results)
+    try:
+        message, results = build_message(settings, now, dry_run=args.dry_run)
+    except Exception as exc:  # noqa: BLE001 - last resort: a broken brief still beats silence
+        log.exception("building the brief failed")
+        message, results = f"<b>{esc(fmt_date_long(now.date()))}</b>\n⚠️ The brief could not be built " \
+                           f"({esc(describe(exc))}). Check the workflow log.", []
+    for report in (runner.write_step_summary, runner.annotate_failures):
+        try:
+            report(results)
+        except Exception:  # noqa: BLE001 - reporting must never stop the send
+            log.exception("%s failed", report.__name__)
 
     if args.dry_run:
         print(message)

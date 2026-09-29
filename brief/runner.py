@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import logging
 import os
+import threading
 import time
 from dataclasses import dataclass, field
 from datetime import date, datetime
@@ -39,6 +40,7 @@ class SectionResult:
     detail: str = ""                 # what failed, for the log (never sent to Telegram)
     duration: float = 0.0
     hidden: bool = False             # nothing to show today (still logged and counted)
+    trimmable: int = 0               # trailing body lines that may be dropped if over budget
     extra: dict = field(default_factory=dict)
 
     def render(self) -> list[str]:
@@ -54,7 +56,32 @@ class Section:
     run: Callable[[Settings, Context], SectionResult]
 
 
+DEFAULT_SECTION_TIMEOUT = 120.0   # seconds; a hung source must not hold up the whole message
+
+
+def call_with_timeout(fn: Callable[[], SectionResult], timeout: float) -> SectionResult:
+    """Run `fn` in a daemon thread. If it overruns, give up on it (the thread is abandoned and
+    dies with the process) so the remaining sections and the send still happen on time."""
+    box: dict = {}
+
+    def target() -> None:
+        try:
+            box["result"] = fn()
+        except BaseException as exc:  # noqa: BLE001 - re-raised below in the caller's thread
+            box["error"] = exc
+
+    thread = threading.Thread(target=target, daemon=True)
+    thread.start()
+    thread.join(timeout)
+    if thread.is_alive():
+        raise TimeoutError(f"timed out after {timeout:g}s")
+    if "error" in box:
+        raise box["error"]
+    return box["result"]
+
+
 def run_sections(sections: list[Section], settings: Settings, ctx: Context) -> list[SectionResult]:
+    timeout = settings.get("brief", {}).get("section_timeout_seconds", DEFAULT_SECTION_TIMEOUT)
     results: list[SectionResult] = []
     for section in sections:
         if not settings.get(section.key, {}).get("enabled", True):
@@ -62,7 +89,7 @@ def run_sections(sections: list[Section], settings: Settings, ctx: Context) -> l
             continue
         started = time.monotonic()
         try:
-            result = section.run(settings, ctx)
+            result = call_with_timeout(lambda: section.run(settings, ctx), timeout)
         except Exception as exc:  # noqa: BLE001 - isolation is the whole point
             log.debug("section %s traceback", section.key, exc_info=True)
             result = SectionResult(section.key, section.title, ["unavailable"], status=FAILED,
@@ -72,6 +99,9 @@ def run_sections(sections: list[Section], settings: Settings, ctx: Context) -> l
         log.log(logging.INFO if result.status == OK else logging.WARNING,
                 "section=%s status=%s duration=%.1fs%s", result.key, result.status,
                 result.duration, f" detail={result.detail}" if result.detail else "")
+    counts = {st: sum(r.status == st for r in results) for st in (OK, PARTIAL, FAILED)}
+    log.info("run summary: %d sections, ok=%d partial=%d failed=%d", len(results),
+             counts[OK], counts[PARTIAL], counts[FAILED])
     return results
 
 
@@ -84,16 +114,33 @@ def warning_line(results: list[SectionResult]) -> str | None:
 
 
 def assemble(header: str, results: list[SectionResult], max_lines: int = 30) -> str:
-    """Header, then each section, then the optional warning. Sections are separated by a blank
-    line for readability; if that would exceed `max_lines`, the blank lines are dropped."""
-    blocks = [[header], *(block for r in results if (block := r.render()))]
+    """Header, then each section, then the optional warning.
+
+    Fitting `max_lines`, in order: (1) blank lines separate sections if they fit; (2) otherwise
+    they're dropped; (3) if still too long, lines a section marked `trimmable` (headlines beyond
+    the third) are dropped from the bottom of the message upwards."""
+    blocks: list[list[str]] = [[header]]
+    trim_budget: list[int] = [0]
+    for r in results:
+        block = r.render()
+        if block:
+            blocks.append(block)
+            trim_budget.append(r.trimmable)
     warn = warning_line(results)
     if warn:
         blocks.append([warn])
-    spaced = [line for i, block in enumerate(blocks) for line in ([""] if i else []) + block]
-    if len(spaced) <= max_lines:
-        return "\n".join(spaced)
-    return "\n".join(line for block in blocks for line in block)
+        trim_budget.append(0)
+
+    def total(gap: int) -> int:
+        return sum(len(b) for b in blocks) + gap * (len(blocks) - 1)
+
+    if total(1) <= max_lines:
+        return "\n\n".join("\n".join(b) for b in blocks)
+    for i in range(len(blocks) - 1, -1, -1):
+        while total(0) > max_lines and trim_budget[i] > 0:
+            blocks[i].pop()
+            trim_budget[i] -= 1
+    return "\n".join(line for b in blocks for line in b)
 
 
 def write_step_summary(results: list[SectionResult]) -> None:

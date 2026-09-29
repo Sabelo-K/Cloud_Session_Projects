@@ -43,11 +43,11 @@ def test_atom_uses_the_alternate_link_and_updated_date():
 
 
 @pytest.mark.parametrize("bad, match", [
-    (b"<html><body>Not a feed</body></html>", "unsupported feed root"),
-    (b"this is not xml at all", "not valid"),
-    (b"", "not valid"),
-    (b'<!DOCTYPE r [<!ENTITY a "aaaa">]><rss><channel/></rss>', "XML entities"),
-    (b"<rss>" + b"x" * MAX_BYTES + b"</rss>", "too large"),
+    pytest.param(b"<html><body>Not a feed</body></html>", "unsupported feed root", id="html-page"),
+    pytest.param(b"this is not xml at all", "not valid", id="plain-text"),
+    pytest.param(b"", "not valid", id="empty"),
+    pytest.param(b'<!DOCTYPE r [<!ENTITY a "aaaa">]><rss><channel/></rss>', "XML entities", id="entities"),
+    pytest.param(b"<rss>" + b"x" * MAX_BYTES + b"</rss>", "too large", id="oversized"),
 ])
 def test_bad_feeds_raise_a_data_error(bad, match):
     with pytest.raises(DataError, match=match):

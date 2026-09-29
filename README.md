@@ -7,8 +7,9 @@ are doing, SA economy headlines, and a "watch today" line for scheduled events.
 Runs entirely on free tiers: GitHub Actions for scheduling, free public APIs for data, Telegram for
 delivery. Secrets live only in GitHub Actions secrets.
 
-> **Status: Phase 2 of 3.** Built: everything in the example below. Coming in Phase 3: more tests and
-> failure-handling polish, and (optional, off by default) a one-line LLM summary of the headlines.
+> **Status: complete (Phase 3 of 3).** Everything in the example below, hardened (timeouts, circuit
+> breaker, line budget, failure alert), plus an optional, off-by-default, *paid* headline summary.
+> There is no YouTube Command Centre in this repo, so there is no `digest.py` to retire.
 
 ## Example (illustrative fixture data, not live numbers)
 
@@ -160,11 +161,36 @@ video count, and the latest upload (title, link, views, age). Change vs the prev
 * If your default branch is **protected**, the history commit will be refused; allow GitHub Actions to
   push, or tell me and we'll move the history to its own branch.
 
+## Optional: one-sentence headline summary (off by default, paid)
+
+The only feature that isn't free. Set `[summary] enabled = true` in `settings.toml` and add an
+`ANTHROPIC_API_KEY` secret (your own Anthropic API credit; roughly $0.07/month at the default model).
+A single italic sentence appears above the headlines. Only the headline **titles** are sent; no
+article text, links or personal data. Any failure (no key, API error, refusal, empty answer) simply
+omits the sentence and is logged. The workflow installs the `anthropic` package only if the secret
+exists (`requirements-llm.txt`). The `model` is configurable; I did not enable Anthropic's refusal
+fallback because a missing summary sentence is harmless.
+
 ## Failure behaviour
 
 Every section is independent. A section that errors becomes `unavailable`; a single bad ticker, currency
 pair, feed or channel only affects itself. The message is always sent. If **more than half** of the
-sections fail, a warning line is added at the bottom. Each run logs per-section status and timing,
+sections fail, a warning line is added at the bottom.
+
+Hardening beyond that:
+
+* **Timeouts:** a section that takes over `section_timeout_seconds` (120) is abandoned so the message
+  still goes out on time.
+* **Yahoo circuit breaker:** after 3 failed tickers in a row the rest are skipped (Yahoo tends to fail
+  all-or-nothing), and Markets never spends over 60s. A total Yahoo outage costs ~15s, not ~45s.
+* **Line budget:** if the message exceeds `max_lines`, blank separators go first, then headlines beyond
+  the third. The warning line is never trimmed.
+* **Stale data:** ECB rates older than 4 days are flagged in the Rand heading.
+* **Last resorts:** if building the message crashes, a short "could not be built" notice is still sent;
+  a failure writing the Actions summary can't stop the send.
+* **Job-level alert:** if the workflow itself dies before the script can send (e.g. a dependency
+  install fails), a fallback step messages you the run link. A run GitHub never starts (or drops) can't
+  be detected; a missing 07:00 message is the signal. Each run logs per-section status and timing,
 writes a table to the Actions run Summary, and emits a warning annotation for anything not `ok`. Only a
 Telegram send failure (or missing Telegram secrets) turns the workflow red. Sections with nothing to
 show (no event today, no channels configured) are silent in the message but still flagged in the log if
@@ -191,5 +217,6 @@ brief/                                config, http, telegram, runner, header, rs
 brief/sections/                       weather, fx, markets, youtube, headlines, watch
 brief/youtube/                        source-neutral models, Data API source, JSON history
 jobs/morning_brief.py                 entrypoint
-tests/                                pytest, fixture data only, no live calls
+tests/                                pytest (~240), fixture data only, no live calls; also run on every push
+brief/summary.py                      optional paid headline summary (off by default)
 ```
