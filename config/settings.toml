@@ -1,0 +1,97 @@
+# SA Morning Brief settings. Edit freely; every section is optional via `enabled`.
+
+[brief]
+# Soft cap on message length. If the message is longer, blank separator lines are dropped.
+max_lines = 30
+
+[weather]
+enabled = true
+name = "Durban"
+latitude = -29.86
+longitude = 31.03
+timezone = "Africa/Johannesburg"
+base_url = "https://api.open-meteo.com/v1/forecast"   # Open-Meteo, no API key
+
+[fx]
+enabled = true
+# Frankfurter serves ECB reference rates, published once per business day (~16:00 CET).
+# If this host ever moves, the older https://api.frankfurter.app is the same service.
+base_url = "https://api.frankfurter.dev/v1"
+quote = "ZAR"
+bases = ["USD", "EUR", "GBP"]   # shown as USD/ZAR, EUR/ZAR, GBP/ZAR
+
+[markets]
+enabled = true
+# Extra dates (YYYY-MM-DD) the JSE was closed that the `holidays` package doesn't know about,
+# e.g. a one-off declared holiday. Weekends and ZA public holidays are already handled.
+extra_jse_closed_dates = []
+
+# market = "JSE"  -> uses the JSE session calendar (weekdays minus ZA public holidays)
+# market = "24H"  -> futures; weekdays only
+# divisor = 100   -> Yahoo quotes JSE equities in cents (ZAc); this shows Rand
+#
+# Alternative if ^J200.JO proves flaky: the Satrix 40 ETF "STX40.JO" (cents, tracks the Top 40,
+# NOT verified). Swap the symbol and set divisor = 100, prefix = "R", decimals = 2.
+
+[[markets.instruments]]
+label = "JSE Top 40"
+symbol = "^J200.JO"
+market = "JSE"
+prefix = ""
+decimals = 0
+
+[[markets.instruments]]
+label = "Standard Bank"
+symbol = "SBK.JO"
+market = "JSE"
+prefix = "R"
+decimals = 2
+divisor = 100
+
+[[markets.instruments]]
+label = "FirstRand"
+symbol = "FSR.JO"
+market = "JSE"
+prefix = "R"
+decimals = 2
+divisor = 100
+
+[[markets.instruments]]
+label = "Absa"
+symbol = "ABG.JO"
+market = "JSE"
+prefix = "R"
+decimals = 2
+divisor = 100
+
+[[markets.instruments]]
+label = "Nedbank"
+symbol = "NED.JO"
+market = "JSE"
+prefix = "R"
+decimals = 2
+divisor = 100
+
+# CPI.JO = Capitec ordinary shares. (CPIP.JO is the preference share, not what you want.)
+[[markets.instruments]]
+label = "Capitec"
+symbol = "CPI.JO"
+market = "JSE"
+prefix = "R"
+decimals = 2
+divisor = 100
+
+[[markets.instruments]]
+label = "Brent"
+symbol = "BZ=F"
+market = "24H"
+prefix = "$"
+decimals = 2
+
+# GC=F is the COMEX front-month gold future in USD per troy ounce.
+[[markets.instruments]]
+label = "Gold"
+symbol = "GC=F"
+market = "24H"
+prefix = "$"
+decimals = 0

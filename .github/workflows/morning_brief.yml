@@ -1,0 +1,36 @@
+name: Morning Brief
+
+on:
+  schedule:
+    - cron: "0 5 * * *"   # 05:00 UTC = 07:00 SAST. GitHub may start scheduled runs a few minutes late.
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: print the message in the log instead of sending it to Telegram"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: morning-brief
+  cancel-in-progress: false
+
+jobs:
+  brief:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Build and send the brief
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          LOG_LEVEL: ${{ inputs.dry_run && 'DEBUG' || 'INFO' }}
+        run: python -m jobs.morning_brief ${{ inputs.dry_run && '--dry-run' || '' }}
