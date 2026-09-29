@@ -158,6 +158,14 @@ def test_place_names_containing_a_keyword_are_excluded(monkeypatch):
     assert len(result.lines) == 1 and "Rand firms" in result.lines[0]
 
 
+def test_aggregator_publisher_suffix_becomes_the_source(monkeypatch):
+    stub_feeds(monkeypatch, {"A": [item("Sarb ups repo rate to 7.25% - Business Day"),
+                                   item("Rand firms - a very long tail that is clearly not a publisher name at all")]})
+    result = headlines.run(settings_with([{**FEED_A, "split_publisher": True}]), make_ctx("2026-09-29"))
+    assert any("Sarb ups repo rate to 7.25%</a> · Business Day" in l for l in result.lines)
+    assert any("Rand firms - a very long tail" in l and l.endswith("· A") for l in result.lines)
+
+
 def test_business_feed_fills_with_unmatched_items_after_matched(monkeypatch):
     stub_feeds(monkeypatch, {"A": [item("Mining output edges up", hours_ago=1), item("Bank profits jump", hours_ago=9)]})
     result = headlines.run(settings_with([FEED_A]), make_ctx("2026-09-29"))

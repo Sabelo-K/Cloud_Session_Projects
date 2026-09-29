@@ -159,36 +159,27 @@ name = "Moneyweb"
 url = "https://www.moneyweb.co.za/feed/"
 
 [[headlines.feeds]]
-name = "BusinessTech"
-url = "https://businesstech.co.za/news/feed/"
-# Live test: HTTP 403 from GitHub's runners even with a browser User-Agent (the site blocks them).
-enabled = false
-
-[[headlines.feeds]]
 name = "Daily Maverick"
 url = "https://www.dailymaverick.co.za/dmrss/"
 keyword_only = true
 
-# TRIAL FEEDS: URLs guessed from common WordPress/aggregator patterns, being tested in a dry run.
-# Anything that fails is removed afterwards.
-[[headlines.feeds]]
-name = "Daily Investor"
-url = "https://dailyinvestor.com/feed/"
-
-[[headlines.feeds]]
-name = "MyBroadband"
-url = "https://mybroadband.co.za/news/feed"
-keyword_only = true
-
+# Verified working from GitHub's runners in a live dry run (29 Sep 2026).
 [[headlines.feeds]]
 name = "The Citizen"
 url = "https://www.citizen.co.za/business/feed/"
 keyword_only = true
 
+# Google News search (Reserve Bank / rates / SA economy): stands in for the missing SARB feed, since
+# it picks up Reserve Bank stories from many outlets. Links go via news.google.com (they redirect to
+# the article). The "- Publisher" suffix is moved into the source label.
 [[headlines.feeds]]
-name = "Google News SA economy"
+name = "Google News"
 url = "https://news.google.com/rss/search?q=South+Africa+economy+OR+%22Reserve+Bank%22+OR+%22repo+rate%22+when:2d&hl=en-ZA&gl=ZA&ceid=ZA:en"
 keyword_only = true
+split_publisher = true
+
+# Tried and blocked (HTTP 403 from GitHub's runners, even with a browser User-Agent):
+# BusinessTech (https://businesstech.co.za/news/feed/), Daily Investor, MyBroadband.
 
 # Business Day publishes a list of its feeds at https://www.businessday.co.za/information/rss-feeds/
 # Open it, copy the Economy (or Business) feed address here, and set enabled = true.

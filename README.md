@@ -100,11 +100,11 @@ those sections may fail for other dates). A local non-dry run writes `data/youtu
 
 | Section | Source | Key | Verified while building? |
 |---|---|---|---|
-| Weather | [Open-Meteo](https://open-meteo.com), Durban (-29.86, 31.03) | No | No (host blocked in the build sandbox); response shape from docs |
-| Rand | [Frankfurter](https://frankfurter.dev): ECB rates, **published once per business day**, so Monday's brief shows Friday's. The heading always states the date. | No | No (blocked) |
-| Markets | Yahoo Finance via [`yfinance`](https://github.com/ranaroussi/yfinance): **unofficial**, can break or rate-limit | No | Tickers confirmed as Yahoo pages; not fetched |
+| Weather | [Open-Meteo](https://open-meteo.com), Durban (-29.86, 31.03) | No | Yes, live |
+| Rand | [Frankfurter](https://frankfurter.dev): ECB rates, **published once per business day**, so Monday's brief shows Friday's. The heading always states the date. | No | Yes, live |
+| Markets | Yahoo Finance via [`yfinance`](https://github.com/ranaroussi/yfinance): **unofficial**, can break or rate-limit | No | Yes, live: all 8 tickers return data |
 | YouTube | [YouTube Data API v3](https://developers.google.com/youtube/v3), public stats | API key | Auth method and error responses **verified live**; success responses from docs |
-| Headlines | RSS feeds, see below | No | **No** |
+| Headlines | RSS feeds, see below | No | Yes, live (4 feeds work) |
 | Watch today | `config/events.toml` (yours) | n/a | n/a |
 | Holidays | the [`holidays`](https://pypi.org/project/holidays/) package (ZA) | n/a | Yes (incl. 4 Nov 2026 local-election holiday) |
 
@@ -124,27 +124,26 @@ JSE didn't trade yesterday (weekend, public holiday, or a date in `extra_jse_clo
 collapse into one `JSE closed yesterday (Heritage Day); last session Wed 23 Sep` line instead of
 showing an old move as new.
 
-### RSS feeds (you need to verify these)
+### RSS feeds
 
-None of these could be fetched from the build sandbox (SA news hosts are blocked there), so the URLs
-come from web searches and are **unconfirmed** until your first dry run.
+Tested live from GitHub's runners on 29 Sep 2026:
 
-| Outlet | Feed URL in config | State |
-|---|---|---|
-| Moneyweb | `https://www.moneyweb.co.za/feed/` | Enabled, unconfirmed |
-| BusinessTech | `https://businesstech.co.za/news/feed/` | Enabled, unconfirmed |
-| Daily Maverick | `https://www.dailymaverick.co.za/dmrss/` | Enabled, unconfirmed. Whole-site feed, so `keyword_only`: only items matching your keywords qualify |
-| Business Day | Feed list at https://www.businessday.co.za/information/rss-feeds/ | **Disabled**: copy the Economy feed URL from that page into `settings.toml` and set `enabled = true` |
-| SARB | **No feed URL could be found** | Not configured. See below |
+| Outlet | Result |
+|---|---|
+| Moneyweb `https://www.moneyweb.co.za/feed/` | Works |
+| Daily Maverick `https://www.dailymaverick.co.za/dmrss/` | Works. Whole-site feed, so `keyword_only` (keyword must be in the title) |
+| The Citizen (business) `https://www.citizen.co.za/business/feed/` | Works, `keyword_only` |
+| Google News search (Reserve Bank / repo rate / SA economy) | Works. **Stands in for a SARB feed**: it surfaces Reserve Bank stories from many outlets. Links go via news.google.com and redirect to the article |
+| BusinessTech, Daily Investor, MyBroadband | **Blocked (HTTP 403)** from GitHub's runners, even with a browser User-Agent. Removed |
+| Business Day | Disabled. Copy the Economy feed URL from https://www.businessday.co.za/information/rss-feeds/ into `settings.toml` if you want it |
+| SARB | No official feed URL could be found; see Google News above and `events.toml` for MPC dates |
 
 A dead feed only costs you its own headlines: it's logged as `FAILED <reason>`, flagged as a warning on
 the run, and the rest still work. Ranking is by keyword hits (title counts triple vs summary), then
 recency; near-duplicate stories are collapsed, at most 2 per outlet, items older than 48h are ignored.
-Only headline + link are shown; article text is never used.
-
-**SARB:** if you find an official RSS address on resbank.co.za, add it under `[[headlines.feeds]]` with
-`priority = 3`. Until then SARB news still surfaces via the business outlets (the keywords include
-`reserve bank`, `sarb`, `mpc`, `repo rate`), and MPC dates come from `events.toml`.
+`exclude_phrases` stops place names like "East Rand" matching `rand`. Keyword matching is blunt:
+occasionally an off-topic headline gets through (e.g. a "military budget" story matches `budget`), so
+trim the `keywords` list if that annoys you. Only headline + link are shown; article text is never used.
 
 ### YouTube
 

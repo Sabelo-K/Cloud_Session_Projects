@@ -40,11 +40,12 @@ class Feed:
     priority: int = 0            # added to the score of every item from this feed
     keyword_only: bool = False   # general-interest feeds: only items with a keyword in the TITLE qualify
     user_agent: str = ""         # per-feed override for sites that block the default one
+    split_publisher: bool = False  # aggregator titles end in " - Publisher": show that as the source
 
     @classmethod
     def from_config(cls, raw: dict) -> "Feed":
         return cls(raw["name"], raw["url"], raw.get("priority", 0), raw.get("keyword_only", False),
-                   raw.get("user_agent", ""))
+                   raw.get("user_agent", ""), raw.get("split_publisher", False))
 
 
 @dataclass
@@ -75,6 +76,12 @@ def score_item(item: FeedItem, patterns: list[re.Pattern], exclude: list[str] = 
     title, summary = strip_excluded(item.title, exclude), strip_excluded(item.summary, exclude)
     return sum(TITLE_WEIGHT if p.search(title) else SUMMARY_WEIGHT if p.search(summary)
                else 0 for p in patterns)
+
+
+def split_publisher(title: str) -> tuple[str, str | None]:
+    """'Rates rise - Business Day' -> ('Rates rise', 'Business Day'). Only splits on a short tail."""
+    head, sep, tail = title.rpartition(" - ")
+    return (head, tail) if sep and head and 0 < len(tail) <= 40 else (title, None)
 
 
 def title_matches(item: FeedItem, patterns: list[re.Pattern], exclude: list[str] = ()) -> bool:
@@ -179,7 +186,12 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
             score = score_item(item, patterns, exclude)
             if feed.keyword_only and not title_matches(item, patterns, exclude):
                 continue   # a keyword buried in the summary isn't enough for a general-interest feed
-            candidates.append(Candidate(item, feed.name, score + feed.priority, order))
+            source = feed.name
+            if feed.split_publisher:
+                new_title, publisher = split_publisher(item.title)
+                if publisher:
+                    item, source = FeedItem(new_title, item.link, item.published, item.summary), publisher
+            candidates.append(Candidate(item, source, score + feed.priority, order))
 
     if len(failures) == len(feeds):
         raise DataError("all feeds failed: " + "; ".join(f"{k} ({v})" for k, v in failures.items()))
