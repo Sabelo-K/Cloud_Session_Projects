@@ -147,8 +147,9 @@ keywords = [
   "load shedding", "loadshedding",
 ]
 
-# priority: added to every item's score.  keyword_only: general-interest feed, so only items that
-# match a keyword are eligible.  enabled = false: kept for reference, not fetched.
+# priority: added to every item's score.  keyword_only: general-interest feed, so only items with a
+# keyword in the TITLE are eligible.  user_agent: per-feed override for sites that block the default.
+# enabled = false: kept for reference, not fetched.
 [[headlines.feeds]]
 name = "Moneyweb"
 url = "https://www.moneyweb.co.za/feed/"
@@ -156,6 +157,8 @@ url = "https://www.moneyweb.co.za/feed/"
 [[headlines.feeds]]
 name = "BusinessTech"
 url = "https://businesstech.co.za/news/feed/"
+# First live run: HTTP 403 with the default user agent (bot blocking). Trying a browser one.
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
 
 [[headlines.feeds]]
 name = "Daily Maverick"

@@ -133,6 +133,23 @@ def test_keyword_only_feed_drops_unrelated_items(monkeypatch):
     assert len(result.lines) == 1 and "Inflation slows" in result.lines[0]
 
 
+def test_keyword_only_feed_needs_the_keyword_in_the_title_not_just_the_summary(monkeypatch):
+    stub_feeds(monkeypatch, {"A": [item("Woman murdered in Ekurhuleni", summary="police at the bank"),
+                                   item("Bank profits jump")]})
+    result = headlines.run(settings_with([{**FEED_A, "keyword_only": True}]), make_ctx("2026-09-29"))
+    assert len(result.lines) == 1 and "Bank profits" in result.lines[0]
+
+
+def test_per_feed_user_agent_overrides_the_default(monkeypatch):
+    seen = {}
+    monkeypatch.setattr(headlines, "get_bytes", lambda url, headers, **kw: seen.update(headers) or b"<rss/>")
+    monkeypatch.setattr(headlines, "parse_feed", lambda data: [])
+    headlines.fetch_feed(headlines.Feed("A", "https://a.example/f", user_agent="Custom/1"), {"user_agent": "Default/1"})
+    assert seen["User-Agent"] == "Custom/1"
+    headlines.fetch_feed(headlines.Feed("A", "https://a.example/f"), {"user_agent": "Default/1"})
+    assert seen["User-Agent"] == "Default/1"
+
+
 def test_business_feed_fills_with_unmatched_items_after_matched(monkeypatch):
     stub_feeds(monkeypatch, {"A": [item("Mining output edges up", hours_ago=1), item("Bank profits jump", hours_ago=9)]})
     result = headlines.run(settings_with([FEED_A]), make_ctx("2026-09-29"))

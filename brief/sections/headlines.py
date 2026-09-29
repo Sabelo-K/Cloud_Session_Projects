@@ -38,11 +38,13 @@ class Feed:
     name: str
     url: str
     priority: int = 0            # added to the score of every item from this feed
-    keyword_only: bool = False   # general-interest feeds: only items matching a keyword qualify
+    keyword_only: bool = False   # general-interest feeds: only items with a keyword in the TITLE qualify
+    user_agent: str = ""         # per-feed override for sites that block the default one
 
     @classmethod
     def from_config(cls, raw: dict) -> "Feed":
-        return cls(raw["name"], raw["url"], raw.get("priority", 0), raw.get("keyword_only", False))
+        return cls(raw["name"], raw["url"], raw.get("priority", 0), raw.get("keyword_only", False),
+                   raw.get("user_agent", ""))
 
 
 @dataclass
@@ -65,6 +67,10 @@ def compile_keywords(keywords: list[str]) -> list[re.Pattern]:
 def score_item(item: FeedItem, patterns: list[re.Pattern]) -> int:
     return sum(TITLE_WEIGHT if p.search(item.title) else SUMMARY_WEIGHT if p.search(item.summary)
                else 0 for p in patterns)
+
+
+def title_matches(item: FeedItem, patterns: list[re.Pattern]) -> bool:
+    return any(p.search(item.title) for p in patterns)
 
 
 def _tokens(title: str) -> list[str]:
@@ -102,7 +108,7 @@ def select(candidates: list[Candidate], *, max_items: int, max_per_source: int,
 
 
 def fetch_feed(feed: Feed, cfg: dict) -> list[FeedItem]:
-    data = get_bytes(feed.url, headers={"User-Agent": cfg.get("user_agent", DEFAULT_UA),
+    data = get_bytes(feed.url, headers={"User-Agent": feed.user_agent or cfg.get("user_agent", DEFAULT_UA),
                                         "Accept": ACCEPT}, timeout=10, attempts=2)
     return parse_feed(data)
 
@@ -161,8 +167,8 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
             if item.published and ctx.now - item.published > max_age:
                 continue
             score = score_item(item, patterns)
-            if feed.keyword_only and score == 0:
-                continue
+            if feed.keyword_only and not title_matches(item, patterns):
+                continue   # a keyword buried in the summary isn't enough for a general-interest feed
             candidates.append(Candidate(item, feed.name, score + feed.priority, order))
 
     if len(failures) == len(feeds):
