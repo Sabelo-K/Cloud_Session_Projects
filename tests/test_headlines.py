@@ -92,6 +92,16 @@ def test_duplicates_collapse_to_the_best_ranked():
     assert [c.source for c in chosen] == ["B"]
 
 
+def test_an_aggregator_counts_as_one_outlet_however_many_publishers_it_relays():
+    titles = ["Chipmaker unveils datacentre accelerator", "Regulators probe chatbot privacy",
+              "Startup raises funding for coding assistant", "University releases open language model",
+              "Court weighs copyright claims over training data"]
+    cs = [Candidate(item(t), f"Publisher {n}", 9, n, origin="Google News") for n, t in enumerate(titles)]
+    cs.append(Candidate(item("Dedicated feed story about robotics"), "Lab", 1, 9, origin="Lab feed"))
+    chosen = select(cs, max_items=5, max_per_source=2, threshold=0.5)
+    assert sum(c.origin == "Google News" for c in chosen) == 2 and any(c.origin == "Lab feed" for c in chosen)
+
+
 def test_one_outlet_cannot_fill_the_list():
     chosen = select(cands(*[(f"Distinct story number {n} {'xyz'*n}", "A", 3, n) for n in range(1, 6)],
                           ("Another outlet story about mining", "B", 0, 40)),

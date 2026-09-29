@@ -218,8 +218,9 @@ links = 0                      # how many source links to show under the briefin
 # ---------------------------------------------------------------------------------------------
 # AI updates: replaces the markets block. Same engine and options as [headlines] above.
 # Dedicated AI feeds need no keyword filter; general tech feeds use keyword_only.
-# TRIAL FEEDS: URLs are unverified guesses until a dry run shows which respond from GitHub's
-# runners; failures are removed afterwards. Anthropic has no official RSS feed.
+# Tested live from GitHub's runners on 29 Sep 2026: all of these respond. (Hacker News' hnrss.org
+# returned HTTP 502 and was removed.) Anthropic has no official RSS feed; the Google News query
+# below picks up Anthropic stories from many outlets.
 [ai_news]
 enabled = true
 max_items = 5
@@ -262,10 +263,6 @@ url = "https://techcrunch.com/category/artificial-intelligence/feed/"
 name = "Ars Technica"
 url = "https://feeds.arstechnica.com/arstechnica/technology-lab"
 keyword_only = true
-
-[[ai_news.feeds]]
-name = "Hacker News"
-url = "https://hnrss.org/newest?q=AI+OR+LLM+OR+OpenAI+OR+Anthropic&points=150"
 
 [[ai_news.feeds]]
 name = "Google News AI"

@@ -54,6 +54,8 @@ class Candidate:
     source: str
     score: int
     order: int                   # position in config; final tiebreak
+    origin: str = ""             # the feed it came from; the per-outlet cap counts this (an
+                                 # aggregator like Google News is ONE outlet, however many publishers)
 
 
 def compile_keywords(keywords: list[str]) -> list[re.Pattern]:
@@ -113,13 +115,14 @@ def select(candidates: list[Candidate], *, max_items: int, max_per_source: int,
     for cand in ranked:
         if len(chosen) >= max_items:
             break
-        if per_source.get(cand.source, 0) >= max_per_source:
+        key = cand.origin or cand.source
+        if per_source.get(key, 0) >= max_per_source:
             continue
         if any(cand.item.link == c.item.link or similar(cand.item.title, c.item.title, threshold)
                for c in chosen):
             continue
         chosen.append(cand)
-        per_source[cand.source] = per_source.get(cand.source, 0) + 1
+        per_source[key] = per_source.get(key, 0) + 1
     return chosen
 
 
@@ -201,7 +204,7 @@ def run_feeds(settings: Settings, ctx: Context, *, key: str, title: str,
                 new_title, publisher = split_publisher(item.title)
                 if publisher:
                     item, source = FeedItem(new_title, item.link, item.published, item.summary), publisher
-            candidates.append(Candidate(item, source, score + feed.priority, order))
+            candidates.append(Candidate(item, source, score + feed.priority, order, origin=feed.name))
 
     if len(failures) == len(feeds):
         raise DataError("all feeds failed: " + "; ".join(f"{k} ({v})" for k, v in failures.items()))
