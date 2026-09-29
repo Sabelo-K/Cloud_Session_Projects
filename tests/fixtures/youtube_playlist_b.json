@@ -1,0 +1,8 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "items": [
+    {"snippet": {"title": "Rand vs Dollar in 60 seconds", "publishedAt": "2026-09-29T02:00:00Z",
+                 "resourceId": {"videoId": "vidBBBBBBB2"}},
+     "contentDetails": {"videoId": "vidBBBBBBB2", "videoPublishedAt": "2026-09-29T02:00:00Z"}}
+  ]
+}

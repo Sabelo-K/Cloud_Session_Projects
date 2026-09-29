@@ -1,0 +1,28 @@
+# "Watch today": known scheduled events. You maintain this file.
+#
+# One [[event]] block per event. On the morning of `date` the brief shows one line:
+#     Watch today: <text>
+# Two events on the same date are joined with " · ". Dates with no event show nothing.
+# `date` must be YYYY-MM-DD. Keep `text` short (it's one line on a phone).
+#
+# Entries here came from web searches, NOT from the official calendars. Check them.
+
+# SARB MPC: 2026 press-briefing dates (29 Jan, 26 Mar, 28 May, 23 Jul, 24 Sep, 19 Nov).
+# Only the remaining 2026 date is listed; add 2027 dates when the SARB publishes them.
+# Source: https://www.resbank.co.za/en/home/what-we-do/monetary-policy/monetary-policy-committee
+[[event]]
+date = "2026-11-19"
+text = "SARB MPC repo rate decision"
+
+# --- Templates: copy, uncomment, fill in. Nothing below is active. ---------------------------
+#
+# Stats SA CPI: see https://www.statssa.gov.za/?page_id=1874 (scheduled publications)
+# [[event]]
+# date = "2026-10-21"
+# text = "CPI inflation release (Stats SA, 10:00)"
+#
+# Fuel price adjustment: normally the first Wednesday of the month, but it moves around
+# holidays. Note that 4 Nov 2026 is a public holiday (local elections).
+# [[event]]
+# date = "2026-10-07"
+# text = "Fuel price adjustment (petrol/diesel)"

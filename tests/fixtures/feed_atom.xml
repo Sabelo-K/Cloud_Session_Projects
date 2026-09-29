@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Example Atom Feed</title>
+  <entry>
+    <title>Fuel price to drop in October</title>
+    <link rel="self" href="https://example.co.za/api/entry/1"/>
+    <link rel="alternate" href="https://example.co.za/fuel-price-october/"/>
+    <updated>2026-09-28T13:00:00Z</updated>
+    <summary type="html">&lt;p&gt;Petrol and diesel &lt;b&gt;fall&lt;/b&gt;.&lt;/p&gt;</summary>
+  </entry>
+</feed>

@@ -1,0 +1,10 @@
+{
+  "kind": "youtube#playlistItemListResponse",
+  "items": [
+    {"snippet": {"title": "Private video", "resourceId": {"videoId": "pppppppppp1"}},
+     "contentDetails": {"videoId": "pppppppppp1"}},
+    {"snippet": {"title": "How I track the JSE with Python", "publishedAt": "2026-09-27T08:00:00Z",
+                 "resourceId": {"videoId": "vidAAAAAAA1"}},
+     "contentDetails": {"videoId": "vidAAAAAAA1", "videoPublishedAt": "2026-09-27T08:00:00Z"}}
+  ]
+}

@@ -95,3 +95,82 @@ symbol = "GC=F"
 market = "24H"
 prefix = "$"
 decimals = 0
+
+
+# ---------------------------------------------------------------------------------------------
+# YouTube: public stats via the YouTube Data API v3 (API key in the YOUTUBE_API_KEY secret).
+# Channel IDs start with "UC" (24 characters). To find one: open the channel -> About ->
+# Share channel -> Copy channel ID. An @handle will NOT work.
+# `name` is optional; if omitted, the channel's own title is used.
+# Public subscriber counts are rounded by YouTube (3 significant figures).
+[youtube]
+enabled = true
+source = "data_api"                        # later: "supabase" once the Command Centre exists
+state_file = "data/youtube_history.json"   # committed by the workflow; enables day-over-day change
+history_days = 120
+
+# [[youtube.channels]]
+# name = "My first channel"
+# id = "UCxxxxxxxxxxxxxxxxxxxxxx"
+#
+# [[youtube.channels]]
+# name = "My second channel"
+# id = "UCxxxxxxxxxxxxxxxxxxxxxx"
+
+# ---------------------------------------------------------------------------------------------
+# SA economy headlines from RSS. Headline + link only; article text is never used or shown.
+# STATUS OF THESE FEEDS: the URLs below come from web searches and were NOT fetched from the
+# build sandbox (SA news hosts are blocked there). Run the workflow with "Dry run" ticked and read
+# the log: each feed prints `feed=<name> ok items=N newest=...` or `FAILED <reason>`.
+[headlines]
+enabled = true
+max_items = 4              # 3-5 recommended
+max_per_source = 2         # so one outlet can't fill the list
+max_age_hours = 48         # ignore older items (items without a date are kept)
+similarity = 0.5           # 0-1: how alike two headlines must be to count as the same story
+user_agent = "Mozilla/5.0 (compatible; SA-Morning-Brief/1.0)"
+
+# Items matching more of these (title counts triple vs summary) rank higher.
+# "load shedding" also matches "load-shedding"; a trailing "s" is allowed automatically.
+keywords = [
+  "repo rate", "interest rate", "reserve bank", "sarb", "mpc",
+  "inflation", "cpi", "consumer price",
+  "fuel price", "petrol", "diesel",
+  "rand", "unemployment", "bank", "budget",
+  "load shedding", "loadshedding",
+]
+
+# priority: added to every item's score.  keyword_only: general-interest feed, so only items that
+# match a keyword are eligible.  enabled = false: kept for reference, not fetched.
+[[headlines.feeds]]
+name = "Moneyweb"
+url = "https://www.moneyweb.co.za/feed/"
+
+[[headlines.feeds]]
+name = "BusinessTech"
+url = "https://businesstech.co.za/news/feed/"
+
+[[headlines.feeds]]
+name = "Daily Maverick"
+url = "https://www.dailymaverick.co.za/dmrss/"
+keyword_only = true
+
+# Business Day publishes a list of its feeds at https://www.businessday.co.za/information/rss-feeds/
+# Open it, copy the Economy (or Business) feed address here, and set enabled = true.
+[[headlines.feeds]]
+name = "Business Day"
+url = "https://www.businessday.co.za/information/rss-feeds/"   # <- placeholder: replace with the feed URL
+enabled = false
+
+# SARB: NO FEED URL COULD BE CONFIRMED. If you find one on https://www.resbank.co.za, add it here
+# with priority = 3 so SARB releases outrank other news.
+# [[headlines.feeds]]
+# name = "SARB"
+# url = "..."
+# priority = 3
+
+# ---------------------------------------------------------------------------------------------
+# "Watch today": known scheduled events, kept in their own file so it's easy to maintain.
+[watch]
+enabled = true
+file = "config/events.toml"

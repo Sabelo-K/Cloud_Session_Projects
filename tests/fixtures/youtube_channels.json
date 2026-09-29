@@ -1,0 +1,20 @@
+{
+  "kind": "youtube#channelListResponse",
+  "pageInfo": {"totalResults": 2, "resultsPerPage": 50},
+  "items": [
+    {
+      "kind": "youtube#channel",
+      "id": "UCaaaaaaaaaaaaaaaaaaaaaa",
+      "snippet": {"title": "Durban Data Lab"},
+      "contentDetails": {"relatedPlaylists": {"uploads": "UUaaaaaaaaaaaaaaaaaaaaaa"}},
+      "statistics": {"viewCount": "45678", "subscriberCount": "1230", "hiddenSubscriberCount": false, "videoCount": "42"}
+    },
+    {
+      "kind": "youtube#channel",
+      "id": "UCbbbbbbbbbbbbbbbbbbbbbb",
+      "snippet": {"title": "Rand Shorts"},
+      "contentDetails": {"relatedPlaylists": {"uploads": "UUbbbbbbbbbbbbbbbbbbbbbb"}},
+      "statistics": {"viewCount": "9000000", "hiddenSubscriberCount": true, "videoCount": "310"}
+    }
+  ]
+}

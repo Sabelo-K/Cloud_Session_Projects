@@ -45,3 +45,10 @@ def no_network_no_sleep(monkeypatch):
         "brief.sections.markets.yahoo_history",
         lambda symbol: (_ for _ in ()).throw(AssertionError(f"unstubbed yfinance call: {symbol}")),
     )
+
+
+def load_text(name: str) -> bytes:
+    return (FIXTURES / name).read_bytes()
+
+# The youtube_error_*.json fixtures ARE recorded live responses (real API, fake key). The other
+# youtube_*.json and feed_* fixtures are hand-written from the API/RSS docs.

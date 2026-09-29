@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Example Business Feed</title>
+    <atom:link href="https://example.co.za/feed/" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Sarb ups repo rate to 7.25%</title>
+      <link>https://example.co.za/news/economy/sarb-ups-repo-rate/</link>
+      <dc:creator>Staff Reporter</dc:creator>
+      <pubDate>Mon, 28 Sep 2026 15:00:00 +0200</pubDate>
+      <description><![CDATA[<p>The Reserve Bank raised rates by 25 basis points &amp; warned on inflation.</p>]]></description>
+      <content:encoded><![CDATA[<p>FULL ARTICLE TEXT THAT MUST NEVER BE USED OR SHOWN.</p>]]></content:encoded>
+    </item>
+    <item>
+      <title>Eskom&amp;#8217;s winter: no load shedding in sight</title>
+      <link>https://example.co.za/news/eskom-winter/</link>
+      <pubDate>Mon, 28 Sep 2026 09:30:00 +0200</pubDate>
+      <description>Grid stable.</description>
+    </item>
+    <item>
+      <title>Item with no link is skipped</title>
+      <pubDate>Mon, 28 Sep 2026 09:30:00 +0200</pubDate>
+    </item>
+    <item>
+      <title>Undated item</title>
+      <link>https://example.co.za/undated/</link>
+    </item>
+    <item>
+      <title>Bad date item</title>
+      <link>https://example.co.za/bad-date/</link>
+      <pubDate>not a date</pubDate>
+    </item>
+  </channel>
+</rss>

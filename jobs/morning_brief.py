@@ -13,18 +13,20 @@ from datetime import date, datetime, time
 
 from brief import runner
 from brief.config import ConfigError, load_dotenv, load_settings, require_env
+from brief.header import build_header
 from brief.sections import SECTIONS
 from brief.telegram import TelegramError, send_message
-from brief.util import SAST, esc, fmt_date_long, now_sast
+from brief.util import SAST, now_sast
 
 log = logging.getLogger("morning_brief")
 
 
-def build_message(settings: dict, now: datetime) -> tuple[str, list[runner.SectionResult]]:
-    ctx = runner.Context(now=now)
+def build_message(settings: dict, now: datetime,
+                  dry_run: bool = False) -> tuple[str, list[runner.SectionResult]]:
+    ctx = runner.Context(now=now, dry_run=dry_run)
     results = runner.run_sections(SECTIONS, settings, ctx)
-    header = f"<b>{esc(fmt_date_long(now.date()))}</b>"
-    message = runner.assemble(header, results, settings.get("brief", {}).get("max_lines", 30))
+    message = runner.assemble(build_header(now.date()), results,
+                              settings.get("brief", {}).get("max_lines", 30))
     return message, results
 
 
@@ -42,7 +44,7 @@ def main(argv: list[str] | None = None) -> int:
 
     settings = load_settings()
     now = datetime.combine(args.date, time(7, 0), tzinfo=SAST) if args.date else now_sast()
-    message, results = build_message(settings, now)
+    message, results = build_message(settings, now, dry_run=args.dry_run)
     runner.write_step_summary(results)
     runner.annotate_failures(results)
 

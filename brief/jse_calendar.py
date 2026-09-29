@@ -9,6 +9,16 @@ import holidays
 from brief.util import DAYS
 
 
+# holidays expands years on demand, so any date can be looked up.
+_ZA = holidays.country_holidays("ZA")
+
+
+def za_holiday_name(d: date) -> str | None:
+    """Name of the South African public holiday on `d`, if any (observed days included)."""
+    name = _ZA.get(d)
+    return str(name) if name else None
+
+
 class SessionCalendar:
     """Weekdays only. Used for 24h futures, where we don't model exchange holidays."""
 
@@ -31,14 +41,13 @@ class JSECalendar(SessionCalendar):
 
     def __init__(self, extra_closed: Iterable[date] = ()) -> None:
         self._extra = set(extra_closed)
-        # holidays expands years on demand, so any date can be looked up.
-        self._za = holidays.country_holidays("ZA")
 
     def closed_reason(self, d: date) -> str | None:
         if d.weekday() >= 5:
             return DAYS[d.weekday()]
-        if d in self._za:
-            return str(self._za.get(d))
+        holiday = za_holiday_name(d)
+        if holiday:
+            return holiday
         if d in self._extra:
             return "market closure"
         return None

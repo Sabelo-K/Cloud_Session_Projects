@@ -22,6 +22,7 @@ OK, PARTIAL, FAILED = "ok", "partial", "failed"
 @dataclass
 class Context:
     now: datetime  # timezone-aware, SAST
+    dry_run: bool = False  # sections must not write state (e.g. history files) on a dry run
 
     @property
     def today(self) -> date:
@@ -37,9 +38,12 @@ class SectionResult:
     status: str = OK
     detail: str = ""                 # what failed, for the log (never sent to Telegram)
     duration: float = 0.0
+    hidden: bool = False             # nothing to show today (still logged and counted)
     extra: dict = field(default_factory=dict)
 
     def render(self) -> list[str]:
+        if self.hidden:
+            return []
         return [self.heading or f"<b>{esc(self.title)}</b>", *self.lines]
 
 
@@ -82,7 +86,7 @@ def warning_line(results: list[SectionResult]) -> str | None:
 def assemble(header: str, results: list[SectionResult], max_lines: int = 30) -> str:
     """Header, then each section, then the optional warning. Sections are separated by a blank
     line for readability; if that would exceed `max_lines`, the blank lines are dropped."""
-    blocks = [[header], *(r.render() for r in results)]
+    blocks = [[header], *(block for r in results if (block := r.render()))]
     warn = warning_line(results)
     if warn:
         blocks.append([warn])
