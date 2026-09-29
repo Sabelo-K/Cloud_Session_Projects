@@ -150,6 +150,14 @@ def test_per_feed_user_agent_overrides_the_default(monkeypatch):
     assert seen["User-Agent"] == "Default/1"
 
 
+def test_place_names_containing_a_keyword_are_excluded(monkeypatch):
+    stub_feeds(monkeypatch, {"A": [item("EAST RAND murders: what we know"), item("Rand firms against the dollar")]})
+    cfg = settings_with([{**FEED_A, "keyword_only": True}])
+    cfg["headlines"]["exclude_phrases"] = ["east rand"]
+    result = headlines.run(cfg, make_ctx("2026-09-29"))
+    assert len(result.lines) == 1 and "Rand firms" in result.lines[0]
+
+
 def test_business_feed_fills_with_unmatched_items_after_matched(monkeypatch):
     stub_feeds(monkeypatch, {"A": [item("Mining output edges up", hours_ago=1), item("Bank profits jump", hours_ago=9)]})
     result = headlines.run(settings_with([FEED_A]), make_ctx("2026-09-29"))

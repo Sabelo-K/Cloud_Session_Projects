@@ -147,6 +147,10 @@ keywords = [
   "load shedding", "loadshedding",
 ]
 
+# Phrases that contain a keyword but don't mean it, ignored when matching (e.g. "East Rand" is a
+# place, not the currency). Add more as you spot them.
+exclude_phrases = ["east rand", "west rand", "rand water", "rand daily mail", "rand afrikaans"]
+
 # priority: added to every item's score.  keyword_only: general-interest feed, so only items with a
 # keyword in the TITLE are eligible.  user_agent: per-feed override for sites that block the default.
 # enabled = false: kept for reference, not fetched.

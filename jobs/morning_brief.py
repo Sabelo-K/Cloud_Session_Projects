@@ -41,6 +41,8 @@ def main(argv: list[str] | None = None) -> int:
     load_dotenv()
     logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO").upper(),
                         format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    for noisy in ("yfinance", "peewee", "urllib3", "curl_cffi", "charset_normalizer"):
+        logging.getLogger(noisy).setLevel(max(logging.getLogger().level, logging.WARNING))   # DEBUG shows OUR values only
 
     settings = load_settings()
     now = datetime.combine(args.date, time(7, 0), tzinfo=SAST) if args.date else now_sast()

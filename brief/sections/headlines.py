@@ -64,13 +64,22 @@ def compile_keywords(keywords: list[str]) -> list[re.Pattern]:
     return patterns
 
 
-def score_item(item: FeedItem, patterns: list[re.Pattern]) -> int:
-    return sum(TITLE_WEIGHT if p.search(item.title) else SUMMARY_WEIGHT if p.search(item.summary)
+def strip_excluded(text: str, exclude: list[str]) -> str:
+    """Blank out phrases that contain a keyword without meaning it ('East Rand' is a place)."""
+    for phrase in exclude:
+        text = re.sub(re.escape(phrase), " ", text, flags=re.IGNORECASE)
+    return text
+
+
+def score_item(item: FeedItem, patterns: list[re.Pattern], exclude: list[str] = ()) -> int:
+    title, summary = strip_excluded(item.title, exclude), strip_excluded(item.summary, exclude)
+    return sum(TITLE_WEIGHT if p.search(title) else SUMMARY_WEIGHT if p.search(summary)
                else 0 for p in patterns)
 
 
-def title_matches(item: FeedItem, patterns: list[re.Pattern]) -> bool:
-    return any(p.search(item.title) for p in patterns)
+def title_matches(item: FeedItem, patterns: list[re.Pattern], exclude: list[str] = ()) -> bool:
+    title = strip_excluded(item.title, exclude)
+    return any(p.search(title) for p in patterns)
 
 
 def _tokens(title: str) -> list[str]:
@@ -147,6 +156,7 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
     if not feeds:
         raise DataError("no enabled feeds in [[headlines.feeds]]")
     patterns = compile_keywords(cfg["keywords"])
+    exclude = cfg.get("exclude_phrases", [])
     max_age = timedelta(hours=cfg.get("max_age_hours", 48))
 
     candidates: list[Candidate] = []
@@ -166,8 +176,8 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
                 continue
             if item.published and ctx.now - item.published > max_age:
                 continue
-            score = score_item(item, patterns)
-            if feed.keyword_only and not title_matches(item, patterns):
+            score = score_item(item, patterns, exclude)
+            if feed.keyword_only and not title_matches(item, patterns, exclude):
                 continue   # a keyword buried in the summary isn't enough for a general-interest feed
             candidates.append(Candidate(item, feed.name, score + feed.priority, order))
 

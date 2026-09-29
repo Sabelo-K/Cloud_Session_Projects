@@ -14,6 +14,12 @@ from tests.test_markets import FRESH, stub
 from tests.test_message import ThreeChannels, TODAY, stub_everything  # noqa: F401 (registers "three")
 
 
+def bars_for(last_day):
+    from datetime import date, timedelta
+    end = date.fromisoformat(last_day)
+    return [(end - timedelta(days=3), 4100.0), (end, 4150.0)]
+
+
 # --- hung sources ---------------------------------------------------------------------------------
 
 def test_a_hung_section_is_abandoned_and_the_rest_still_run():
@@ -73,6 +79,31 @@ def test_time_budget_stops_further_fetches(monkeypatch, settings):
     calls = stub(monkeypatch, FRESH)
     result = markets.run(settings, make_ctx(TODAY))
     assert len(calls) == 1 and result.status == PARTIAL and "time budget" in result.detail
+
+
+def test_a_missing_newest_bar_is_retried_once_and_the_fresh_one_used(monkeypatch, settings):
+    monday = bars_for("2026-09-28")
+    stale = bars_for("2026-09-25")
+    answers = {"GC=F": [stale, monday]}
+    calls = []
+
+    def fake(symbol):
+        calls.append(symbol)
+        return answers[symbol].pop(0) if symbol in answers and answers[symbol] else FRESH[symbol]
+
+    monkeypatch.setattr(markets, "yahoo_history", fake)
+    monkeypatch.setattr(markets.time, "sleep", lambda _s: None)
+    result = markets.run(settings, make_ctx(TODAY))
+    assert calls.count("GC=F") == 2
+    assert not any("not updated" in l for l in result.lines)
+
+
+def test_a_bar_that_stays_missing_is_labelled_stale_after_the_retry(monkeypatch, settings):
+    stale = bars_for("2026-09-25")
+    monkeypatch.setattr(markets, "yahoo_history", lambda s: stale if s == "GC=F" else FRESH[s])
+    monkeypatch.setattr(markets.time, "sleep", lambda _s: None)
+    result = markets.run(settings, make_ctx(TODAY))
+    assert any(l.startswith("Gold") and "not updated" in l for l in result.lines)
 
 
 # --- stale ECB data ------------------------------------------------------------------------------------

@@ -134,10 +134,15 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
             continue
         calendar = jse if inst.market == "JSE" else futures
         try:
+            expected = calendar.previous_session(today)
             quote = make_quote(inst, yahoo_history(inst.symbol), today)
+            if quote.session < expected:   # Yahoo sometimes omits the newest bar; one more look
+                time.sleep(2)
+                retry = make_quote(inst, yahoo_history(inst.symbol), today)
+                quote = retry if retry.session > quote.session else quote
             log.debug("markets %s (%s): close=%s prev=%s session=%s", inst.label, inst.symbol,
                       quote.close, quote.prev_close, quote.session)
-            lines.append(render_quote(quote, calendar.previous_session(today)))
+            lines.append(render_quote(quote, expected))
             streak = 0
         except Exception as exc:  # noqa: BLE001 - one bad ticker must not drop the others
             failures[inst.label] = f"{inst.symbol} {describe(exc)}"
