@@ -121,6 +121,7 @@ def test_one_failed_ticker_shows_unavailable_and_the_rest_still_render(monkeypat
 
 def test_every_ticker_failing_fails_the_section_via_the_runner(monkeypatch, settings):
     stub(monkeypatch, FRESH, fail=set(FRESH))
+    settings["markets"]["enabled"] = True            # off by default in the shipped config
     (result,) = run_sections([Section("markets", "Markets", markets.run)], settings,
                              make_ctx("2026-09-29"))
     assert result.status == FAILED

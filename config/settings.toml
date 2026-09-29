@@ -24,7 +24,8 @@ quote = "ZAR"
 bases = ["USD", "EUR", "GBP"]   # shown as USD/ZAR, EUR/ZAR, GBP/ZAR
 
 [markets]
-enabled = true
+# OFF: replaced by [ai_news] below. Set to true to bring the JSE/Brent/gold block back.
+enabled = false
 # Extra dates (YYYY-MM-DD) the JSE was closed that the `holidays` package doesn't know about,
 # e.g. a one-off declared holiday. Weekends and ZA public holidays are already handled.
 extra_jse_closed_dates = []
@@ -209,3 +210,61 @@ file = "config/events.toml"
 [summary]
 enabled = false
 model = "claude-opus-5-5"      # any Claude model ID works; a smaller one is cheaper
+
+# ---------------------------------------------------------------------------------------------
+# AI updates: replaces the markets block. Same engine and options as [headlines] above.
+# Dedicated AI feeds need no keyword filter; general tech feeds use keyword_only.
+# TRIAL FEEDS: URLs are unverified guesses until a dry run shows which respond from GitHub's
+# runners; failures are removed afterwards. Anthropic has no official RSS feed.
+[ai_news]
+enabled = true
+max_items = 5
+max_per_source = 2
+max_age_hours = 72
+similarity = 0.5
+user_agent = "Mozilla/5.0 (compatible; SA-Morning-Brief/1.0)"
+keywords = [
+  "AI", "artificial intelligence", "LLM", "large language model", "generative",
+  "OpenAI", "Anthropic", "Claude", "Gemini", "GPT", "ChatGPT", "DeepMind", "Mistral", "Llama",
+  "machine learning", "Nvidia", "AI agent",
+]
+exclude_phrases = []
+
+[[ai_news.feeds]]
+name = "OpenAI"
+url = "https://openai.com/news/rss.xml"
+
+[[ai_news.feeds]]
+name = "Google AI"
+url = "https://blog.google/technology/ai/rss/"
+
+[[ai_news.feeds]]
+name = "Hugging Face"
+url = "https://huggingface.co/blog/feed.xml"
+
+[[ai_news.feeds]]
+name = "MIT Technology Review"
+url = "https://www.technologyreview.com/topic/artificial-intelligence/feed"
+
+[[ai_news.feeds]]
+name = "The Verge"
+url = "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+
+[[ai_news.feeds]]
+name = "TechCrunch"
+url = "https://techcrunch.com/category/artificial-intelligence/feed/"
+
+[[ai_news.feeds]]
+name = "Ars Technica"
+url = "https://feeds.arstechnica.com/arstechnica/technology-lab"
+keyword_only = true
+
+[[ai_news.feeds]]
+name = "Hacker News"
+url = "https://hnrss.org/newest?q=AI+OR+LLM+OR+OpenAI+OR+Anthropic&points=150"
+
+[[ai_news.feeds]]
+name = "Google News AI"
+url = "https://news.google.com/rss/search?q=%22artificial+intelligence%22+OR+OpenAI+OR+Anthropic+OR+Gemini+when:2d&hl=en&gl=ZA&ceid=ZA:en"
+keyword_only = true
+split_publisher = true

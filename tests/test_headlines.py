@@ -205,7 +205,7 @@ def test_no_enabled_feeds_is_an_error(monkeypatch):
 def test_nothing_recent_says_so_instead_of_an_empty_section(monkeypatch):
     stub_feeds(monkeypatch, {"A": [item("Ancient", hours_ago=500)]})
     result = headlines.run(settings_with([FEED_A]), make_ctx("2026-09-29"))
-    assert result.status == OK and result.lines == ["No recent headlines."]
+    assert result.status == OK and result.lines == ["No recent items."]
 
 
 def test_the_shipped_config_only_enables_feeds_with_real_urls(settings):

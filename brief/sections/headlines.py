@@ -158,10 +158,17 @@ def _maybe_summarise(settings: Settings, titles: list[str]) -> tuple[str | None,
 
 
 def run(settings: Settings, ctx: Context) -> SectionResult:
-    cfg = settings["headlines"]
+    return run_feeds(settings, ctx, key="headlines", title="SA economy", allow_summary=True)
+
+
+def run_feeds(settings: Settings, ctx: Context, *, key: str, title: str,
+              allow_summary: bool = False) -> SectionResult:
+    """Fetch, rank and render a list of RSS feeds configured under settings[key].
+    Shared by 'SA economy' headlines and 'AI updates'; only the config and heading differ."""
+    cfg = settings[key]
     feeds = [Feed.from_config(f) for f in cfg["feeds"] if f.get("enabled", True)]
     if not feeds:
-        raise DataError("no enabled feeds in [[headlines.feeds]]")
+        raise DataError(f"no enabled feeds in [[{key}.feeds]]")
     patterns = compile_keywords(cfg["keywords"])
     exclude = cfg.get("exclude_phrases", [])
     max_age = timedelta(hours=cfg.get("max_age_hours", 48))
@@ -199,15 +206,15 @@ def run(settings: Settings, ctx: Context) -> SectionResult:
     chosen = select(candidates, max_items=cfg.get("max_items", 4),
                     max_per_source=cfg.get("max_per_source", 2),
                     threshold=cfg.get("similarity", 0.5))
-    lines = [render_headline(c) for c in chosen] or ["No recent headlines."]
+    lines = [render_headline(c) for c in chosen] or ["No recent items."]
     detail = "; ".join(f"{k} ({v})" for k, v in failures.items())
-    sentence, summary_problem = _maybe_summarise(settings, [c.item.title for c in chosen])
+    sentence, summary_problem = (_maybe_summarise(settings, [c.item.title for c in chosen])
+                                 if allow_summary else (None, ""))
     if sentence:
         lines.insert(0, f"<i>{esc(sentence)}</i>")
     if summary_problem:
         detail = "; ".join(filter(None, [detail, summary_problem]))
-    result = SectionResult("headlines", "SA economy", lines,
-                           status=PARTIAL if detail else OK, detail=detail)
-    result.heading = "<b>SA economy</b>"
+    result = SectionResult(key, title, lines, status=PARTIAL if detail else OK, detail=detail)
+    result.heading = f"<b>{esc(title)}</b>"
     result.trimmable = max(0, len(chosen) - MIN_ITEMS)   # spec: always keep at least 3 if we have them
     return result

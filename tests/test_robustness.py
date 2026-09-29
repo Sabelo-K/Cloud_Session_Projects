@@ -6,12 +6,12 @@ from html.parser import HTMLParser
 import pytest
 
 from brief.runner import FAILED, OK, PARTIAL, Section, SectionResult, assemble, run_sections
-from brief.sections import fx, headlines, markets, watch, weather
+from brief.sections import fx, headlines, markets
 from jobs import morning_brief
 from tests.conftest import make_ctx
 from tests.test_fx import payload
 from tests.test_markets import FRESH, stub
-from tests.test_message import ThreeChannels, TODAY, stub_everything  # noqa: F401 (registers "three")
+from tests.test_message import FEED_KILLERS, KILLERS, TODAY, stub_everything
 
 
 def bars_for(last_day):
@@ -185,7 +185,7 @@ def test_shipped_tickers_are_sane(settings):
 
 
 def test_every_section_has_a_settings_table_with_an_enabled_flag(settings):
-    for key in ("weather", "fx", "markets", "youtube", "headlines", "watch"):
+    for key in ("weather", "fx", "markets", "youtube", "headlines", "ai_news", "watch"):
         assert settings[key]["enabled"] in (True, False)
 
 
@@ -223,9 +223,7 @@ def audit(message):
     return parser.problems + ([f"unclosed {parser.stack}"] if parser.stack else [])
 
 
-KILLERS = {"weather": (weather, "fetch_forecast"), "fx": (fx, "fetch_series"),
-           "markets": (markets, "yahoo_history"), "headlines": (headlines, "fetch_feed"),
-           "youtube": (ThreeChannels, "fetch_reports"), "watch": (watch, "load_events")}
+ALL_SECTIONS = [*KILLERS, *FEED_KILLERS]     # markets are off by default, so six sections run
 
 
 def test_message_with_hostile_text_is_valid_telegram_html(monkeypatch, settings, tmp_path):
@@ -237,16 +235,17 @@ def test_message_with_hostile_text_is_valid_telegram_html(monkeypatch, settings,
     assert audit(message) == []
 
 
-@pytest.mark.parametrize("dead", [c for n in range(7) for c in itertools.combinations(KILLERS, n)],
+@pytest.mark.parametrize("dead", [c for n in range(7) for c in itertools.combinations(ALL_SECTIONS, n)],
                          ids=lambda c: "+".join(c) or "none-dead")
 def test_every_combination_of_dead_sources_yields_a_valid_message(monkeypatch, settings, tmp_path, dead):
-    stub_everything(monkeypatch, settings, tmp_path)
+    stub_everything(monkeypatch, settings, tmp_path, dead_feeds=[FEED_KILLERS[d] for d in dead if d in FEED_KILLERS])
 
     def boom(*_a, **_k):
         raise ConnectionError("source down")
 
     for name in dead:
-        monkeypatch.setattr(*KILLERS[name], boom)
+        if name in KILLERS:
+            monkeypatch.setattr(*KILLERS[name], boom)
     message, results = morning_brief.build_message(settings, make_ctx(TODAY).now)
     failed = [r.key for r in results if r.status == FAILED]
     assert set(failed) == set(dead)
