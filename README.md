@@ -160,15 +160,29 @@ video count, and the latest upload (title, link, views, age). Change vs the prev
 * If your default branch is **protected**, the history commit will be refused; allow GitHub Actions to
   push, or tell me and we'll move the history to its own branch.
 
-## Optional: one-sentence headline summary (off by default, paid)
+## Optional: a plain-English briefing instead of headline links (off by default, paid)
 
-The only feature that isn't free. Set `[summary] enabled = true` in `settings.toml` and add an
-`ANTHROPIC_API_KEY` secret (your own Anthropic API credit; roughly $0.07/month at the default model).
-A single italic sentence appears above the headlines. Only the headline **titles** are sent; no
-article text, links or personal data. Any failure (no key, API error, refusal, empty answer) simply
-omits the sentence and is logged. The workflow installs the `anthropic` package only if the secret
-exists (`requirements-llm.txt`). The `model` is configurable; I did not enable Anthropic's refusal
-fallback because a missing summary sentence is harmless.
+If you don't have time to click and read, this replaces the **SA economy** link list with 3-4 plain
+sentences on what is happening (rates, rand, fuel, jobs, power, budget...), written by Claude from the
+day's headlines. It is the only feature that isn't free: you need your own Anthropic API key with
+credit, and it costs a few cents a month at the default model.
+
+To turn it on:
+1. Create an API key at https://console.anthropic.com and add credit.
+2. Add it as a repository secret named `ANTHROPIC_API_KEY`.
+3. In `config/settings.toml` set `[summary] enabled = true`.
+
+Settings under `[summary]`: `model` (default `claude-opus-5-5`; a smaller model is cheaper),
+`send_excerpts` (headline titles plus each outlet's short RSS excerpt, or `false` for titles only), and
+`links` (how many source links to keep under the briefing; default 0).
+
+What is sent to Anthropic: headline titles and, unless you turn it off, the ~300-character excerpt each
+outlet publishes in its RSS feed. No links, and nothing about you. The model is told to use only that
+material and not to follow instructions inside it. It can still occasionally paraphrase badly, which is
+why `links` exists if you want to spot-check. If the key is missing or anything fails (API error,
+refusal, empty answer), you simply get the normal headline list for that day and the problem is
+logged. The workflow installs the `anthropic` package only if the secret exists. The AI updates
+section never uses this.
 
 ## Failure behaviour
 
@@ -217,5 +231,5 @@ brief/sections/                       weather, fx, markets, youtube, headlines, 
 brief/youtube/                        source-neutral models, Data API source, JSON history
 jobs/morning_brief.py                 entrypoint
 tests/                                pytest (~240), fixture data only, no live calls; also run on every push
-brief/summary.py                      optional paid headline summary (off by default)
+brief/summary.py                      optional paid SA economy briefing (off by default)
 ```

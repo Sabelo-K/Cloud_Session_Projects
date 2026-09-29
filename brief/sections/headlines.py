@@ -142,19 +142,22 @@ def _is_web_link(url: str) -> bool:
     return urlparse(url).scheme in ("http", "https")
 
 
-def _maybe_summarise(settings: Settings, titles: list[str]) -> tuple[str | None, str]:
-    """(sentence, problem). Feature is off unless [summary] enabled = true; never raises."""
+BRIEFING_INPUT_ITEMS = 12   # how many top-ranked items the briefing is written from
+
+
+def _maybe_brief(settings: Settings, pool: list[Candidate]) -> tuple[list[str] | None, str]:
+    """(briefing lines, problem). Off unless [summary] enabled = true; never raises."""
     cfg = settings.get("summary", {})
-    if not cfg.get("enabled", False) or not titles:
+    if not cfg.get("enabled", False) or not pool:
         return None, ""
     api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
     if not api_key:
-        return None, "summary enabled but ANTHROPIC_API_KEY is not set"
+        return None, "briefing enabled but ANTHROPIC_API_KEY is not set"
     try:
-        sentence = summary.summarise(titles, cfg, api_key)
-    except Exception as exc:  # noqa: BLE001 - the summary is a garnish; the headlines still go out
-        return None, f"summary failed ({describe(exc)})"
-    return sentence, "" if sentence else "summary came back empty"
+        lines = summary.briefing([(c.item.title, c.item.summary) for c in pool], cfg, api_key)
+    except Exception as exc:  # noqa: BLE001 - the briefing is a bonus; the headlines still go out
+        return None, f"briefing failed ({describe(exc)})"
+    return lines, "" if lines else "briefing came back empty"
 
 
 def run(settings: Settings, ctx: Context) -> SectionResult:
@@ -206,15 +209,24 @@ def run_feeds(settings: Settings, ctx: Context, *, key: str, title: str,
     chosen = select(candidates, max_items=cfg.get("max_items", 4),
                     max_per_source=cfg.get("max_per_source", 2),
                     threshold=cfg.get("similarity", 0.5))
-    lines = [render_headline(c) for c in chosen] or ["No recent items."]
     detail = "; ".join(f"{k} ({v})" for k, v in failures.items())
-    sentence, summary_problem = (_maybe_summarise(settings, [c.item.title for c in chosen])
-                                 if allow_summary else (None, ""))
-    if sentence:
-        lines.insert(0, f"<i>{esc(sentence)}</i>")
-    if summary_problem:
-        detail = "; ".join(filter(None, [detail, summary_problem]))
+    briefing_lines, briefing_problem = (None, "")
+    if allow_summary:
+        pool = select(candidates, max_items=BRIEFING_INPUT_ITEMS, max_per_source=BRIEFING_INPUT_ITEMS,
+                      threshold=cfg.get("similarity", 0.5))
+        briefing_lines, briefing_problem = _maybe_brief(settings, pool)
+    if briefing_problem:
+        detail = "; ".join(filter(None, [detail, briefing_problem]))
+
+    if briefing_lines:   # a few plain sentences; optionally the top N source links underneath
+        n_links = settings.get("summary", {}).get("links", 0)
+        lines = [f"• {esc(line)}" for line in briefing_lines]
+        lines += [render_headline(c).replace("• ", "↳ ", 1) for c in chosen[:n_links]]
+        trimmable = 0
+    else:
+        lines = [render_headline(c) for c in chosen] or ["No recent items."]
+        trimmable = max(0, len(chosen) - MIN_ITEMS)   # spec: always keep at least 3 if we have them
     result = SectionResult(key, title, lines, status=PARTIAL if detail else OK, detail=detail)
     result.heading = f"<b>{esc(title)}</b>"
-    result.trimmable = max(0, len(chosen) - MIN_ITEMS)   # spec: always keep at least 3 if we have them
+    result.trimmable = trimmable
     return result

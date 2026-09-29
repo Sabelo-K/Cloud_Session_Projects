@@ -203,13 +203,17 @@ enabled = true
 file = "config/events.toml"
 
 # ---------------------------------------------------------------------------------------------
-# OPTIONAL, OFF BY DEFAULT: a one-sentence summary above the headlines, written by Claude.
+# OPTIONAL, OFF BY DEFAULT: replaces the SA economy headline list with a 3-4 line briefing on what
+# is happening, written by Claude from the day's headlines, so you don't have to click and read.
 # This is the ONLY paid feature (a few cents a month; needs an ANTHROPIC_API_KEY secret and your
-# own Anthropic API credit; it is not covered by any free tier). Only headline titles are sent.
-# Any failure just omits the sentence.
+# own Anthropic API credit; it is not covered by any free tier).
+# Sent to Anthropic: headline titles and (if send_excerpts) each outlet's short RSS excerpt. No links.
+# If the key is missing or a call fails, you simply get the normal headline list.
 [summary]
 enabled = false
 model = "claude-opus-5-5"      # any Claude model ID works; a smaller one is cheaper
+send_excerpts = true           # false = titles only (cheaper, less context)
+links = 0                      # how many source links to show under the briefing (0 = none)
 
 # ---------------------------------------------------------------------------------------------
 # AI updates: replaces the markets block. Same engine and options as [headlines] above.
