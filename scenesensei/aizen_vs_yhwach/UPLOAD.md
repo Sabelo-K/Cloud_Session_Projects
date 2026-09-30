@@ -17,6 +17,21 @@ Was Aizen's role in the final fight enough, or should Kubo have given him more? 
 Subscribe to SceneSensei for more deep dives into the scenes that define anime.
 
 CHAPTERS
+0:00 The One Man No One Wanted Free
+0:24 Intro
+0:54 Where We Left Him
+1:34 The World Without A King
+2:10 Kyoraku's Gamble
+2:44 The Entrance
+3:21 Full Incantation Kurohitsugi
+3:55 Perception vs Prophecy
+4:30 The Opening
+5:07 It Wasn't Enough
+5:46 Why It Had To Be Aizen
+6:36 The Irony
+7:10 The Mirror
+7:42 After The War
+8:05 The Verdict
 
 #Bleach #Aizen #Yhwach #BleachTYBW #ThousandYearBloodWar #Anime
 
