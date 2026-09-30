@@ -121,6 +121,14 @@ def test_run_renders_headline_and_link_only(monkeypatch):
     assert "SECRET" not in "".join(result.render())
 
 
+def test_show_links_false_renders_plain_escaped_text(monkeypatch):
+    stub_feeds(monkeypatch, {"A": [item("Repo rate & <b>inflation</b> hold", link="https://a.example/x")]})
+    cfg = settings_with([FEED_A])
+    cfg["headlines"]["show_links"] = False
+    (line,) = headlines.run(cfg, make_ctx("2026-09-29")).lines
+    assert line == "• Repo rate &amp; &lt;b&gt;inflation&lt;/b&gt; hold · A" and "http" not in line
+
+
 def test_titles_are_html_escaped_and_long_ones_shortened(monkeypatch):
     stub_feeds(monkeypatch, {"A": [item('Rand <script>alert(1)</script> & "co" ' + "x" * 200)]})
     (line,) = headlines.run(settings_with([FEED_A]), make_ctx("2026-09-29")).lines

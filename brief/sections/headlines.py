@@ -136,9 +136,11 @@ def _shorten(text: str, limit: int) -> str:
     return text if len(text) <= limit else text[: limit - 1].rstrip() + "…"
 
 
-def render_headline(cand: Candidate) -> str:
-    href = html.escape(cand.item.link, quote=True)
-    return f'• <a href="{href}">{esc(_shorten(cand.item.title, TITLE_CHARS))}</a> · {esc(cand.source)}'
+def render_headline(cand: Candidate, link: bool = True) -> str:
+    title = esc(_shorten(cand.item.title, TITLE_CHARS))
+    if link:
+        title = f'<a href="{html.escape(cand.item.link, quote=True)}">{title}</a>'
+    return f"• {title} · {esc(cand.source)}"
 
 
 def _is_web_link(url: str) -> bool:
@@ -227,7 +229,8 @@ def run_feeds(settings: Settings, ctx: Context, *, key: str, title: str,
         lines += [render_headline(c).replace("• ", "↳ ", 1) for c in chosen[:n_links]]
         trimmable = 0
     else:
-        lines = [render_headline(c) for c in chosen] or ["No recent items."]
+        link = cfg.get("show_links", True)   # shipped config sets false: read-only, nothing to tap
+        lines = [render_headline(c, link) for c in chosen] or ["No recent items."]
         trimmable = max(0, len(chosen) - MIN_ITEMS)   # spec: always keep at least 3 if we have them
     result = SectionResult(key, title, lines, status=PARTIAL if detail else OK, detail=detail)
     result.heading = f"<b>{esc(title)}</b>"

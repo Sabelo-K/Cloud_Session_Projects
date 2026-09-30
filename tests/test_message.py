@@ -67,11 +67,21 @@ def test_full_message_has_every_section_in_order_within_the_line_budget(monkeypa
     assert all(r.status == "ok" for r in results), [(r.key, r.detail) for r in results]
 
 
-def test_ai_updates_show_links_and_the_source_name(monkeypatch, settings, tmp_path):
+def test_news_is_plain_text_by_default_with_the_source_name(monkeypatch, settings, tmp_path):
     stub_everything(monkeypatch, settings, tmp_path)
     message, _ = morning_brief.build_message(settings, make_ctx(TODAY).now)
-    ai_lines = [l for l in message.splitlines() if "/ai" in l]
-    assert len(ai_lines) == 5 and all(l.startswith("• <a href=") and l.endswith("· AIFeed") for l in ai_lines)
+    news = [l for l in message.splitlines() if l.endswith(("· AIFeed", "· SAFeed"))]
+    assert news and not any("<a " in l or "http" in l for l in news)   # nothing to tap or click (YouTube's own-video link is separate)
+    ai_lines = [l for l in message.splitlines() if l.endswith("· AIFeed")]
+    assert len(ai_lines) == 5 and all(l.startswith("• ") for l in ai_lines)
+    assert any(l.endswith("· SAFeed") for l in message.splitlines())
+
+
+def test_links_can_be_switched_back_on(monkeypatch, settings, tmp_path):
+    stub_everything(monkeypatch, settings, tmp_path)
+    settings["ai_news"]["show_links"] = True
+    message, _ = morning_brief.build_message(settings, make_ctx(TODAY).now)
+    assert any(l.startswith("• <a href=") and l.endswith("· AIFeed") for l in message.splitlines())
 
 
 def test_markets_can_be_switched_back_on_in_the_same_spot(monkeypatch, settings, tmp_path):

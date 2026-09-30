@@ -134,6 +134,7 @@ history_days = 120
 # the log: each feed prints `feed=<name> ok items=N newest=...` or `FAILED <reason>`.
 [headlines]
 enabled = true
+show_links = false         # false = plain text, nothing to tap; true = headlines are tappable links
 max_items = 4              # 3-5 recommended
 max_per_source = 2         # so one outlet can't fill the list
 max_age_hours = 48         # ignore older items (items without a date are kept)
@@ -225,6 +226,7 @@ links = 0                      # how many source links to show under the briefin
 # below picks up Anthropic stories from many outlets.
 [ai_news]
 enabled = true
+show_links = false         # false = plain text, nothing to tap
 max_items = 5
 max_per_source = 2
 max_age_hours = 72
