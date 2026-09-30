@@ -45,3 +45,9 @@ bleach, aizen, yhwach, aizen vs yhwach, bleach thousand year blood war, bleach t
 4. Pin a comment: "Was Aizen the real MVP of the final battle? 👇"
 5. Cut a 45–60s Short from the "Perception vs Prophecy" section (the strongest hook) and post it 1–2 days later, linking back to this video.
 6. **Strongly recommended:** on the matching sections, lay short manga panels or anime clips over the motion graphics (the timestamps are in the chapters), with commentary running over them. Short clips with commentary are much safer for Content ID and fair use, and real footage lifts retention a lot.
+
+## Short (`SceneSensei_Aizen_Short.mp4`, 51s, 9:16)
+- **Title:** He Blinded a God 👁️ Aizen vs Yhwach #bleach #aizen #shorts
+- **Description:** Yhwach could see every future. Aizen made him see the wrong one. Full breakdown on the channel. #Bleach #Aizen #Yhwach #BleachTYBW #anime #shorts
+- Upload `SceneSensei_Aizen_Short.srt` as captions. In YouTube Studio, set **Related video** to the full breakdown so viewers can tap through.
+- Post it 1–2 days after the long video, or on the same day if you want the long video to get early traffic.
