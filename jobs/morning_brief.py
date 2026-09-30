@@ -12,13 +12,29 @@ import sys
 from datetime import date, datetime, time
 
 from brief import runner
-from brief.config import ConfigError, load_dotenv, load_settings, require_env
+from brief.config import ROOT, ConfigError, load_dotenv, load_settings, require_env
 from brief.header import build_header
 from brief.sections import SECTIONS
 from brief.telegram import TelegramError, send_message
 from brief.util import SAST, describe, esc, fmt_date_long, now_sast
 
 log = logging.getLogger("morning_brief")
+
+
+def _read_marker(path) -> str:
+    try:
+        return path.read_text(encoding="utf-8").strip()
+    except OSError:
+        return ""
+
+
+def _write_marker(path, day: str) -> None:
+    """Remember the day the brief was sent, so a backup run can tell it isn't needed. Best effort."""
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(day + "\n", encoding="utf-8")
+    except OSError:
+        log.warning("could not write %s", path, exc_info=True)
 
 
 def build_message(settings: dict, now: datetime,
@@ -33,6 +49,8 @@ def build_message(settings: dict, now: datetime,
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--dry-run", action="store_true", help="print the message, don't send it")
+    parser.add_argument("--skip-if-sent-today", action="store_true",
+                        help="exit quietly if today's brief was already sent (used by the backup schedule)")
     parser.add_argument("--date", type=date.fromisoformat, metavar="YYYY-MM-DD",
                         help="pretend it is this date at 07:00 SAST (calendar/holiday testing; "
                              "live weather/FX still describe the real today)")
@@ -46,6 +64,10 @@ def main(argv: list[str] | None = None) -> int:
 
     settings = load_settings()
     now = datetime.combine(args.date, time(7, 0), tzinfo=SAST) if args.date else now_sast()
+    marker = ROOT / settings.get("brief", {}).get("last_sent_file", "data/last_sent.txt")
+    if args.skip_if_sent_today and _read_marker(marker) == now.date().isoformat():
+        log.info("Today's brief was already sent (%s); nothing to do", marker.name)
+        return 0
     try:
         message, results = build_message(settings, now, dry_run=args.dry_run)
     except Exception as exc:  # noqa: BLE001 - last resort: a broken brief still beats silence
@@ -67,6 +89,7 @@ def main(argv: list[str] | None = None) -> int:
         log.error("Could not send the brief: %s", exc)
         return 1
     log.info("Brief sent (%d lines, %d chars)", message.count("\n") + 1, len(message))
+    _write_marker(marker, now.date().isoformat())
     return 0
 
 

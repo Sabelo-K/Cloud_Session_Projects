@@ -6,6 +6,8 @@ max_lines = 30
 # A section that takes longer than this is abandoned (shown as unavailable) so the message still
 # goes out on time.
 section_timeout_seconds = 120
+# Written after each successful send. The backup schedule reads it so a second run doesn't send twice.
+last_sent_file = "data/last_sent.txt"
 
 [weather]
 enabled = true

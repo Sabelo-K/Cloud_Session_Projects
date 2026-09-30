@@ -2,7 +2,11 @@ name: Morning Brief
 
 on:
   schedule:
-    - cron: "0 5 * * *"   # 05:00 UTC = 07:00 SAST. GitHub may start scheduled runs a few minutes late.
+    # GitHub starts scheduled runs late (or occasionally drops them), worst at the top of the hour.
+    # So: a main slot at 04:50 UTC (06:50 SAST, usually lands around 07:00) and a backup at 05:20 UTC
+    # that does nothing if the main run already sent today's brief.
+    - cron: "50 4 * * *"
+    - cron: "20 5 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -11,7 +15,7 @@ on:
         default: false
 
 permissions:
-  contents: write   # only used to commit data/youtube_history.json after a real run
+  contents: write   # only used to commit files under data/ after a real run
 
 concurrency:
   group: morning-brief
@@ -42,8 +46,8 @@ jobs:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}   # optional; only used if [summary] enabled
           LOG_LEVEL: ${{ inputs.dry_run && 'DEBUG' || 'INFO' }}
-        run: python -m jobs.morning_brief ${{ inputs.dry_run && '--dry-run' || '' }}
-      # Keeps today's YouTube numbers so tomorrow's brief can show the change. Skipped on dry runs.
+        run: python -m jobs.morning_brief ${{ inputs.dry_run && '--dry-run' || '' }} ${{ github.event_name == 'schedule' && '--skip-if-sent-today' || '' }}
+      # Keeps today's YouTube numbers (tomorrow's change) and the 'sent today' marker. Skipped on dry runs.
       # Runs even if the Telegram step failed: the snapshot is still valid data.
       - name: Commit YouTube history
         id: commit
@@ -53,7 +57,7 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/
-            git commit -m "chore: YouTube stats snapshot $(date -u +%F)"
+            git commit -m "chore: daily state $(date -u +%F)"
             git push || { git pull --rebase && git push; }
           else
             echo "No history changes to commit."
