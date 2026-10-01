@@ -2,11 +2,14 @@ name: Morning Brief
 
 on:
   schedule:
-    # GitHub starts scheduled runs late (or occasionally drops them), worst at the top of the hour.
-    # So: a main slot at 04:50 UTC (06:50 SAST, usually lands around 07:00) and a backup at 05:20 UTC
-    # that does nothing if the main run already sent today's brief.
+    # GitHub starts scheduled runs late (or drops them): on 1 Oct 2026 the 04:50 and 05:20 slots did not
+    # fire and the first run started at 11:11 UTC. So there are several slots (06:50 to 07:50 SAST);
+    # each one does nothing if an earlier run already sent today's brief (data/last_sent.txt).
     - cron: "50 4 * * *"
+    - cron: "5 5 * * *"
     - cron: "20 5 * * *"
+    - cron: "35 5 * * *"
+    - cron: "50 5 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
