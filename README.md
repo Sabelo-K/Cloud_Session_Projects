@@ -236,10 +236,23 @@ brief/summary.py                      optional paid SA economy briefing (off by 
 
 ## F1 analysis
 
-A separate app in `f1/` (dark, phone-friendly): an overview with fastest lap, race pace and teammate battles,
-lap times, tyre stints and degradation, championship progression, and qualifying/telemetry comparison for any
-race since 2018. Data: FastF1 (laps, telemetry) and Jolpica (schedule, standings). Lines and bars use team
-colours; a team's second driver is dashed.
+A separate app in `f1/`: a dark dashboard with a sidebar of analysis modules and one season / event / session
+selector that follows you between them. Data: FastF1 (laps, telemetry, weather) and Jolpica (schedule, standings).
+Team colours are used throughout, and a team's second driver is dashed.
+
+| Module | What it shows |
+|---|---|
+| Home | fastest lap, best median pace, teammate battles |
+| Race Pace Insights | box plot or raw laps, gap to leader, consistency, traffic |
+| Telemetry Analyser | any drivers and laps overlaid on speed, throttle, brake, gear, RPM, with linked zoom |
+| Single Lap Comparison | up to three drivers: track dominance map, corner apex speeds, speed trace, time delta |
+| Practice Insights | long-run violins, tyre degradation, consistency, speed traps |
+| Sectors & Maps | sector rankings, theoretical best lap, gap to it, sector-coloured circuit |
+| Strategy & Weather | tyre stint timeline, pit stops, session weather |
+| Season Pace | race pace deficit round by round (percent or seconds), by driver or team |
+| Championship | points after each round |
+
+Not built yet: Live Dashboard, Prediction League, Car Performance, Energy Management.
 
 Run: `pip install -r requirements-f1.txt && python -m streamlit run f1/app.py`.
 

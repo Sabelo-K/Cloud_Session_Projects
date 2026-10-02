@@ -46,3 +46,10 @@ def test_teammate_gaps():
 
 def test_teammate_gaps_without_team_column():
     assert pace.teammate_gaps(_race([("A", "T", 90.0)]).drop(columns="Team")).empty
+
+
+def test_distinct_colours_lightens_second_teammate():
+    laps = pd.DataFrame({"Driver": ["HAM", "LEC", "RUS"], "Team": ["Ferrari", "Ferrari", "Mercedes"]})
+    c = style.distinct_colours(laps)
+    assert c["HAM"] == "#E8002D" and c["LEC"] != c["HAM"] and c["RUS"] == "#27F4D2"
+    assert style.lighten("#000000", 0.5) == "#808080"
