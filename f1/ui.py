@@ -125,6 +125,7 @@ def load_laps(year: int, rnd: int, kind: str):
     except Exception as exc:
         st.error(f"No {data.SESSION_NAMES[kind].lower()} data for this event ({type(exc).__name__}). "
                  "It may not have happened yet, or this weekend had no such session. Try another event or session.")
+        st.caption(f"Details: {str(exc)[:300] or type(exc).__name__}")
         st.stop()
     if laps.empty:
         st.warning("This session has no lap data.")
