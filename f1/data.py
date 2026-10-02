@@ -10,7 +10,7 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-from f1 import store
+from f1 import store, tyres
 from f1.standings import parse_standings
 
 JOLPICA = "https://api.jolpi.ca/ergast/f1"
@@ -67,11 +67,11 @@ def _not_saved(year, round_no, kind) -> store.NotSaved:
 
 def load_session_laps(year: int, round_no: int, kind: str = "R") -> pd.DataFrame:
     saved = store.read_laps(year, round_no, kind)
-    if saved is not None:
-        return saved
-    if offline():
-        raise _not_saved(year, round_no, kind)
-    return pd.DataFrame(_session(year, round_no, kind, False, False).laps)
+    if saved is None:
+        if offline():
+            raise _not_saved(year, round_no, kind)
+        saved = pd.DataFrame(_session(year, round_no, kind, False, False).laps)
+    return tyres.repair(saved)
 
 
 def fetch_lap_telemetry(session, drv: str, lap_no) -> pd.DataFrame | None:

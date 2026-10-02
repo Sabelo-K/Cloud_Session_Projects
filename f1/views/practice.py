@@ -3,7 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from f1 import data, pace, style, ui
+from f1 import data, pace, style, tyres, ui
 
 
 def _hex_rgba(hex_colour: str, alpha: float) -> str:
@@ -21,6 +21,7 @@ def render():
         st.info("Pick at least one driver above.")
         return
 
+    ui.tyre_legend(laps[laps["Driver"].isin(drivers)])
     c1, c2 = st.columns(2)
     min_laps = c1.slider("Minimum clean laps for a long run", 3, 12, 5)
     fuel = c2.toggle("Adjust for fuel burn (0.03 s per lap)", value=False)
@@ -30,16 +31,16 @@ def render():
         return
     fuel_effect = pace.FUEL_EFFECT_S_PER_LAP if fuel else 0.0
     summary = pace.run_summary(runs, fuel_effect)
-    label = {r.Run: f"{r.Run} {r.Compound[:1]}" for r in summary.itertuples()}
+    label = {r.Run: f"{r.Run} {tyres.letter(r.Compound)}" for r in summary.itertuples()}
     runs = runs.assign(Label=runs["Run"].map(label), Adjusted=runs["LapSeconds"] + fuel_effect * runs["LapInRun"])
     mean_of = summary.set_index("Run")["mean"]
     best_mean = summary["mean"].min()
 
-    with ui.card("Long-run pace distribution", "One violin per run, coloured by tyre (S soft, M medium, H hard). Hover for the mean lap and gap to the quickest run; the table below lists them all."):
+    with ui.card("Long-run pace distribution", "One violin per run, coloured by tyre (S soft, M medium, H hard, I intermediate, W wet, ? unknown). Hover for the mean lap and gap to the quickest run; the table below lists them all."):
         fig = go.Figure()
         for r in summary.sort_values("mean").itertuples():
             g = runs[runs["Run"] == r.Run]
-            col = style.COMPOUND_COLORS.get(r.Compound, "#98A4B3")
+            col = tyres.colour(r.Compound)
             fig.add_trace(go.Violin(y=g["Adjusted"], name=label[r.Run],
                                     hovertemplate=f"{label[r.Run]}: mean {ui.fmt_lap(r.mean)} (+{r.mean - best_mean:.2f}s)<br>%{{y:.3f}}s<extra></extra>",
                                     points="all", pointpos=0, jitter=0.4, meanline_visible=True, line_color=col,
@@ -55,7 +56,7 @@ def render():
         fig = go.Figure()
         for r in summary.itertuples():
             g = runs[runs["Run"] == r.Run]
-            col = style.COMPOUND_COLORS.get(r.Compound, "#98A4B3")
+            col = tyres.colour(r.Compound)
             fig.add_trace(go.Scatter(x=g["LapInRun"], y=g["Adjusted"], mode="markers", name=label[r.Run], legendgroup=r.Run,
                                      marker=dict(color=col, size=6, line=dict(color="#090B0E", width=1))))
             xs = [g["LapInRun"].min(), g["LapInRun"].max()]
@@ -71,13 +72,13 @@ def render():
     left, right = st.columns(2)
     with left, ui.card("Driver consistency", "Standard deviation of lap time within each run, after removing its trend. Lower is better."):
         fig = px.bar(summary.sort_values("resid_std"), x="Run", y="resid_std", color="Compound",
-                     color_discrete_map=style.COMPOUND_COLORS, labels={"resid_std": "Std dev (s)"})
+                     color_discrete_map=tyres.COLOURS, category_orders={"Compound": tyres.ORDER}, labels={"resid_std": "Std dev (s)"})
         ui.show(fig, 320)
     with right, ui.card("Straight-line speed", "Average speed-trap speed over each run's laps."):
         if "SpeedST" in runs and runs["SpeedST"].notna().any():
             trap = runs.groupby("Run").agg(speed=("SpeedST", "mean"), laps=("SpeedST", "count"), Compound=("Compound", "first")).reset_index()
             fig = px.bar(trap.sort_values("speed", ascending=False), x="Run", y="speed", color="Compound",
-                         color_discrete_map=style.COMPOUND_COLORS, labels={"speed": "Speed trap (km/h)"})
+                         color_discrete_map=tyres.COLOURS, category_orders={"Compound": tyres.ORDER}, labels={"speed": "Speed trap (km/h)"})
             fig.update_yaxes(range=[trap["speed"].min() - 8, trap["speed"].max() + 3])
             ui.show(fig, 320)
             st.caption("Whether DRS was open on each lap is not available here, so compare runs with care.")

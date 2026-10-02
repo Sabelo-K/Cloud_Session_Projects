@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import pandas as pd
 
+from f1 import tyres
+
 # Matched by lower-case substring of FastF1's Team name, first hit wins.
 TEAM_COLORS = [
     ("red bull", "#3671C6"), ("racing bulls", "#6692FF"), ("alphatauri", "#5E8FAA"),
@@ -13,8 +15,7 @@ TEAM_COLORS = [
 ]
 FALLBACK = ["#E10600", "#FFD60A", "#30D158", "#BF5AF2", "#FF9F0A", "#64D2FF"]
 
-COMPOUND_COLORS = {"SOFT": "#E8002D", "MEDIUM": "#FFD60A", "HARD": "#F2F3F5",
-                   "INTERMEDIATE": "#30D158", "WET": "#3E7BFA"}
+COMPOUND_COLORS = tyres.COLOURS
 
 
 def team_color(team: str | None, fallback_index: int = 0) -> str:
