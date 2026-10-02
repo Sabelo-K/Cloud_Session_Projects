@@ -3,3 +3,4 @@ fastf1>=3.4
 streamlit>=1.50
 plotly>=5.20
 requests>=2.31
+pyarrow>=14

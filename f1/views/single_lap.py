@@ -4,7 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from f1 import charts, data, pace, style, telemetry, ui
+from f1 import charts, data, pace, store, style, telemetry, ui
 
 
 @st.cache_data(show_spinner="Loading telemetry (slow the first time)...")
@@ -28,6 +28,12 @@ def render():
         return
 
     valid = laps.dropna(subset=["LapTime"])
+    if data.offline():  # hosted copy: only laps whose telemetry was saved can be compared
+        saved = store.stored_telemetry_laps(year, rnd, kind)
+        valid = valid[[(d, int(n)) in saved for d, n in zip(valid["Driver"], valid["LapNumber"])]]
+        if valid.empty:
+            st.info("No telemetry was saved for this session." + ui.SAVED_ONLY_HINT)
+            return
     picks = []
     cols = st.columns(len(drivers))
     for col, drv in zip(cols, drivers):
@@ -51,7 +57,7 @@ def render():
     tels = _telemetry(year, rnd, kind, tuple(picks))
     missing = [f"{d} lap {n}" for d, n in picks if f"{d}|{n}" not in tels]
     if missing:
-        st.warning("No telemetry for: " + ", ".join(missing) + ". Showing the rest.")
+        st.warning("No telemetry for: " + ", ".join(missing) + ". Showing the rest." + (ui.SAVED_ONLY_HINT if data.offline() else ""))
     if len(tels) < 2:
         st.info("Pick at least two drivers with telemetry to compare.")
         return
