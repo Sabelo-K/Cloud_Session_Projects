@@ -222,3 +222,19 @@ def test_main_passes_drivers_only_when_given(monkeypatch):
     sync.main(["--year", "2026", "--rounds", "1", "--sessions", "R", "--telemetry", "all", "--drivers", "nor, pia"])
     sync.main(["--year", "2026", "--rounds", "1", "--sessions", "R"])
     assert calls == [["NOR", "PIA"], None]
+
+
+def test_corners_fall_back_to_another_session_of_the_round(tmp_path, monkeypatch):
+    from f1 import sync
+    monkeypatch.setattr(store, "ROOT", tmp_path)
+    laps = pd.DataFrame({"Driver": ["NOR"], "LapNumber": [1.0]})
+    corners = pd.DataFrame({"Number": [1, 2], "Distance": [100.0, 400.0], "X": [1.0, 2.0], "Y": [3.0, 4.0]})
+    store.write_session(2026, 6, "Q", laps, pd.DataFrame(), corners, {}, "none")
+    store.write_session(2026, 6, "R", laps, pd.DataFrame(), pd.DataFrame(), {}, "none")
+    assert store.read_corners(2026, 6, "R") is None
+    assert len(store.read_round_corners(2026, 6, "R")) == 2  # borrowed from qualifying
+    store.write_session(2026, 7, "R", laps, pd.DataFrame(), pd.DataFrame(), {}, "none")
+    assert store.read_round_corners(2026, 7, "R") is None
+    monkeypatch.setattr(data, "_session", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("offline")))
+    assert sync.fix_corners(2026, [6, 7], log=lambda *_: None) == 1  # round 6 copied; round 7 has none to copy (FastF1 not reachable here)
+    assert store.read_corners(2026, 6, "R") is not None

@@ -100,6 +100,25 @@ def read_corners(year: int, round_no: int, kind: str) -> pd.DataFrame | None:
     return _read(year, round_no, kind, "corners")
 
 
+def sessions_of_round(year: int, round_no: int) -> list[str]:
+    """Session codes saved for a round (e.g. ['FP1', 'Q', 'R'])."""
+    folder = ROOT / str(int(year))
+    return [p.name.split("_", 1)[1] for p in sorted(folder.glob(f"{int(round_no):02d}_*")) if (p / "laps.parquet").exists()] if folder.exists() else []
+
+
+def read_round_corners(year: int, round_no: int, kind: str | None = None) -> pd.DataFrame | None:
+    """Corners of a session, else of any other saved session of the same round (same circuit, same corners)."""
+    for k in ([kind] if kind else []) + sessions_of_round(year, round_no):
+        saved = read_corners(year, round_no, k)
+        if saved is not None and len(saved):
+            return saved
+    return None
+
+
+def write_corners(year: int, round_no: int, kind: str, corners: pd.DataFrame) -> None:
+    _clean(corners).to_parquet(session_dir(year, round_no, kind) / "corners.parquet", index=False, compression="zstd")
+
+
 def stored_telemetry_laps(year: int, round_no: int, kind: str) -> set[tuple[str, int]]:
     """(driver, lap number) pairs whose telemetry was saved."""
     tel = _read(year, round_no, kind, "telemetry", columns=["Driver", "LapNumber"])

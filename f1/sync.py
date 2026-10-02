@@ -5,6 +5,7 @@ Run on your own computer (FastF1's live-timing server refuses Streamlit Cloud):
     python -m f1.sync --year 2026 --last 3 --push
     python -m f1.sync --year 2026 --rounds 13,15 --sessions R Q --telemetry all
     python -m f1.sync --year 2026 --rounds 15 --sessions R --telemetry all --drivers NOR,PIA   # every lap, for chosen drivers only
+    python -m f1.sync --year 2026 --fix-corners --push  # add missing corner numbers to saved sessions (no telemetry download)
     python -m f1.sync --year 2026 --missing --push      # everything finished and not saved yet (what f1/sync_missing.ps1 runs)
 
 Telemetry: `fastest` (default) saves each driver's fastest lap, `all` saves every timed lap (bigger files), `none` skips it.
@@ -104,6 +105,33 @@ def sync_session(year: int, round_no: int, kind: str, mode: str = "fastest", log
     return True
 
 
+def fix_corners(year: int, rounds: list[int], log=print) -> int:
+    """Fill in missing corner numbers for saved sessions: copy them from another session of the same round, else load them
+    from FastF1 once per round. Returns how many sessions were updated."""
+    updated = 0
+    for rnd in rounds:
+        kinds = store.sessions_of_round(year, rnd)
+        todo = [k for k in kinds if store.read_corners(year, rnd, k) is None]
+        if not todo:
+            continue
+        corners = store.read_round_corners(year, rnd)
+        if corners is None:
+            log(f"{year} round {rnd}: loading corners from FastF1...")
+            try:
+                corners = data.corners_frame(data._session(year, rnd, kinds[0], False, False))
+            except Exception as exc:
+                log(f"{year} round {rnd}: skipped ({type(exc).__name__}: {str(exc)[:120]})")
+                continue
+        if corners is None or corners.empty:
+            log(f"{year} round {rnd}: FastF1 has no corner data for this circuit")
+            continue
+        for k in todo:
+            store.write_corners(year, rnd, k, corners)
+            updated += 1
+        log(f"{year} round {rnd}: saved {len(corners)} corners for {', '.join(todo)}")
+    return updated
+
+
 def git_push(message: str, log=print, path: str = "f1/store") -> bool:
     """Commit the saved data (or another folder of the app) and push the current branch."""
     steps = [["git", "add", path], ["git", "commit", "-m", message], ["git", "push"]]
@@ -131,9 +159,19 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--sessions", nargs="+", default=DEFAULT_SESSIONS, choices=list(data.SESSION_NAMES))
     ap.add_argument("--telemetry", choices=["fastest", "all", "none"], default="fastest")
     ap.add_argument("--drivers", help="only save telemetry for these drivers, e.g. NOR,PIA (all drivers when left out)")
+    ap.add_argument("--fix-corners", action="store_true", help="only fill in missing corner numbers for sessions already saved (all rounds unless --rounds/--last)")
     ap.add_argument("--push", action="store_true", help="commit and push the saved data with git afterwards")
     args = ap.parse_args(argv)
 
+    if args.fix_corners:
+        saved_rounds = sorted({int(p.name.split("_")[0]) for p in (store.ROOT / str(args.year)).glob("*_*")}) if (store.ROOT / str(args.year)).exists() else []
+        rounds = parse_rounds(args.rounds, saved_rounds[-1] if saved_rounds else None) if args.rounds else (
+            saved_rounds[-args.last:] if args.last else saved_rounds)
+        n = fix_corners(args.year, rounds)
+        print(f"Updated {n} session(s).")
+        if n and args.push:
+            return 0 if git_push(f"Save F1 corner numbers: {args.year}") else 1
+        return 0
     if args.missing:
         pairs = [(r, k) for r in completed_rounds(args.year, strict=True) for k in args.sessions
                  if not store.has_session(args.year, r, k)]
