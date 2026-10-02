@@ -48,30 +48,30 @@ t_laps, t_pace, t_stints, t_deg, t_champ, t_quali = st.tabs(
 with t_laps:
     show_all = st.checkbox("Show pit, safety car and slow laps", value=False)
     d = pace.lap_chart_frame(sel, show_all=show_all)
-    st.plotly_chart(px.line(d, x="LapNumber", y="LapSeconds", color="Driver"), use_container_width=True)
+    st.plotly_chart(px.line(d, x="LapNumber", y="LapSeconds", color="Driver"), width="stretch")
 
 with t_pace:
     p = pace.race_pace(laps)
-    st.dataframe(p[p["Driver"].isin(drivers)], use_container_width=True)
-    st.plotly_chart(px.bar(p, x="Driver", y="gap_to_best", title="Gap to best median clean lap (s)"), use_container_width=True)
+    st.dataframe(p[p["Driver"].isin(drivers)], width="stretch")
+    st.plotly_chart(px.bar(p, x="Driver", y="gap_to_best", title="Gap to best median clean lap (s)"), width="stretch")
 
 with t_stints:
     s = pace.stint_summary(sel)
     s["Laps"] = s["EndLap"] - s["StartLap"] + 1
     fig = px.bar(s, x="Laps", base="StartLap", y="Driver", color="Compound", orientation="h",
                  labels={"Laps": "Lap number"})
-    st.plotly_chart(fig, use_container_width=True)
-    st.dataframe(s, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
+    st.dataframe(s, width="stretch")
 
 with t_deg:
     st.caption("Slope of fuel-corrected clean lap time against tyre age, pooled over all drivers "
                "(assumes ~0.03 s/lap fuel effect). Positive = losing pace.")
     if "TyreLife" in laps.columns:
         deg = pace.compound_degradation(laps)
-        st.dataframe(deg, use_container_width=True)
+        st.dataframe(deg, width="stretch")
         if not deg.empty:
             st.plotly_chart(px.bar(deg, x="Compound", y="deg_per_lap", title="Degradation (s per lap of tyre age)"),
-                            use_container_width=True)
+                            width="stretch")
     else:
         st.info("This session has no tyre age data.")
 
@@ -83,13 +83,13 @@ with t_champ:
         prog = standings_for(year, rounds)
         top = prog[prog["Round"] == prog["Round"].max()].nlargest(10, "Points")["Driver"]
         st.plotly_chart(px.line(prog[prog["Driver"].isin(top)], x="Round", y="Points", color="Driver", markers=True,
-                                title="Championship points after each round (top 10)"), use_container_width=True)
+                                title="Championship points after each round (top 10)"), width="stretch")
 
 with t_quali:
     kind = st.radio("Session", ["Q", "R"], format_func=lambda k: {"Q": "Qualifying", "R": "Race"}[k], horizontal=True)
     ql = laps_for(year, race, kind)
     best = telemetry.best_lap_times(ql)
-    st.dataframe(best, use_container_width=True)
+    st.dataframe(best, width="stretch")
     pair = st.multiselect("Compare two drivers' fastest laps", list(best["Driver"]), default=list(best["Driver"][:2]),
                           max_selections=2)
     if len(pair) == 2:
@@ -102,6 +102,6 @@ with t_quali:
             fig.add_trace(go.Scatter(x=cmp["Distance"], y=cmp["SpeedB"], name=pair[1]), row=1, col=1)
             fig.add_trace(go.Scatter(x=cmp["Distance"], y=cmp["Delta"], name="delta", showlegend=False), row=2, col=1)
             fig.update_xaxes(title_text="Distance (m)", row=2, col=1)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width="stretch")
         else:
             st.info("No fastest-lap telemetry for one of those drivers.")
