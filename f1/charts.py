@@ -6,7 +6,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from f1 import style
+from f1 import style, tyres
 
 GROUP_DASHES = ["solid", "dash", "dot", "dashdot"]
 
@@ -127,20 +127,27 @@ def telemetry_stack(res: dict, colours: dict, dashes: dict, corners: pd.DataFram
 
 
 def stint_timeline(laps: pd.DataFrame, order: list[str]) -> go.Figure:
-    """One row per driver, one block per stint, coloured by compound and labelled with its initial."""
+    """One row per driver, one block per stint, coloured by compound and labelled with its initial.
+    Hover shows the compound, laps, tyre age at the start and whether the set was new. Unknown tyres are hatched grey."""
     fig = go.Figure()
     shown = set()
     for (drv, stint), g in laps.dropna(subset=["Stint"]).groupby(["Driver", "Stint"]):
-        comp = str(g["Compound"].iloc[0])
+        comp = tyres.stint_compound(g["Compound"]) if "Compound" in g else tyres.UNKNOWN
         start, end = int(g["LapNumber"].min()), int(g["LapNumber"].max())
         age = g["TyreLife"].iloc[0] if "TyreLife" in g else float("nan")
+        age_text = f"{age:g}" if pd.notna(age) else "not reported"
+        fresh = g["FreshTyre"].dropna() if "FreshTyre" in g else []
+        set_text = "" if not len(fresh) else ("<br>new set" if bool(fresh.iloc[0]) else "<br>used set")
         fig.add_trace(go.Bar(
-            y=[drv], x=[end - start + 1], base=[start - 1], orientation="h", name=comp, legendgroup=comp,
-            showlegend=comp not in shown, marker=dict(color=style.COMPOUND_COLORS.get(comp, "#98A4B3"),
-                                                      line=dict(color="#090B0E", width=2)),
-            text=[comp[:1]], textposition="inside", textfont=dict(color="#090B0E" if comp != "SOFT" else "#fff", size=11),
-            hovertemplate=f"{drv} · stint {int(stint)}<br>{comp}<br>laps {start}-{end}<br>tyre age at start: {age:g}<extra></extra>"))
+            y=[drv], x=[end - start + 1], base=[start - 1], orientation="h", name=tyres.name(comp), legendgroup=comp,
+            legendrank=tyres.rank(comp), showlegend=comp not in shown,
+            marker=dict(color=tyres.colour(comp), line=dict(color="#090B0E", width=2),
+                        pattern=dict(shape="/", fgcolor="#2B323B", size=6) if comp == tyres.UNKNOWN else dict()),
+            text=[f"<b>{tyres.letter(comp)}</b>"], textposition="inside", insidetextanchor="middle",
+            textangle=0, textfont=dict(color=tyres.text_colour(comp), size=13),
+            hovertemplate=(f"{drv} · stint {int(stint)}<br>{tyres.name(comp)}<br>laps {start}-{end}"
+                           f"<br>tyre age at start: {age_text}{set_text}<extra></extra>")))
         shown.add(comp)
-    fig.update_layout(barmode="overlay", yaxis=dict(categoryorder="array", categoryarray=order[::-1]),
+    fig.update_layout(barmode="overlay", bargap=0.12, yaxis=dict(categoryorder="array", categoryarray=order[::-1]),
                       xaxis_title="Lap")
     return fig

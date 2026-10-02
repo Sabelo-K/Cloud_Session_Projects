@@ -27,8 +27,9 @@ def render():
         order = list(last["Driver"])
     else:
         order = sorted(drivers)
-    with ui.card("Tyre strategy", "One row per driver (finishing order in a race). Each block is a stint; hover for laps and starting tyre age."):
-        ui.show(charts.stint_timeline(sel, order), max(300, 26 * len(order) + 110))
+    with ui.card("Tyre strategy", "One row per driver (finishing order in a race). Each block is a stint, labelled with its tyre. Hover for laps, starting tyre age and whether the set was new."):
+        ui.tyre_legend(sel)
+        ui.show(charts.stint_timeline(sel, order), max(300, 32 * len(order) + 110))
     with st.expander("Pit stops"):
         stops = pace.pit_stops(sel)
         st.dataframe(stops, width="stretch", hide_index=True)

@@ -6,6 +6,8 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from f1 import tyres
+
 OUTLIER_FACTOR = 1.07  # laps slower than 107% of a driver's median clean lap are dropped
 
 
@@ -64,6 +66,7 @@ def compound_degradation(laps: pd.DataFrame, fuel_effect: float = FUEL_EFFECT_S_
     """Per-compound tyre degradation: slope of fuel-corrected clean lap time vs tyre age
     (needs a TyreLife column), pooled over all drivers. Positive slope = tyres losing pace."""
     df = clean_laps(laps).dropna(subset=["TyreLife", "Compound"])
+    df = df[df["Compound"].map(tyres.normalise) != tyres.UNKNOWN]  # unknown tyres would pool different compounds
     df = df.assign(Corrected=df["LapSeconds"] + fuel_effect * df["LapNumber"])
     rows = []
     for compound, g in df.groupby("Compound"):
@@ -99,7 +102,7 @@ def stint_summary(laps: pd.DataFrame) -> pd.DataFrame:
         if len(g) >= 3:
             slope = _slope(g["LapNumber"], g["LapSeconds"])
         rows.append({
-            "Driver": driver, "Stint": int(stint), "Compound": g["Compound"].iloc[0],
+            "Driver": driver, "Stint": int(stint), "Compound": tyres.stint_compound(g["Compound"]),
             "StartLap": int(bounds.loc[(driver, stint), "min"]),
             "EndLap": int(bounds.loc[(driver, stint), "max"]),
             "median": float(g["LapSeconds"].median()), "deg_per_lap": slope,
@@ -208,7 +211,7 @@ def run_summary(runs: pd.DataFrame, fuel_effect: float = 0.0) -> pd.DataFrame:
         intercept = float(y.mean() - slope * g["LapInRun"].mean())
         resid = y - (slope * g["LapInRun"] + intercept)
         rows.append({"Run": run, "Driver": g["Driver"].iloc[0], "Stint": int(g["Stint"].iloc[0]),
-                     "Compound": g["Compound"].iloc[0], "laps": len(g), "mean": float(g["LapSeconds"].mean()),
+                     "Compound": tyres.stint_compound(g["Compound"]), "laps": len(g), "mean": float(g["LapSeconds"].mean()),
                      "median": float(g["LapSeconds"].median()), "std": float(g["LapSeconds"].std()),
                      "resid_std": float(resid.std()), "slope": slope, "intercept": intercept})
     cols = ["Run", "Driver", "Stint", "Compound", "laps", "mean", "median", "std", "resid_std", "slope", "intercept"]
@@ -240,6 +243,6 @@ def pit_stops(laps: pd.DataFrame) -> pd.DataFrame:
         for prev, nxt in zip(order, order[1:]):
             a, b = stints.get_group(prev), stints.get_group(nxt)
             age = b["TyreLife"].iloc[0] if "TyreLife" in b else None
-            rows.append({"Driver": drv, "Lap": int(a["LapNumber"].max()), "From": a["Compound"].iloc[-1],
-                         "To": b["Compound"].iloc[0], "NewTyreAge": age})
+            rows.append({"Driver": drv, "Lap": int(a["LapNumber"].max()), "From": tyres.stint_compound(a["Compound"]),
+                         "To": tyres.stint_compound(b["Compound"]), "NewTyreAge": age})
     return pd.DataFrame(rows, columns=["Driver", "Lap", "From", "To", "NewTyreAge"]).sort_values(["Lap", "Driver"]).reset_index(drop=True)

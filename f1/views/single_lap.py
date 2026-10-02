@@ -4,7 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from f1 import charts, data, pace, store, style, telemetry, ui
+from f1 import charts, data, pace, store, style, telemetry, tyres, ui
 
 
 @st.cache_data(show_spinner="Loading telemetry (slow the first time)...")
@@ -47,9 +47,11 @@ def render():
                                format_func=lambda n, fast=fast: f"Lap {n}" + (" (fastest)" if n == fast else ""))
         row = mine[mine["LapNumber"] == lap_no].iloc[0]
         age = f' · {int(row["TyreLife"])} laps old' if "TyreLife" in row and pd.notna(row["TyreLife"]) else ""
+        if "FreshTyre" in row and pd.notna(row["FreshTyre"]):
+            age += " · new set" if bool(row["FreshTyre"]) else " · used set"
         col.markdown(f'<span class="chip"><i style="background:{colours.get(drv)}"></i>{drv}</span>'
                      f'<span class="badge tnum">{ui.fmt_lap(row["LapTime"].total_seconds())}</span>'
-                     f'<span class="badge">{row.get("Compound", "?")}{age}</span>', unsafe_allow_html=True)
+                     f'<span class="badge">{ui.tyre_dot(row.get("Compound"))}{tyres.name(row.get("Compound"))}{age}</span>', unsafe_allow_html=True)
         picks.append((drv, int(lap_no)))
     if not picks:
         return

@@ -3,7 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from f1 import data, pace, style, ui
+from f1 import data, pace, style, tyres, ui
 
 
 def _box(tagged, stats, colours, show_excluded):
@@ -31,6 +31,7 @@ def _raw(tagged, colours, dashes, show_excluded):
     cols = ["Driver", "Team", "Compound", "TyreLife", "Stint", "TrackStatus", "Position"]
     for drv, g in tagged.groupby("Driver"):
         keep = g[~g["Excluded"]].sort_values("LapNumber")
+        keep = keep.assign(Compound=keep["Compound"].map(tyres.name), TyreLife=keep["TyreLife"].map(lambda v: "?" if v != v else f"{v:g}"))
         fig.add_trace(go.Scatter(x=keep["LapNumber"], y=keep["LapSeconds"], mode="lines+markers", name=drv,
                                  line=dict(color=colours.get(drv), dash=dashes.get(drv, "solid"), width=1.5),
                                  marker=dict(size=4), customdata=keep.reindex(columns=cols).to_numpy(), hovertemplate=hover))

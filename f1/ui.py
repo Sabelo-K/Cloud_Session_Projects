@@ -6,7 +6,7 @@ from datetime import date
 
 import streamlit as st
 
-from f1 import data, store, style
+from f1 import data, store, style, tyres
 
 CSS = """
 <style>
@@ -25,6 +25,8 @@ div[data-testid="stMetricValue"] {font-size: 1.5rem;}
 .chip {display:inline-block; padding: 2px 10px; margin: 0 6px 6px 0; border-radius: 999px; font-size: 0.82rem;
     font-weight: 600; background:#1d232b; border: 1px solid #29313A;}
 .chip i {display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px;}
+.tyre {display:inline-block; width:15px; height:15px; line-height:15px; text-align:center; border-radius:50%;
+    font-size:.62rem; font-weight:800; margin-right:6px; vertical-align:middle;}
 .badge {display:inline-block; padding: 1px 8px; border-radius: 6px; font-size: .78rem; font-weight:600;
     background:#1d232b; border:1px solid #29313A; margin-left: 6px;}
 button[data-baseweb="tab"] {padding: 6px 10px;}
@@ -166,6 +168,23 @@ def driver_picker(page: str, drivers: list[str], colours: dict, default_n: int =
     ss["mem_drivers"] = chosen
     c3.caption(f"{len(chosen)} of {len(drivers)} drivers selected")
     return chosen
+
+
+def tyre_dot(compound) -> str:
+    """Small round tyre marker (coloured, with the compound's initial) as HTML."""
+    return (f'<span class="tyre" style="background:{tyres.colour(compound)};color:{tyres.text_colour(compound)}">'
+            f'{tyres.letter(compound)}</span>')
+
+
+def tyre_legend(laps) -> None:
+    """Which tyre colour is which, for the compounds in these laps, plus a note when some laps have no tyre information."""
+    if "Compound" not in laps.columns:
+        return
+    present = sorted({tyres.normalise(c) for c in laps["Compound"]}, key=tyres.rank)
+    st.markdown("".join(f'<span class="chip">{tyre_dot(c)}{tyres.name(c)}</span>' for c in present), unsafe_allow_html=True)
+    note = tyres.unknown_note(laps)
+    if note:
+        st.caption(note)
 
 
 def chips(labels: list[str], colours: dict) -> None:
