@@ -41,6 +41,7 @@ def race_pace(laps: pd.DataFrame) -> pd.DataFrame:
 def stint_summary(laps: pd.DataFrame) -> pd.DataFrame:
     """One row per driver stint: compound, lap range, median clean lap, tyre-deg slope (s/lap)."""
     df = clean_laps(laps)
+    bounds = laps.groupby(["Driver", "Stint"])["LapNumber"].agg(["min", "max"])  # incl. pit laps
     rows = []
     for (driver, stint), g in df.groupby(["Driver", "Stint"]):
         slope = None
@@ -48,7 +49,8 @@ def stint_summary(laps: pd.DataFrame) -> pd.DataFrame:
             slope = _slope(g["LapNumber"], g["LapSeconds"])
         rows.append({
             "Driver": driver, "Stint": int(stint), "Compound": g["Compound"].iloc[0],
-            "StartLap": int(g["LapNumber"].min()), "EndLap": int(g["LapNumber"].max()),
+            "StartLap": int(bounds.loc[(driver, stint), "min"]),
+            "EndLap": int(bounds.loc[(driver, stint), "max"]),
             "median": float(g["LapSeconds"].median()), "deg_per_lap": slope,
         })
     return pd.DataFrame(rows)

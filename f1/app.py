@@ -31,6 +31,8 @@ with t2:
     st.plotly_chart(px.bar(p, x="Driver", y="gap_to_best", title="Gap to best median clean lap (s)"), use_container_width=True)
 with t3:
     s = pace.stint_summary(sel)
-    fig = px.bar(s, x=s["EndLap"] - s["StartLap"] + 1, base="StartLap", y="Driver", color="Compound", orientation="h")
+    s["Laps"] = s["EndLap"] - s["StartLap"] + 1
+    fig = px.bar(s, x="Laps", base="StartLap", y="Driver", color="Compound", orientation="h",
+                 labels={"Laps": "Lap number"})
     st.plotly_chart(fig, use_container_width=True)
     st.dataframe(s, use_container_width=True)
