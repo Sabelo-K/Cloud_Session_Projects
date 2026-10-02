@@ -279,4 +279,16 @@ pushes them; the hosted app redeploys in a minute or two. Other examples: `--rou
 `--telemetry none`. Without `--push`, commit `f1/store` yourself. Locally the app reads saved sessions first and falls
 back to FastF1 for anything else; on Streamlit Cloud it shows only saved sessions (set `F1_OFFLINE=0` or `1` to force).
 
+### Saving new races automatically
+
+The GitHub Action in `.github/workflows/f1_data.yml` runs twice a day and saves every finished race weekend that is
+not in `f1/store/` yet (`python -m f1.sync --missing`), then pushes, so the hosted app updates itself. Run it by hand
+from the repo's Actions tab (Save F1 data, Run workflow). If F1 refuses GitHub's servers the run fails with the
+reason in its log; then run the same thing from your own PC on a schedule instead, for example daily at 09:00 in
+PowerShell (change the folder to yours):
+
+```
+schtasks /Create /SC DAILY /ST 09:00 /TN "F1 data" /TR "powershell -NoProfile -Command \"cd C:\\path\\to\\Cloud_Session_Projects; git pull; python -m f1.sync --missing --push\""
+```
+
 Pace maths lives in `f1/pace.py`, `f1/telemetry.py` and `f1/standings.py` and is unit-tested with synthetic data.

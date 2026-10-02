@@ -4,6 +4,7 @@ Run on your own computer (FastF1's live-timing server refuses Streamlit Cloud):
 
     python -m f1.sync --year 2026 --last 3 --push
     python -m f1.sync --year 2026 --rounds 13,15 --sessions R Q --telemetry all
+    python -m f1.sync --year 2026 --missing --push      # everything finished and not saved yet (the daily job)
 
 Telemetry: `fastest` (default) saves each driver's fastest lap, `all` saves every timed lap (bigger files), `none` skips it.
 """
@@ -40,9 +41,11 @@ def parse_rounds(text: str, last_round: int | None = None) -> list[int]:
     return sorted(set(rounds))
 
 
-def completed_rounds(year: int, today: date | None = None) -> list[int]:
+def completed_rounds(year: int, today: date | None = None, strict: bool = False) -> list[int]:
+    """Rounds whose race date has arrived (strict: has passed, i.e. at least a day ago)."""
     sched = data.season_schedule(year)
-    done = sched[sched["date"] <= str((today or date.today()))]
+    day = str(today or date.today())
+    done = sched[sched["date"] < day] if strict else sched[sched["date"] <= day]
     return [int(r) for r in done["round"]]
 
 
@@ -119,28 +122,38 @@ def main(argv: list[str] | None = None) -> int:
     pick = ap.add_mutually_exclusive_group()
     pick.add_argument("--rounds", help="e.g. 13, 10-13, 1,3,5 or all")
     pick.add_argument("--last", type=int, help="the last N completed rounds of the season")
+    pick.add_argument("--missing", action="store_true",
+                      help="every finished round of the season whose sessions are not saved yet (what the daily job runs)")
     ap.add_argument("--sessions", nargs="+", default=DEFAULT_SESSIONS, choices=list(data.SESSION_NAMES))
     ap.add_argument("--telemetry", choices=["fastest", "all", "none"], default="fastest")
     ap.add_argument("--push", action="store_true", help="commit and push the saved data with git afterwards")
     args = ap.parse_args(argv)
 
-    done = completed_rounds(args.year)
-    if args.rounds:
-        rounds = parse_rounds(args.rounds, done[-1] if done else None)
-    elif args.last:
-        rounds = done[-args.last:]
+    if args.missing:
+        pairs = [(r, k) for r in completed_rounds(args.year, strict=True) for k in args.sessions
+                 if not store.has_session(args.year, r, k)]
+        if not pairs:
+            print("Everything is already saved.")
+            return 0
     else:
-        ap.error("choose --rounds or --last")
-    if not rounds:
+        done = completed_rounds(args.year)
+        if args.rounds:
+            rounds = parse_rounds(args.rounds, done[-1] if done else None)
+        elif args.last:
+            rounds = done[-args.last:]
+        else:
+            ap.error("choose --rounds, --last or --missing")
+        pairs = [(r, k) for r in rounds for k in args.sessions]
+    if not pairs:
         print("No completed rounds to save.")
         return 1
 
     saved = 0
-    for rnd in rounds:
-        for kind in args.sessions:
-            saved += sync_session(args.year, rnd, kind, args.telemetry)
-    print(f"Saved {saved} session(s).")
+    for rnd, kind in pairs:
+        saved += sync_session(args.year, rnd, kind, args.telemetry)
+    print(f"Saved {saved} of {len(pairs)} session(s).")
     if saved and args.push:
+        rounds = sorted({r for r, _ in pairs})
         return 0 if git_push(f"Save F1 data: {args.year} rounds {', '.join(map(str, rounds))}") else 1
     if saved:
         print("To publish: git add f1/store && git commit -m \"Save F1 data\" && git push (or re-run with --push).")
