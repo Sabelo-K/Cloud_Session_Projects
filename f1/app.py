@@ -45,23 +45,34 @@ t_laps, t_pace, t_stints, t_deg, t_champ, t_quali = st.tabs(
     ["Lap times", "Race pace", "Tyre stints", "Tyre degradation", "Championship", "Qualifying & telemetry"]
 )
 
+NEED_DRIVERS = "Pick at least one driver in the sidebar."
+
 with t_laps:
-    show_all = st.checkbox("Show pit, safety car and slow laps", value=False)
-    d = pace.lap_chart_frame(sel, show_all=show_all)
-    st.plotly_chart(px.line(d, x="LapNumber", y="LapSeconds", color="Driver"), width="stretch")
+    if not drivers:
+        st.info(NEED_DRIVERS)
+    else:
+        show_all = st.checkbox("Show pit, safety car and slow laps", value=False)
+        d = pace.lap_chart_frame(sel, show_all=show_all)
+        st.plotly_chart(px.line(d, x="LapNumber", y="LapSeconds", color="Driver"), width="stretch")
 
 with t_pace:
     p = pace.race_pace(laps)
-    st.dataframe(p[p["Driver"].isin(drivers)], width="stretch")
+    if not drivers:
+        st.info(NEED_DRIVERS)
+    else:
+        st.dataframe(p[p["Driver"].isin(drivers)], width="stretch")
     st.plotly_chart(px.bar(p, x="Driver", y="gap_to_best", title="Gap to best median clean lap (s)"), width="stretch")
 
 with t_stints:
     s = pace.stint_summary(sel)
-    s["Laps"] = s["EndLap"] - s["StartLap"] + 1
-    fig = px.bar(s, x="Laps", base="StartLap", y="Driver", color="Compound", orientation="h",
-                 labels={"Laps": "Lap number"})
-    st.plotly_chart(fig, width="stretch")
-    st.dataframe(s, width="stretch")
+    if s.empty:
+        st.info(NEED_DRIVERS)
+    else:
+        s["Laps"] = s["EndLap"] - s["StartLap"] + 1
+        fig = px.bar(s, x="Laps", base="StartLap", y="Driver", color="Compound", orientation="h",
+                     labels={"Laps": "Lap number"})
+        st.plotly_chart(fig, width="stretch")
+        st.dataframe(s, width="stretch")
 
 with t_deg:
     st.caption("Slope of fuel-corrected clean lap time against tyre age, pooled over all drivers "

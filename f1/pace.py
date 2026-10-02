@@ -81,7 +81,7 @@ def stint_summary(laps: pd.DataFrame) -> pd.DataFrame:
             "EndLap": int(bounds.loc[(driver, stint), "max"]),
             "median": float(g["LapSeconds"].median()), "deg_per_lap": slope,
         })
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows, columns=["Driver", "Stint", "Compound", "StartLap", "EndLap", "median", "deg_per_lap"])
 
 
 def _slope(x: pd.Series, y: pd.Series) -> float:

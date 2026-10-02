@@ -42,3 +42,10 @@ def test_best_lap_times_gap():
     best = telemetry.best_lap_times(laps)
     assert list(best["Driver"]) == ["A", "B"]
     assert abs(best["gap_to_pole"].iloc[1] - 0.4) < 1e-9
+
+
+def test_parse_standings_tolerates_missing_position():
+    payload = {"MRData": {"StandingsTable": {"StandingsLists": [{"DriverStandings": [
+        {"points": "0", "positionText": "-", "Driver": {"code": "ZZZ", "familyName": "Zed"}}]}]}}}
+    df = standings.parse_standings(payload, 3)
+    assert df.loc[0, "Driver"] == "ZZZ" and pd.isna(df.loc[0, "Position"])

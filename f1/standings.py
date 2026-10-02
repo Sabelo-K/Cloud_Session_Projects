@@ -4,6 +4,13 @@ from __future__ import annotations
 import pandas as pd
 
 
+def _int_or_none(v):
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return None
+
+
 def parse_standings(payload: dict, round_no: int) -> pd.DataFrame:
     """One round's Jolpica driverStandings response -> rows of Driver, Round, Points, Position."""
     lists = payload["MRData"]["StandingsTable"]["StandingsLists"]
@@ -14,7 +21,7 @@ def parse_standings(payload: dict, round_no: int) -> pd.DataFrame:
             "Driver": d["Driver"].get("code") or d["Driver"]["familyName"][:3].upper(),
             "Round": round_no,
             "Points": float(d["points"]),
-            "Position": int(d["position"]),
+            "Position": _int_or_none(d.get("position") or d.get("positionText")),
         } for d in lists[0]["DriverStandings"]]
     )
 

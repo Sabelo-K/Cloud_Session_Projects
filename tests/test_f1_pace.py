@@ -60,3 +60,8 @@ def test_compound_degradation_recovers_slope():
     df["PitInTime"] = pd.Series([pd.NaT] * len(df), dtype="timedelta64[ns]")
     deg = pace.compound_degradation(df)
     assert abs(deg.loc[0, "deg_per_lap"] - 0.08) < 1e-6
+
+
+def test_stint_summary_empty_selection_keeps_columns():
+    s = pace.stint_summary(_laps().iloc[0:0])
+    assert s.empty and "EndLap" in s.columns
