@@ -11,6 +11,11 @@ def _telemetry(year, rnd, kind, picks):
 
 
 @st.cache_data(show_spinner=False)
+def _corners(year, rnd, kind):
+    return data.load_corners(year, rnd, kind)
+
+
+@st.cache_data(show_spinner=False)
 def _timeline(year, rnd, kind, key, picks):
     return replay.timeline(_telemetry(year, rnd, kind, picks)[key])
 
@@ -45,7 +50,9 @@ def render():
         chosen[drv] = col.selectbox(f"{drv} lap", options, index=options.index(fast), key=f"rp_{drv}_{year}_{rnd}_{kind}",
                                     format_func=lambda n, fast=fast: f"Lap {n}" + (" (fastest)" if n == fast else ""))
     picks = tuple((d, int(n)) for d, n in chosen.items())
-    speed = st.segmented_control("Playback speed", ["0.5x", "1x", "2x", "4x"], default="1x", label_visibility="collapsed") or "1x"
+    c1, c2 = st.columns([2, 3])
+    reference = c1.selectbox("Reference driver", drivers, help="The delta is shown from this driver's point of view: green when they are ahead of the others, red when behind.") if len(drivers) > 1 else drivers[0]
+    speed = c2.segmented_control("Playback speed", ["0.5x", "1x", "2x", "4x"], default="1x") or "1x"
 
     tels = _telemetry(year, rnd, kind, picks)
     runs, missing = [], []
@@ -58,6 +65,8 @@ def render():
         runs.append(dict(label=drv, colour=colours.get(drv, "#00D5CF"), tl=_timeline(year, rnd, kind, key, picks),
                          splits=replay.splits_from_row(row), lap_time=float(pd.Timedelta(row["LapTime"]).total_seconds()),
                          tyre=row.get("Compound"), lap=lap_no))
+    runs.sort(key=lambda r: r["label"] != reference)  # the reference driver leads, the others are measured against them
+    replay.attach_deltas(runs)
     if missing:
         st.warning("No telemetry for: " + ", ".join(missing) + ". Showing the rest." + (ui.SAVED_ONLY_HINT if data.offline() else ""))
     if not runs:
@@ -65,9 +74,9 @@ def render():
     if any(r["splits"] is None for r in runs):
         st.caption("Sector times are not available for some of these laps, so their sector rows stay empty.")
 
-    with ui.card("Replay", "Dots start together at the line, so you can see who is ahead as the lap unfolds. Purple means the quickest "
-                           "sector among the laps shown. Use the slider to jump to any moment."):
-        fig = style.style_fig(charts.lap_replay(runs, float(speed.rstrip("x"))), 600)
+    with ui.card("Replay", f"Dots start together at the line. The dotted line joins {runs[0]['label']} to each other driver: green when {runs[0]['label']} is ahead, "
+                           "red when behind, with the gap in seconds in the timing panel. Numbered circles are the corners. Purple is the quickest sector shown. Use the slider to jump anywhere."):
+        fig = style.style_fig(charts.lap_replay(runs, float(speed.rstrip("x")), corners=_corners(year, rnd, kind)), 600)
         fig.update_layout(margin=dict(l=0, r=0, t=10, b=120))
         st.plotly_chart(fig, width="stretch", config=style.PLOT_CONFIG)
     with ui.card("Lap summary", "Sector times and lap time for the laps replayed above."):

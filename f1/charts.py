@@ -153,11 +153,11 @@ def stint_timeline(laps: pd.DataFrame, order: list[str]) -> go.Figure:
     return fig
 
 
-def lap_replay(runs: list[dict], speed: float = 1.0, tail: int = 25) -> go.Figure:
+def lap_replay(runs: list[dict], speed: float = 1.0, tail: int = 25, corners: pd.DataFrame | None = None) -> go.Figure:
     """Animated track map: one dot per run driving its lap, a short tail behind it and a timing panel that fills in each
     sector time as the dot passes the sector line. Play / pause buttons and a time slider are part of the figure,
     so playback runs in the browser. `runs` are dicts from the replay page: label, colour, tl (replay.timeline), splits,
-    lap_time, tyre. `speed` is the playback speed (1 = real time)."""
+    lap_time, tyre. `speed` is the playback speed (1 = real time). `corners` (Number, X, Y) adds numbered corner signs."""
     from f1 import replay
 
     ref = runs[0]
@@ -176,6 +176,10 @@ def lap_replay(runs: list[dict], speed: float = 1.0, tail: int = 25) -> go.Figur
     fig.add_trace(go.Scatter(x=mx, y=my, mode="markers+text", text=mt, textposition="top center", hoverinfo="skip", showlegend=False,
                              marker=dict(symbol="line-ns", size=16, color="#F2F3F5", line=dict(width=2, color="#F2F3F5")),
                              textfont=dict(size=11, color="#98A4B3")))
+    if corners is not None and not corners.empty and "X" in corners:
+        fig.add_trace(go.Scatter(x=corners["X"], y=corners["Y"], mode="markers+text", text=[str(int(n)) for n in corners["Number"]],
+                                 textposition="middle center", hoverinfo="skip", showlegend=False, textfont=dict(size=9, color="#F2F3F5"),
+                                 marker=dict(size=17, color="#14181E", line=dict(width=1, color="#6B7683"))))
     first_dynamic = len(fig.data)
     label_at = ["top center", "bottom center", "middle right"]  # different sides, so close cars keep readable names
     for k, r in enumerate(runs):
@@ -185,8 +189,12 @@ def lap_replay(runs: list[dict], speed: float = 1.0, tail: int = 25) -> go.Figur
         fig.add_trace(go.Scatter(x=tl["X"].iloc[:1], y=tl["Y"].iloc[:1], mode="markers+text", text=[r["label"]], textposition=label_at[k % 3],
                                  textfont=dict(size=12, color="#F2F3F5"), hoverinfo="skip", name=r["label"],
                                  marker=dict(size=15, color=r["colour"], line=dict(color="#F2F3F5", width=2))))
+    gaps = [k for k, r in enumerate(runs) if k and r.get("delta") is not None]  # lines from the reference to each other car
+    for k in gaps:
+        fig.add_trace(go.Scatter(x=[None], y=[None], mode="lines", line=dict(color=replay.WHITE, width=3, dash="dot"),
+                                 hoverinfo="skip", showlegend=False))
     n = max(len(r["tl"]) for r in runs)
-    traces = list(range(first_dynamic, first_dynamic + 2 * len(runs)))
+    traces = list(range(first_dynamic, first_dynamic + 2 * len(runs) + len(gaps)))
     frames = []
     for i in range(n):
         data = []
@@ -196,6 +204,15 @@ def lap_replay(runs: list[dict], speed: float = 1.0, tail: int = 25) -> go.Figur
             lo = max(0, j - tail)
             data.append(go.Scatter(x=np.round(tl["X"].iloc[lo:j + 1].to_numpy(), 0), y=np.round(tl["Y"].iloc[lo:j + 1].to_numpy(), 0)))
             data.append(go.Scatter(x=[round(float(tl["X"].iloc[j]))], y=[round(float(tl["Y"].iloc[j]))]))
+        ref_tl = runs[0]["tl"]
+        rj = min(i, len(ref_tl) - 1)
+        for k in gaps:
+            tl = runs[k]["tl"]
+            j = min(i, len(tl) - 1)
+            ahead = runs[k]["delta"][min(i, len(runs[k]["delta"]) - 1)] >= 0  # reference ahead: green, behind: red
+            data.append(go.Scatter(x=[round(float(ref_tl["X"].iloc[rj])), round(float(tl["X"].iloc[j]))],
+                                   y=[round(float(ref_tl["Y"].iloc[rj])), round(float(tl["Y"].iloc[j]))],
+                                   line=dict(color=replay.GREEN if ahead else replay.RED, width=3, dash="dot")))
         frames.append(go.Frame(data=data, traces=traces, name=str(i),
                                layout=dict(annotations=[_panel(replay.panel_html(runs, i * replay.STEP))])))
     fig.frames = frames

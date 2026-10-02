@@ -247,7 +247,7 @@ Team colours are used throughout, and a team's second driver is dashed.
 | Race Pace Insights | box plot or raw laps, gap to leader, consistency, traffic |
 | Telemetry Analyser | any drivers and laps overlaid on speed, throttle, brake, gear, RPM, with linked zoom |
 | Single Lap Comparison | up to three drivers: track dominance map, corner apex speeds, speed trace, time delta |
-| Lap Replay | press play to watch up to three fast laps being driven on the circuit, with each sector time appearing as the car passes it (purple = quickest sector shown) |
+| Lap Replay | press play to watch up to three fast laps being driven on the circuit, with each sector time appearing as the car passes it (purple = quickest sector shown), a live green/red delta to a reference driver you pick, and numbered corners |
 | Practice Insights | long-run violins, tyre degradation, consistency, speed traps |
 | Sectors & Maps | sector rankings, theoretical best lap, gap to it, sector-coloured circuit |
 | Strategy & Weather | tyre stint timeline, pit stops, session weather |
