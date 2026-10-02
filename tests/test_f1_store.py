@@ -164,3 +164,34 @@ def test_main_last_rounds(monkeypatch):
     monkeypatch.setattr(sync, "sync_session", lambda y, r, k, mode, log=print: called.append((y, r, k, mode)) or True)
     assert sync.main(["--year", "2026", "--last", "2", "--sessions", "R"]) == 0
     assert called == [(2026, 2, "R", "fastest"), (2026, 3, "R", "fastest")]
+
+
+def test_main_missing_only_fetches_unsaved_finished_rounds(monkeypatch):
+    sched = pd.DataFrame({"round": [1, 2, 3, 4], "name": list("abcd"),
+                          "date": ["2026-03-01", "2026-03-08", "2026-03-15", "2999-01-01"]})
+    monkeypatch.setattr(data, "season_schedule", lambda y: sched)
+    save()  # saves round 13 R, unrelated to this schedule
+    store.write_session(2026, 1, "R", make_laps(), pd.DataFrame(), pd.DataFrame(), {}, "none")
+    called = []
+    monkeypatch.setattr(sync, "sync_session", lambda y, r, k, mode, log=print: called.append((r, k)) or True)
+    assert sync.main(["--year", "2026", "--missing"]) == 0
+    assert called == [(1, "Q"), (2, "R"), (2, "Q"), (3, "R"), (3, "Q")]  # round 1 R is saved; round 4 is in the future
+
+
+def test_main_missing_with_nothing_to_do_and_with_total_failure(monkeypatch, capsys):
+    sched = pd.DataFrame({"round": [1], "name": ["a"], "date": ["2026-03-01"]})
+    monkeypatch.setattr(data, "season_schedule", lambda y: sched)
+    monkeypatch.setattr(sync, "sync_session", lambda *a, **k: False)
+    assert sync.main(["--year", "2026", "--missing"]) == 1  # nothing could be saved: surface it
+    store.write_session(2026, 1, "R", make_laps(), pd.DataFrame(), pd.DataFrame(), {}, "none")
+    store.write_session(2026, 1, "Q", make_laps(), pd.DataFrame(), pd.DataFrame(), {}, "none")
+    assert sync.main(["--year", "2026", "--missing"]) == 0
+    assert "Everything is already saved" in capsys.readouterr().out
+
+
+def test_completed_rounds_strict_excludes_race_day(monkeypatch):
+    sched = pd.DataFrame({"round": [1, 2], "name": ["a", "b"], "date": ["2026-03-01", "2026-03-08"]})
+    monkeypatch.setattr(data, "season_schedule", lambda y: sched)
+    from datetime import date
+    assert sync.completed_rounds(2026, date(2026, 3, 8)) == [1, 2]
+    assert sync.completed_rounds(2026, date(2026, 3, 8), strict=True) == [1]
