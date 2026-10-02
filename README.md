@@ -281,14 +281,19 @@ back to FastF1 for anything else; on Streamlit Cloud it shows only saved session
 
 ### Saving new races automatically
 
-The GitHub Action in `.github/workflows/f1_data.yml` runs twice a day and saves every finished race weekend that is
-not in `f1/store/` yet (`python -m f1.sync --missing`), then pushes, so the hosted app updates itself. Run it by hand
-from the repo's Actions tab (Save F1 data, Run workflow). If F1 refuses GitHub's servers the run fails with the
-reason in its log; then run the same thing from your own PC on a schedule instead, for example daily at 09:00 in
-PowerShell (change the folder to yours):
+F1's server refuses GitHub's and Streamlit's servers, so the saving has to run on your own PC. `f1/sync_missing.ps1`
+pulls, saves every finished race weekend that is not in `f1/store/` yet (`python -m f1.sync --missing`) and pushes it.
+To run it every day, and catch up the next time the PC is on if it was off at that hour, run this once in PowerShell
+(change the folder to yours):
 
 ```
-schtasks /Create /SC DAILY /ST 09:00 /TN "F1 data" /TR "powershell -NoProfile -Command \"cd C:\\path\\to\\Cloud_Session_Projects; git pull; python -m f1.sync --missing --push\""
+$repo = "C:\Users\you\Cloud_Session_Projects"
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$repo\f1\sync_missing.ps1`""
+$trigger = New-ScheduledTaskTrigger -Daily -At 9am
+$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+Register-ScheduledTask -TaskName "F1 data" -Action $action -Trigger $trigger -Settings $settings
 ```
+
+Test it with `Start-ScheduledTask -TaskName "F1 data"`; remove it with `Unregister-ScheduledTask -TaskName "F1 data"`.
 
 Pace maths lives in `f1/pace.py`, `f1/telemetry.py` and `f1/standings.py` and is unit-tested with synthetic data.
