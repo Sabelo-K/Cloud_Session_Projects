@@ -117,7 +117,7 @@ def corners_frame(session) -> pd.DataFrame:
 
 def load_corners(year: int, round_no: int, kind: str) -> pd.DataFrame:
     """Corner numbers with their distance along the lap and position (empty if unavailable)."""
-    saved = store.read_corners(year, round_no, kind)
+    saved = store.read_round_corners(year, round_no, kind)
     if saved is not None:
         return saved
     if offline():

@@ -65,6 +65,7 @@ def render():
         runs.append(dict(label=drv, colour=colours.get(drv, "#00D5CF"), tl=_timeline(year, rnd, kind, key, picks),
                          splits=replay.splits_from_row(row), lap_time=float(pd.Timedelta(row["LapTime"]).total_seconds()),
                          tyre=row.get("Compound"), lap=lap_no))
+    corners = _corners(year, rnd, kind)
     runs.sort(key=lambda r: r["label"] != reference)  # the reference driver leads, the others are measured against them
     replay.attach_deltas(runs)
     if missing:
@@ -76,8 +77,11 @@ def render():
 
     with ui.card("Replay", f"Dots start together at the line. The dotted line joins {runs[0]['label']} to each other driver: green when {runs[0]['label']} is ahead, "
                            "red when behind, with the gap in seconds in the timing panel. Numbered circles are the corners. Purple is the quickest sector shown. Use the slider to jump anywhere."):
-        fig = style.style_fig(charts.lap_replay(runs, float(speed.rstrip("x")), corners=_corners(year, rnd, kind)), 600)
+        fig = style.style_fig(charts.lap_replay(runs, float(speed.rstrip("x")), corners=corners), 600)
         fig.update_layout(margin=dict(l=0, r=0, t=10, b=120))
         st.plotly_chart(fig, width="stretch", config=style.PLOT_CONFIG)
+    if corners.empty:
+        st.caption("No corner numbers are saved for this event yet." + (
+            f" On your computer run: `python -m f1.sync --year {year} --rounds {rnd} --fix-corners --push`" if data.offline() else ""))
     with ui.card("Lap summary", "Sector times and lap time for the laps replayed above."):
         st.dataframe(replay.results_table(runs), width="stretch", hide_index=True)
