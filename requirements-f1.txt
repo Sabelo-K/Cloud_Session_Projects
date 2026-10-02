@@ -1,5 +1,1 @@
--r requirements.txt
-pandas>=2.0
-fastf1>=3.4
-streamlit>=1.50
-plotly>=5.20
+-r f1/requirements.txt

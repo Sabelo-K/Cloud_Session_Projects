@@ -234,8 +234,35 @@ tests/                                pytest (~240), fixture data only, no live 
 brief/summary.py                      optional paid SA economy briefing (off by default)
 ```
 
-## F1 analysis (work in progress)
+## F1 analysis
 
-A separate app in `f1/`: lap times, race pace, tyre stints and degradation, championship progression, and qualifying/telemetry comparison for any race since 2018.
-Data: FastF1 (laps) and Jolpica (schedule). Run: `pip install -r requirements-f1.txt && python -m streamlit run f1/app.py`.
-Pace maths lives in `f1/pace.py` and is unit-tested with synthetic laps (`tests/test_f1_pace.py`).
+A separate app in `f1/`: a dark dashboard with a sidebar of analysis modules and one season / event / session
+selector that follows you between them. Data: FastF1 (laps, telemetry, weather) and Jolpica (schedule, standings).
+Team colours are used throughout, and a team's second driver is dashed.
+
+| Module | What it shows |
+|---|---|
+| Home | fastest lap, best median pace, teammate battles |
+| Race Pace Insights | box plot or raw laps, gap to leader, consistency, traffic |
+| Telemetry Analyser | any drivers and laps overlaid on speed, throttle, brake, gear, RPM, with linked zoom |
+| Single Lap Comparison | up to three drivers: track dominance map, corner apex speeds, speed trace, time delta |
+| Practice Insights | long-run violins, tyre degradation, consistency, speed traps |
+| Sectors & Maps | sector rankings, theoretical best lap, gap to it, sector-coloured circuit |
+| Strategy & Weather | tyre stint timeline, pit stops, session weather |
+| Season Pace | race pace deficit round by round (percent or seconds), by driver or team |
+| Championship | points after each round |
+
+Not built yet: Live Dashboard, Prediction League, Car Performance, Energy Management.
+
+Run: `pip install -r requirements-f1.txt && python -m streamlit run f1/app.py`.
+
+### Open it on your phone
+
+- **Same Wi-Fi (quickest):** start it with `python -m streamlit run f1/app.py --server.address 0.0.0.0`, find
+  your PC's IP with `ipconfig` (IPv4 Address), then open `http://<that-ip>:8501` on your phone. Allow Python
+  through the Windows firewall if asked. Works only while the PC is on and running the app.
+- **Anywhere (free):** deploy on Streamlit Community Cloud (share.streamlit.io): New app, pick this repo and
+  branch, main file `f1/app.py`. It installs `f1/requirements.txt` itself. Data is re-downloaded after the app
+  sleeps, so the first load of a race is slow.
+
+Pace maths lives in `f1/pace.py`, `f1/telemetry.py` and `f1/standings.py` and is unit-tested with synthetic data.
