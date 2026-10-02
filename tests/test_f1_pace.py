@@ -11,8 +11,8 @@ def _laps():
                              LapTime=pd.Timedelta(seconds=base + 0.1 * lap),
                              PitInTime=pd.NaT, PitOutTime=pd.NaT, TrackStatus="1"))
     df = pd.DataFrame(rows)
-    df["PitOutTime"] = pd.to_timedelta(df["PitOutTime"])
-    df["PitInTime"] = pd.to_timedelta(df["PitInTime"])
+    df["PitOutTime"] = pd.Series([pd.NaT] * len(df), dtype="timedelta64[ns]")
+    df["PitInTime"] = pd.Series([pd.NaT] * len(df), dtype="timedelta64[ns]")
     df.loc[0, "PitOutTime"] = pd.Timedelta(seconds=1)          # out lap, dropped
     df.loc[1, "TrackStatus"] = "4"                              # safety car, dropped
     df.loc[2, "LapTime"] = pd.Timedelta(seconds=120)            # outlier, dropped
