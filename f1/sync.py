@@ -4,7 +4,7 @@ Run on your own computer (FastF1's live-timing server refuses Streamlit Cloud):
 
     python -m f1.sync --year 2026 --last 3 --push
     python -m f1.sync --year 2026 --rounds 13,15 --sessions R Q --telemetry all
-    python -m f1.sync --year 2026 --missing --push      # everything finished and not saved yet (the daily job)
+    python -m f1.sync --year 2026 --missing --push      # everything finished and not saved yet (what f1/sync_missing.ps1 runs)
 
 Telemetry: `fastest` (default) saves each driver's fastest lap, `all` saves every timed lap (bigger files), `none` skips it.
 """
@@ -123,7 +123,7 @@ def main(argv: list[str] | None = None) -> int:
     pick.add_argument("--rounds", help="e.g. 13, 10-13, 1,3,5 or all")
     pick.add_argument("--last", type=int, help="the last N completed rounds of the season")
     pick.add_argument("--missing", action="store_true",
-                      help="every finished round of the season whose sessions are not saved yet (what the daily job runs)")
+                      help="every finished round of the season whose sessions are not saved yet (what f1/sync_missing.ps1 runs)")
     ap.add_argument("--sessions", nargs="+", default=DEFAULT_SESSIONS, choices=list(data.SESSION_NAMES))
     ap.add_argument("--telemetry", choices=["fastest", "all", "none"], default="fastest")
     ap.add_argument("--push", action="store_true", help="commit and push the saved data with git afterwards")
