@@ -6,7 +6,7 @@ from datetime import date
 
 import streamlit as st
 
-from f1 import data, style
+from f1 import data, store, style
 
 CSS = """
 <style>
@@ -71,6 +71,10 @@ def show(fig, height: int = 380) -> None:
     st.plotly_chart(style.style_fig(fig, height), width="stretch", config=style.PLOT_CONFIG)
 
 
+SAVED_ONLY_HINT = (" This hosted copy only has the laps saved with `python -m f1.sync`, by default each driver's fastest lap "
+                   "(use `--telemetry all` to save every lap).")
+
+
 def fmt_lap(seconds: float) -> str:
     m, s = divmod(float(seconds), 60)
     return f"{int(m)}:{s:06.3f}"
@@ -105,6 +109,9 @@ def session_controls(page: str, sessions: list[str], default_session: str):
         st.stop()
     done = sched[sched["date"] <= str(date.today())]
     latest = int(done["round"].iloc[-1]) if len(done) else int(sched["round"].iloc[0])
+    saved = [r for r in store.saved_rounds(year) if r in set(sched["round"])]
+    if data.offline() and saved:  # hosted app: open on the newest event that has saved data
+        latest = saved[-1]
     names = sched.set_index("round")["name"]
     rnd = _remembered("Event", [int(r) for r in sched["round"]], page, "round", latest,
                       fmt=lambda r: f"R{r} · {names.loc[r]}", container=c2)
@@ -122,6 +129,10 @@ def load_laps(year: int, rnd: int, kind: str):
     """Laps for a session, or a friendly message and a stop when the session has no data (yet)."""
     try:
         laps = _laps(year, rnd, kind)
+    except store.NotSaved as exc:
+        have = ", ".join(f"R{r}" for r in store.saved_rounds(year)) or "none yet"
+        st.warning(f"{exc}\n\nEvents with saved data for {year}: {have}.")
+        st.stop()
     except Exception as exc:
         st.error(f"No {data.SESSION_NAMES[kind].lower()} data for this event ({type(exc).__name__}). "
                  "It may not have happened yet, or this weekend had no such session. Try another event or session.")

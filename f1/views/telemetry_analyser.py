@@ -59,7 +59,7 @@ def render():
     tels = _telemetry(year, rnd, kind, picks)
     missing = [f"{d} lap {n}" for d, n in picks if f"{d}|{n}" not in tels]
     if missing:
-        st.warning("No telemetry for: " + ", ".join(missing) + ". Those laps may be deleted, or the car was in the pits.")
+        st.warning("No telemetry for: " + ", ".join(missing) + ". Those laps may be deleted, or the car was in the pits." + (ui.SAVED_ONLY_HINT if data.offline() else ""))
     if not tels:
         return
 

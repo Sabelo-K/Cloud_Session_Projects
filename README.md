@@ -262,7 +262,21 @@ Run: `pip install -r requirements-f1.txt && python -m streamlit run f1/app.py`.
   your PC's IP with `ipconfig` (IPv4 Address), then open `http://<that-ip>:8501` on your phone. Allow Python
   through the Windows firewall if asked. Works only while the PC is on and running the app.
 - **Anywhere (free):** deploy on Streamlit Community Cloud (share.streamlit.io): New app, pick this repo and
-  branch, main file `f1/app.py`. It installs `f1/requirements.txt` itself. Data is re-downloaded after the app
-  sleeps, so the first load of a race is slow.
+  branch, main file `f1/app.py`, Python 3.13. FastF1's live-timing server refuses Streamlit Cloud, so the hosted
+  app reads sessions you saved from your own computer (see below). Jolpica (calendar, standings) works there.
+
+### Saving sessions for the hosted app
+
+On your computer (normal internet connection), from the repo folder on the branch the app deploys from:
+
+```
+python -m f1.sync --year 2026 --last 3 --push
+```
+
+That saves the race and qualifying of the last three completed rounds into `f1/store/` as small parquet files and
+pushes them; the hosted app redeploys in a minute or two. Other examples: `--rounds 13`, `--rounds 10-13`,
+`--sessions R Q FP1 FP2 FP3 S SQ`, `--telemetry all` (every lap instead of each driver's fastest; much bigger files),
+`--telemetry none`. Without `--push`, commit `f1/store` yourself. Locally the app reads saved sessions first and falls
+back to FastF1 for anything else; on Streamlit Cloud it shows only saved sessions (set `F1_OFFLINE=0` or `1` to force).
 
 Pace maths lives in `f1/pace.py`, `f1/telemetry.py` and `f1/standings.py` and is unit-tested with synthetic data.
