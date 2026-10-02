@@ -279,4 +279,21 @@ pushes them; the hosted app redeploys in a minute or two. Other examples: `--rou
 `--telemetry none`. Without `--push`, commit `f1/store` yourself. Locally the app reads saved sessions first and falls
 back to FastF1 for anything else; on Streamlit Cloud it shows only saved sessions (set `F1_OFFLINE=0` or `1` to force).
 
+### Saving new races automatically
+
+F1's server refuses GitHub's and Streamlit's servers, so the saving has to run on your own PC. `f1/sync_missing.ps1`
+pulls, saves every finished race weekend that is not in `f1/store/` yet (`python -m f1.sync --missing`) and pushes it.
+To run it every day, and catch up the next time the PC is on if it was off at that hour, run this once in PowerShell
+(change the folder to yours):
+
+```
+$repo = "C:\Users\you\Cloud_Session_Projects"
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$repo\f1\sync_missing.ps1`""
+$trigger = New-ScheduledTaskTrigger -Daily -At 9am
+$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+Register-ScheduledTask -TaskName "F1 data" -Action $action -Trigger $trigger -Settings $settings
+```
+
+Test it with `Start-ScheduledTask -TaskName "F1 data"`; remove it with `Unregister-ScheduledTask -TaskName "F1 data"`.
+
 Pace maths lives in `f1/pace.py`, `f1/telemetry.py` and `f1/standings.py` and is unit-tested with synthetic data.
