@@ -146,3 +146,16 @@ def test_estimated_corners_are_drawn_in_amber():
     fig = charts.lap_replay([run("NOR")], corners=corners)
     sign = [t for t in fig.data if list(t.text or []) == ["1"]][0]
     assert sign.marker.line.color == "#E3B341"
+
+
+def test_delta_ignores_a_drifting_distance_channel_and_matches_the_measured_sector_times():
+    ref, same = run("REF"), run("SAME")
+    same["tl"] = same["tl"].assign(Distance=same["tl"]["Distance"] * 1.15)  # integrated distance 15% out: same cars, same places
+    replay.attach_deltas([ref, same])
+    assert np.abs(same["delta"]).max() < 0.05
+    # the other car lost 0.4 s in sector 2 (measured by the timing system): the gap is exact at the sector lines and the flag
+    slow = run("SLOW", duration=10.4, splits=(3.0, 3.9, 3.5))
+    slow["tl"] = replay.timeline(tel(10.4))
+    replay.attach_deltas([ref, slow])
+    assert abs(slow["delta"][int(round(6.5 / replay.STEP))] - 0.4) < 0.03
+    assert abs(slow["delta"][-1] - 0.4) < 0.03 and abs(slow["delta"][int(round(3.0 / replay.STEP))]) < 0.03

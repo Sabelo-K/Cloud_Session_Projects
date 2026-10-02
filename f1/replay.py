@@ -39,20 +39,78 @@ def splits_from_row(row) -> tuple[float, float, float] | None:
     return tuple(vals)
 
 
-def attach_deltas(runs: list[dict]) -> list[dict]:
+def _anchor_times(run: dict, sectors: bool = True) -> np.ndarray:
+    """Lap clock at the start line, the two sector lines and the finish: the moments the timing system measured exactly."""
+    end = float(run["tl"]["T"].iloc[-1])
+    sp = run.get("splits")
+    if sectors and sp and abs(sum(sp) - end) < 0.2:
+        c = np.cumsum(sp)
+        return np.array([0.0, c[0], c[1], end])
+    return np.array([0.0, end])
+
+
+def _nearest_reach(ox, oy, ot, px, py, centre, w):
+    """For each point (px, py) the time the other car (path ox, oy at times ot) was nearest to it, searching only `w` samples
+    either side of `centre`, with the closest spot refined between samples."""
+    reach = np.empty(len(px))
+    for i in range(len(px)):
+        lo, hi = max(0, centre[i] - w), min(len(ox), centre[i] + w + 1)
+        k = lo + int(np.argmin((ox[lo:hi] - px[i]) ** 2 + (oy[lo:hi] - py[i]) ** 2))
+        best_d, best_t = np.inf, ot[k]
+        for a, b in ((max(k - 1, 0), k), (k, min(k + 1, len(ox) - 1))):
+            if a == b:
+                continue
+            vx, vy = ox[b] - ox[a], oy[b] - oy[a]
+            length = vx * vx + vy * vy
+            f = 0.0 if length == 0 else float(np.clip(((px[i] - ox[a]) * vx + (py[i] - oy[a]) * vy) / length, 0, 1))
+            d = (ox[a] + f * vx - px[i]) ** 2 + (oy[a] + f * vy - py[i]) ** 2
+            if d < best_d:
+                best_d, best_t = d, ot[a] + f * (ot[b] - ot[a])
+        reach[i] = best_t
+    return reach
+
+
+def _smooth(x: np.ndarray, median: int = 9, mean: int = 5) -> np.ndarray:
+    """Remove frame-to-frame jitter and one-off spikes (a gap cannot really change by tenths of a second in 0.1 s)."""
+    from numpy.lib.stride_tricks import sliding_window_view
+    x = sliding_window_view(np.pad(x, median // 2, mode="edge"), median)
+    x = np.median(x, axis=1)
+    return np.convolve(np.pad(x, mean // 2, mode="edge"), np.ones(mean) / mean, mode="valid")
+
+
+def attach_deltas(runs: list[dict], window: float = 8.0, slack: float = 0.5) -> list[dict]:
     """Give every run after the first (the reference) a `delta` array, one value per animation frame: how many seconds
     later than the reference it reaches the point on track where the reference is at that moment. Positive means the
-    reference is ahead, negative means it is behind. Once the reference has finished, the last value is held."""
+    reference is ahead, negative means it is behind. Once the reference has finished, the last value is held.
+
+    Cars are matched by where they are on the track (X/Y), not by the Distance channel: Distance is integrated from speed,
+    drifts by tens of metres and, where speed samples dropped out, was out by hundreds (gaps of 3 s that were not real).
+    Each frame finds the nearest point on the other car's path, searching within `window` seconds of where Distance says
+    it should be. The timing system's exact times at the start line, the two sector lines and the flag then pin the gap at
+    those four moments, the gap in between is bent smoothly to meet them, and it is kept within `slack` seconds of the
+    measured gaps either side so a bad stretch of position data cannot invent a swing."""
     if len(runs) < 2:
         return runs
+    full = all(len(_anchor_times(r)) == 4 for r in runs)  # sector lines are only used when every lap has its sector times
     ref = runs[0]["tl"]
     n = max(len(r["tl"]) for r in runs)
     j = np.minimum(np.arange(n), len(ref) - 1)
-    ref_dist, ref_time = ref["Distance"].to_numpy()[j], ref["T"].to_numpy()[j]
+    px, py = ref["X"].to_numpy()[j], ref["Y"].to_numpy()[j]
+    ref_time, ref_dist = ref["T"].to_numpy()[j], ref["Distance"].to_numpy()[j]
+    ref_anchor = _anchor_times(runs[0], full)
+    w = max(1, int(window / STEP))
     for r in runs[1:]:
-        other = r["tl"]
-        reach = np.interp(ref_dist, np.maximum.accumulate(other["Distance"].to_numpy()), other["T"].to_numpy())
-        r["delta"] = reach - ref_time
+        o = r["tl"]
+        ot = o["T"].to_numpy()
+        guess = np.interp(ref_dist, np.maximum.accumulate(o["Distance"].to_numpy()), ot)
+        centre = np.clip(np.rint(guess / STEP).astype(int), 0, len(o) - 1)
+        delta = _smooth(_nearest_reach(o["X"].to_numpy(), o["Y"].to_numpy(), ot, px, py, centre, w) - ref_time)
+        truth = _anchor_times(r, full) - ref_anchor  # what the timing system measured at each anchor
+        found = np.interp(ref_anchor, ref_time[: len(ref)], delta[: len(ref)])
+        delta = delta + np.interp(ref_time, ref_anchor, truth - found)
+        lo = np.interp(ref_time, ref_anchor, np.minimum(truth, np.append(truth[1:], truth[-1]))) - slack
+        hi = np.interp(ref_time, ref_anchor, np.maximum(truth, np.append(truth[1:], truth[-1]))) + slack
+        r["delta"] = np.clip(delta, lo, hi)
     return runs
 
 
