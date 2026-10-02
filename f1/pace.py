@@ -24,6 +24,34 @@ def clean_laps(laps: pd.DataFrame, factor: float = OUTLIER_FACTOR) -> pd.DataFra
     return df[df["LapSeconds"] <= median * factor]
 
 
+def lap_chart_frame(laps: pd.DataFrame, show_all: bool = False) -> pd.DataFrame:
+    """Frame for the lap-time line chart. By default pit, non-green and slow-outlier laps are
+    blanked (NaN) so the line breaks there instead of a red-flag lap squashing the y-axis."""
+    df = with_seconds(laps)
+    if not show_all:
+        keep = clean_laps(laps).index
+        df.loc[~df.index.isin(keep), "LapSeconds"] = float("nan")
+    return df.sort_values(["Driver", "LapNumber"])
+
+
+FUEL_EFFECT_S_PER_LAP = 0.03  # approx. time gained per lap as fuel burns off
+
+
+def compound_degradation(laps: pd.DataFrame, fuel_effect: float = FUEL_EFFECT_S_PER_LAP) -> pd.DataFrame:
+    """Per-compound tyre degradation: slope of fuel-corrected clean lap time vs tyre age
+    (needs a TyreLife column), pooled over all drivers. Positive slope = tyres losing pace."""
+    df = clean_laps(laps).dropna(subset=["TyreLife", "Compound"])
+    df = df.assign(Corrected=df["LapSeconds"] + fuel_effect * df["LapNumber"])
+    rows = []
+    for compound, g in df.groupby("Compound"):
+        if len(g) < 5 or g["TyreLife"].nunique() < 3:
+            continue
+        rows.append({"Compound": compound, "laps": len(g),
+                     "deg_per_lap": _slope(g["TyreLife"], g["Corrected"]),
+                     "fastest": float(g["Corrected"].min())})
+    return pd.DataFrame(rows, columns=["Compound", "laps", "deg_per_lap", "fastest"])
+
+
 def race_pace(laps: pd.DataFrame) -> pd.DataFrame:
     """Median clean lap per driver, fastest first, with gap to the best driver."""
     df = clean_laps(laps)

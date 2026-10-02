@@ -236,6 +236,6 @@ brief/summary.py                      optional paid SA economy briefing (off by 
 
 ## F1 analysis (work in progress)
 
-A separate app in `f1/`: lap-time overlays, race pace and tyre stints for any race since 2018.
-Data: FastF1 (laps) and Jolpica (schedule). Run: `pip install -r requirements-f1.txt && streamlit run f1/app.py`.
+A separate app in `f1/`: lap times, race pace, tyre stints and degradation, championship progression, and qualifying/telemetry comparison for any race since 2018.
+Data: FastF1 (laps) and Jolpica (schedule). Run: `pip install -r requirements-f1.txt && python -m streamlit run f1/app.py`.
 Pace maths lives in `f1/pace.py` and is unit-tested with synthetic laps (`tests/test_f1_pace.py`).
