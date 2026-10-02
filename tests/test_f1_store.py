@@ -195,3 +195,30 @@ def test_completed_rounds_strict_excludes_race_day(monkeypatch):
     from datetime import date
     assert sync.completed_rounds(2026, date(2026, 3, 8)) == [1, 2]
     assert sync.completed_rounds(2026, date(2026, 3, 8), strict=True) == [1]
+
+
+def test_laps_to_save_can_be_limited_to_chosen_drivers():
+    laps = make_laps()
+    assert dict(sync.laps_to_save(laps, "fastest", ["HAM"])) == {"HAM": 1}
+    assert {d for d, _ in sync.laps_to_save(laps, "all", ["VER"])} == {"VER"}
+
+
+def test_saving_more_telemetry_keeps_laps_saved_earlier():
+    laps, picks = save("fastest")                       # VER lap 1 and HAM lap 1
+    extra = {("VER", 2): make_tel(5), ("VER", 4): make_tel(6)}
+    store.write_session(2026, 13, "R", laps, pd.DataFrame(), pd.DataFrame(), extra, "all")
+    assert store.stored_telemetry_laps(2026, 13, "R") == {("VER", 1), ("HAM", 1), ("VER", 2), ("VER", 4)}
+    store.write_session(2026, 13, "R", laps, pd.DataFrame(), pd.DataFrame(), {("VER", 2): make_tel(9)}, "all")
+    assert len(store.stored_telemetry_laps(2026, 13, "R")) == 4  # re-saving a lap replaces it, nothing is duplicated
+    tel = store.read_telemetry(2026, 13, "R", [("VER", 2)])["VER|2"]
+    assert abs(tel["Speed"].iloc[0] - 209.0) < 1e-3
+
+
+def test_main_passes_drivers_only_when_given(monkeypatch):
+    sched = pd.DataFrame({"round": [1], "name": ["a"], "date": ["2026-03-01"]})
+    monkeypatch.setattr(data, "season_schedule", lambda y: sched)
+    calls = []
+    monkeypatch.setattr(sync, "sync_session", lambda y, r, k, mode, log=print, drivers=None: calls.append(drivers) or True)
+    sync.main(["--year", "2026", "--rounds", "1", "--sessions", "R", "--telemetry", "all", "--drivers", "nor, pia"])
+    sync.main(["--year", "2026", "--rounds", "1", "--sessions", "R"])
+    assert calls == [["NOR", "PIA"], None]

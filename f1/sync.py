@@ -4,9 +4,11 @@ Run on your own computer (FastF1's live-timing server refuses Streamlit Cloud):
 
     python -m f1.sync --year 2026 --last 3 --push
     python -m f1.sync --year 2026 --rounds 13,15 --sessions R Q --telemetry all
+    python -m f1.sync --year 2026 --rounds 15 --sessions R --telemetry all --drivers NOR,PIA   # every lap, for chosen drivers only
     python -m f1.sync --year 2026 --missing --push      # everything finished and not saved yet (what f1/sync_missing.ps1 runs)
 
 Telemetry: `fastest` (default) saves each driver's fastest lap, `all` saves every timed lap (bigger files), `none` skips it.
+A whole race of `all` is about 20 MB, so use `--drivers` to limit it to the drivers you care about. Laps saved earlier are kept.
 """
 from __future__ import annotations
 
@@ -49,11 +51,13 @@ def completed_rounds(year: int, today: date | None = None, strict: bool = False)
     return [int(r) for r in done["round"]]
 
 
-def laps_to_save(laps: pd.DataFrame, mode: str) -> list[tuple[str, int]]:
-    """Which (driver, lap number) pairs get telemetry saved."""
+def laps_to_save(laps: pd.DataFrame, mode: str, drivers: list[str] | None = None) -> list[tuple[str, int]]:
+    """Which (driver, lap number) pairs get telemetry saved (only for `drivers` when given)."""
     if mode == "none":
         return []
     timed = laps.dropna(subset=["LapTime"])
+    if drivers:
+        timed = timed[timed["Driver"].isin(drivers)]
     if "Deleted" in timed.columns:
         timed = timed[~store.as_bool(timed["Deleted"])]
     if mode == "all":
@@ -62,7 +66,7 @@ def laps_to_save(laps: pd.DataFrame, mode: str) -> list[tuple[str, int]]:
     return [(str(d), int(n)) for d, n in zip(best["Driver"], best["LapNumber"])]
 
 
-def sync_session(year: int, round_no: int, kind: str, mode: str = "fastest", log=print) -> bool:
+def sync_session(year: int, round_no: int, kind: str, mode: str = "fastest", log=print, drivers: list[str] | None = None) -> bool:
     """Download one session with FastF1 and save it. False when the session has no data."""
     label = f"{year} round {round_no} {data.SESSION_NAMES.get(kind, kind)}"
     log(f"{label}: loading from FastF1 (this can take a few minutes)...")
@@ -81,7 +85,7 @@ def sync_session(year: int, round_no: int, kind: str, mode: str = "fastest", log
         weather = pd.DataFrame()
     corners = data.corners_frame(session) if mode != "none" else pd.DataFrame()
     telemetry = {}
-    picks = laps_to_save(laps, mode)
+    picks = laps_to_save(laps, mode, drivers)
     for i, (drv, lap_no) in enumerate(picks, 1):
         try:
             tel = data.fetch_lap_telemetry(session, drv, lap_no)
@@ -126,6 +130,7 @@ def main(argv: list[str] | None = None) -> int:
                       help="every finished round of the season whose sessions are not saved yet (what f1/sync_missing.ps1 runs)")
     ap.add_argument("--sessions", nargs="+", default=DEFAULT_SESSIONS, choices=list(data.SESSION_NAMES))
     ap.add_argument("--telemetry", choices=["fastest", "all", "none"], default="fastest")
+    ap.add_argument("--drivers", help="only save telemetry for these drivers, e.g. NOR,PIA (all drivers when left out)")
     ap.add_argument("--push", action="store_true", help="commit and push the saved data with git afterwards")
     args = ap.parse_args(argv)
 
@@ -148,9 +153,10 @@ def main(argv: list[str] | None = None) -> int:
         print("No completed rounds to save.")
         return 1
 
+    extra = {"drivers": [d.strip().upper() for d in args.drivers.split(",") if d.strip()]} if args.drivers else {}
     saved = 0
     for rnd, kind in pairs:
-        saved += sync_session(args.year, rnd, kind, args.telemetry)
+        saved += sync_session(args.year, rnd, kind, args.telemetry, **extra)
     print(f"Saved {saved} of {len(pairs)} session(s).")
     if saved and args.push:
         rounds = sorted({r for r, _ in pairs})

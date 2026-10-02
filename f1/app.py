@@ -10,13 +10,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 st.set_page_config(page_title="F1 Insights", page_icon="🏁", layout="wide")
 
 from f1 import ui  # noqa: E402  (after set_page_config, which must be the first Streamlit call)
-from f1.views import (championship, home, practice, race_pace, sectors_maps, season_pace,  # noqa: E402
-                      single_lap, strategy_weather, telemetry_analyser)
+from f1.views import (car_performance, championship, home, practice, race_pace, sectors_maps, season_pace,  # noqa: E402
+                      single_lap, strategy_weather, telemetry_analyser, weekend)
 
 ui.inject_css()
 
 PAGES = [
     st.Page(home.render, title="Home", icon="🏁", url_path="home", default=True),
+    st.Page(weekend.render, title="Race Weekend Summary", icon="📋", url_path="weekend"),
     st.Page(race_pace.render, title="Race Pace Insights", icon="⏱️", url_path="race-pace"),
     st.Page(telemetry_analyser.render, title="Telemetry Analyser", icon="📈", url_path="telemetry"),
     st.Page(single_lap.render, title="Single Lap Comparison", icon="🗺️", url_path="single-lap"),
@@ -24,6 +25,7 @@ PAGES = [
     st.Page(sectors_maps.render, title="Sectors & Maps", icon="🧭", url_path="sectors"),
     st.Page(strategy_weather.render, title="Strategy & Weather", icon="⛅", url_path="strategy"),
     st.Page(season_pace.render, title="Season Pace", icon="📊", url_path="season-pace"),
+    st.Page(car_performance.render, title="Car Performance", icon="🏎️", url_path="cars"),
     st.Page(championship.render, title="Championship", icon="🏆", url_path="championship"),
 ]
 st.navigation(PAGES).run()

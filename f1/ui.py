@@ -99,11 +99,8 @@ def schedule_for(year: int):
     return data.season_schedule(year)
 
 
-def session_controls(page: str, sessions: list[str], default_session: str):
-    """Season / event / session row at the top of a page. Returns (year, round, event name, session code).
-    Choices are kept when switching pages (the session falls back to `default_session` if unsupported here)."""
-    c1, c2, c3 = st.columns([1, 3, 2])
-    year = _remembered("Season", list(range(date.today().year, 2017, -1)), page, "year", date.today().year, container=c1)
+def _year_and_event(page: str, year_box, event_box):
+    year = _remembered("Season", list(range(date.today().year, 2017, -1)), page, "year", date.today().year, container=year_box)
     try:
         sched = schedule_for(year)
     except Exception as exc:
@@ -116,13 +113,27 @@ def session_controls(page: str, sessions: list[str], default_session: str):
         latest = saved[-1]
     names = sched.set_index("round")["name"]
     rnd = _remembered("Event", [int(r) for r in sched["round"]], page, "round", latest,
-                      fmt=lambda r: f"R{r} · {names.loc[r]}", container=c2)
+                      fmt=lambda r: f"R{r} · {names.loc[r]}", container=event_box)
+    return int(year), int(rnd), str(names.loc[rnd])
+
+
+def event_controls(page: str):
+    """Season / event row for pages that cover a whole weekend. Returns (year, round, event name)."""
+    c1, c2 = st.columns([1, 4])
+    return _year_and_event(page, c1, c2)
+
+
+def session_controls(page: str, sessions: list[str], default_session: str):
+    """Season / event / session row at the top of a page. Returns (year, round, event name, session code).
+    Choices are kept when switching pages (the session falls back to `default_session` if unsupported here)."""
+    c1, c2, c3 = st.columns([1, 3, 2])
+    year, rnd, name = _year_and_event(page, c1, c2)
     kind = _remembered("Session", sessions, page, "session", default_session,
                        fmt=lambda k: data.SESSION_NAMES[k], container=c3)
-    return int(year), int(rnd), str(names.loc[rnd]), kind
+    return year, rnd, name, kind
 
 
-@st.cache_data(show_spinner="Loading laps (the first load of a session is slow)...")
+@st.cache_data(show_spinner="Loading laps (the first load of a session is slow)...", max_entries=40)  # bounded: the hosted app has limited memory
 def _laps(year: int, rnd: int, kind: str):
     return data.load_session_laps(year, rnd, kind)
 
@@ -144,6 +155,15 @@ def load_laps(year: int, rnd: int, kind: str):
         st.warning("This session has no lap data.")
         st.stop()
     return laps
+
+
+def optional_laps(year: int, rnd: int, kind: str):
+    """Laps for a session, or None when it is not saved / did not happen (no message, no stop)."""
+    try:
+        laps = _laps(year, rnd, kind)
+    except Exception:
+        return None
+    return None if laps.empty else laps
 
 
 def driver_picker(page: str, drivers: list[str], colours: dict, default_n: int = 4, max_selected: int | None = None):

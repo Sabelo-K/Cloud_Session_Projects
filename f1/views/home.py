@@ -40,6 +40,7 @@ def render():
 
     with ui.card("Modules"):
         st.markdown(
+            "- **Race Weekend Summary**: qualifying, race result, places gained, strategy and top speeds\n"
             "- **Race Pace Insights**: box plots, raw laps, gap to leader, consistency, traffic\n"
             "- **Telemetry Analyser**: overlay any drivers and laps on speed, throttle, brake, gear, RPM\n"
             "- **Single Lap Comparison**: track dominance map, corner speeds, speed trace, time delta\n"
@@ -47,5 +48,6 @@ def render():
             "- **Sectors & Maps**: sector rankings, theoretical best lap, circuit map\n"
             "- **Strategy & Weather**: tyre stints, pit stops, session conditions\n"
             "- **Season Pace**: race pace deficit round by round\n"
+            "- **Car Performance**: team qualifying gap, race pace and top speed over the season\n"
             "- **Championship**: points after each round"
         )
