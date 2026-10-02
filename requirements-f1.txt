@@ -1,0 +1,5 @@
+-r requirements.txt
+pandas>=2.0
+fastf1>=3.4
+streamlit>=1.35
+plotly>=5.20
