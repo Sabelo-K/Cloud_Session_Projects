@@ -179,7 +179,8 @@ def lap_replay(runs: list[dict], speed: float = 1.0, tail: int = 25, corners: pd
     if corners is not None and not corners.empty and "X" in corners:
         fig.add_trace(go.Scatter(x=corners["X"], y=corners["Y"], mode="markers+text", text=[str(int(n)) for n in corners["Number"]],
                                  textposition="middle center", hoverinfo="skip", showlegend=False, textfont=dict(size=9, color="#F2F3F5"),
-                                 marker=dict(size=17, color="#14181E", line=dict(width=1, color="#6B7683"))))
+                                 marker=dict(size=17, color="#14181E", line=dict(
+                                     width=1, color="#E3B341" if "Estimated" in corners and corners["Estimated"].any() else "#6B7683"))))
     first_dynamic = len(fig.data)
     label_at = ["top center", "bottom center", "middle right"]  # different sides, so close cars keep readable names
     for k, r in enumerate(runs):
