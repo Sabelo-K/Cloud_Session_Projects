@@ -104,9 +104,9 @@ def sync_session(year: int, round_no: int, kind: str, mode: str = "fastest", log
     return True
 
 
-def git_push(message: str, log=print) -> bool:
-    """Commit the saved data and push the current branch."""
-    steps = [["git", "add", "f1/store"], ["git", "commit", "-m", message], ["git", "push"]]
+def git_push(message: str, log=print, path: str = "f1/store") -> bool:
+    """Commit the saved data (or another folder of the app) and push the current branch."""
+    steps = [["git", "add", path], ["git", "commit", "-m", message], ["git", "push"]]
     for step in steps:
         done = subprocess.run(step, capture_output=True, text=True)
         if done.returncode != 0:

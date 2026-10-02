@@ -4,7 +4,7 @@ from datetime import date
 import plotly.express as px
 import streamlit as st
 
-from f1 import data, pace, style, ui
+from f1 import pace, style, ui
 
 
 @st.cache_data(show_spinner="Loading races...")
@@ -27,10 +27,8 @@ def render():
         st.info("No completed rounds yet this season.")
         return
 
-    if not data.offline() and not st.session_state.get(f"season_pace_{year}"):  # saved data loads in seconds; live data does not
-        if not st.button(f"Load {len(rounds)} races", type="primary"):
-            return
-        st.session_state[f"season_pace_{year}"] = True
+    if not ui.confirm_load(f"season_pace_{year}", year, rounds):
+        return
     out = _deficits(year, tuple(rounds))
     if out.empty:
         st.warning("No race data could be loaded.")

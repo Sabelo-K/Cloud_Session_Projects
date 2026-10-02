@@ -49,5 +49,6 @@ def render():
             "- **Strategy & Weather**: tyre stints, pit stops, session conditions\n"
             "- **Season Pace**: race pace deficit round by round\n"
             "- **Car Performance**: team qualifying gap, race pace and top speed over the season\n"
+            "- **Prediction League**: pick pole, the podium and the fastest lap, then score against the result\n"
             "- **Championship**: points after each round"
         )

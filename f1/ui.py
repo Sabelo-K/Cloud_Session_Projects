@@ -157,6 +157,18 @@ def load_laps(year: int, rnd: int, kind: str):
     return laps
 
 
+def confirm_load(key: str, year: int, rounds: list[int]) -> bool:
+    """Whole-season pages load saved data straight away; data that has to come from F1 waits for a button press
+    (it takes minutes). True when the page should go ahead and load."""
+    if data.offline() or set(rounds) <= set(store.saved_rounds(year)) or st.session_state.get(key):
+        return True
+    if st.button(f"Load {len(rounds)} rounds", type="primary"):
+        st.session_state[key] = True
+        return True
+    st.caption("Loading a whole season from F1 takes a while the first time.")
+    return False
+
+
 def optional_laps(year: int, rnd: int, kind: str):
     """Laps for a session, or None when it is not saved / did not happen (no message, no stop)."""
     try:

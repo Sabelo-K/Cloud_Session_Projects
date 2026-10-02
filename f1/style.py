@@ -57,9 +57,12 @@ def distinct_colours(laps: pd.DataFrame) -> dict:
 
 def style_fig(fig, height: int = 380):
     """Compact, phone-friendly layout: legend underneath, tight margins, transparent background."""
+    legend = dict(orientation="h", yanchor="top", y=-0.18, x=0, title_text="")
+    if fig.layout.legend.orientation:  # a chart that placed its own legend (e.g. above tilted labels) keeps it
+        legend = dict(title_text="")
     fig.update_layout(
         height=height, margin=dict(l=8, r=8, t=fig.layout.margin.t or 40, b=8),
-        legend=dict(orientation="h", yanchor="top", y=-0.18, x=0, title_text=""),
+        legend=legend,
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         title=dict(font=dict(size=15), x=0),
     )

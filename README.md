@@ -243,6 +243,7 @@ Team colours are used throughout, and a team's second driver is dashed.
 | Module | What it shows |
 |---|---|
 | Home | fastest lap, best median pace, teammate battles |
+| Race Weekend Summary | qualifying order, race result with strategies, places gained, tyre stints, top speeds |
 | Race Pace Insights | box plot or raw laps, gap to leader, consistency, traffic |
 | Telemetry Analyser | any drivers and laps overlaid on speed, throttle, brake, gear, RPM, with linked zoom |
 | Single Lap Comparison | up to three drivers: track dominance map, corner apex speeds, speed trace, time delta |
@@ -250,9 +251,11 @@ Team colours are used throughout, and a team's second driver is dashed.
 | Sectors & Maps | sector rankings, theoretical best lap, gap to it, sector-coloured circuit |
 | Strategy & Weather | tyre stint timeline, pit stops, session weather |
 | Season Pace | race pace deficit round by round (percent or seconds), by driver or team |
+| Car Performance | each team's qualifying gap, race-pace gap and top speed round by round, plus a season profile |
+| Prediction League | pick pole, the podium and the fastest lap; scored against the saved result (see below) |
 | Championship | points after each round |
 
-Not built yet: Live Dashboard, Prediction League, Car Performance, Energy Management.
+Not built yet: Live Dashboard, Energy Management.
 
 Run: `pip install -r requirements-f1.txt && python -m streamlit run f1/app.py`.
 
@@ -276,7 +279,8 @@ python -m f1.sync --year 2026 --last 3 --push
 That saves the race and qualifying of the last three completed rounds into `f1/store/` as small parquet files and
 pushes them; the hosted app redeploys in a minute or two. Other examples: `--rounds 13`, `--rounds 10-13`,
 `--sessions R Q FP1 FP2 FP3 S SQ`, `--telemetry all` (every lap instead of each driver's fastest; much bigger files),
-`--telemetry none`. Without `--push`, commit `f1/store` yourself. Locally the app reads saved sessions first and falls
+`--telemetry none`. A whole race of `--telemetry all` is about 20 MB, so limit it to the drivers you care about with
+`--drivers NOR,PIA` (laps saved earlier are kept). Without `--push`, commit `f1/store` yourself. Locally the app reads saved sessions first and falls
 back to FastF1 for anything else; on Streamlit Cloud it shows only saved sessions (set `F1_OFFLINE=0` or `1` to force).
 
 ### Saving new races automatically
@@ -295,5 +299,13 @@ Register-ScheduledTask -TaskName "F1 data" -Action $action -Trigger $trigger -Se
 ```
 
 Test it with `Start-ScheduledTask -TaskName "F1 data"`; remove it with `Unregister-ScheduledTask -TaskName "F1 data"`.
+
+### Prediction League
+
+Picks are saved in `f1/league/<year>.json`. The hosted app cannot store anything permanently, so enter picks on your own
+computer (`python -m streamlit run f1/app.py`, Prediction League page) and publish them with `python -m f1.league --push`;
+the hosted app then shows the picks and the leaderboard. Scoring: 5 points for each driver in the right podium place,
+2 if on the podium in another place, 3 for pole, 3 for the fastest lap (21 at most). A race's picks lock once the race
+has been saved.
 
 Pace maths lives in `f1/pace.py`, `f1/telemetry.py` and `f1/standings.py` and is unit-tested with synthetic data.

@@ -37,11 +37,8 @@ def render():
     if not rounds:
         st.info("No saved rounds for this season yet.")
         return
-    if not data.offline() and f"cars_{year}" not in st.session_state:
-        if not st.button(f"Load {len(rounds)} rounds", type="primary"):
-            st.caption("Loading a whole season from F1 takes a while the first time.")
-            return
-        st.session_state[f"cars_{year}"] = True
+    if not ui.confirm_load(f"cars_{year}", year, rounds):
+        return
     table = _season(year, tuple(rounds))
     if table.empty:
         st.warning("No qualifying or race data could be loaded.")
