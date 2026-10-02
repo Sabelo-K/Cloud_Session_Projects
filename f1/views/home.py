@@ -44,7 +44,7 @@ def render():
             "- **Race Pace Insights**: box plots, raw laps, gap to leader, consistency, traffic\n"
             "- **Telemetry Analyser**: overlay any drivers and laps on speed, throttle, brake, gear, RPM\n"
             "- **Single Lap Comparison**: track dominance map, corner speeds, speed trace, time delta\n"
-            "- **Lap Replay**: watch fast laps being driven, with sector times appearing as the car passes them\n"
+            "- **Lap Replay**: watch fast laps being driven, with sector times, a green/red delta to a reference driver and numbered corners\n"
             "- **Practice Insights**: long runs, degradation, consistency, speed traps\n"
             "- **Sectors & Maps**: sector rankings, theoretical best lap, circuit map\n"
             "- **Strategy & Weather**: tyre stints, pit stops, session conditions\n"
