@@ -1,5 +1,11 @@
 """Streamlit entry point. Run: python -m streamlit run f1/app.py"""
+import sys
+from pathlib import Path
+
 import streamlit as st
+
+# Streamlit Cloud puts f1/ (the script folder) on sys.path, not the repo root, so `from f1 import ...` fails there.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 st.set_page_config(page_title="F1 Insights", page_icon="🏁", layout="wide")
 
