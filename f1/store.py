@@ -63,11 +63,18 @@ def write_session(year: int, round_no: int, kind: str, laps: pd.DataFrame, weath
     tel_path = folder / "telemetry.parquet"
     parts = [_slim_telemetry(frame).assign(Driver=drv, LapNumber=int(n)) for (drv, n), frame in telemetry.items()]
     if parts:
-        pd.concat(parts, ignore_index=True).to_parquet(tel_path, index=False, compression="zstd")
-    elif tel_path.exists():
+        new = pd.concat(parts, ignore_index=True)
+        if tel_path.exists():  # keep laps saved earlier (e.g. every lap of one driver) that this run did not touch
+            old = pd.read_parquet(tel_path)
+            fresh = set(zip(new["Driver"], new["LapNumber"]))
+            keep = old[[(d, n) not in fresh for d, n in zip(old["Driver"], old["LapNumber"])]]
+            new = pd.concat([keep, new], ignore_index=True)
+        new.to_parquet(tel_path, index=False, compression="zstd")
+    elif tel_path.exists() and mode == "none":
         tel_path.unlink()
+    saved_laps = len(stored_telemetry_laps(year, round_no, kind)) if tel_path.exists() else 0
     meta = {"saved_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "telemetry": mode,
-            "telemetry_laps": len(parts)}
+            "telemetry_laps": saved_laps}
     (folder / "meta.json").write_text(json.dumps(meta))
     return folder
 
