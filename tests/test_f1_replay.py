@@ -126,3 +126,23 @@ def test_corner_numbers_are_drawn_under_the_moving_cars():
     assert len(sign) == 1 and list(sign[0].x) == [200.0, 800.0, 1600.0]
     assert min(i for i, t in enumerate(with_corners.data) if t is sign[0]) < with_corners.frames[0].traces[0]  # static, not animated
     assert len(charts.lap_replay(runs, corners=pd.DataFrame(columns=["Number", "X", "Y"])).data) == len(plain.data)
+
+
+def test_estimated_corners_find_slow_points_and_tight_bends():
+    from f1 import telemetry
+    d = np.arange(0, 3000, 5.0)
+    speed = 300 - 150 * np.exp(-((d - 1000) / 60) ** 2)   # one braking zone
+    ang = np.radians(np.where(d < 2000, 0, np.clip((d - 2000) / 40, 0, 1) * 90))  # one flat-out 90 degree turn after 2 km
+    x = np.cumsum(np.cos(ang) * 5.0) * 10
+    y = np.cumsum(np.sin(ang) * 5.0) * 10
+    est = telemetry.estimate_corners(pd.DataFrame({"Distance": d, "Speed": speed, "X": x, "Y": y}))
+    assert list(est["Number"]) == [1, 2] and est["Estimated"].all()
+    assert abs(est["Distance"].iloc[0] - 1000) < 30 and abs(est["Distance"].iloc[1] - 2020) < 60
+    assert telemetry.estimate_corners(pd.DataFrame({"Distance": [0.0], "Speed": [1.0], "X": [0.0], "Y": [0.0]})).empty
+
+
+def test_estimated_corners_are_drawn_in_amber():
+    corners = pd.DataFrame({"Number": [1], "Distance": [100.0], "X": [200.0], "Y": [100.0], "Estimated": [True]})
+    fig = charts.lap_replay([run("NOR")], corners=corners)
+    sign = [t for t in fig.data if list(t.text or []) == ["1"]][0]
+    assert sign.marker.line.color == "#E3B341"

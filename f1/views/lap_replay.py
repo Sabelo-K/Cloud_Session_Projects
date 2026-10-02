@@ -2,7 +2,7 @@
 import pandas as pd
 import streamlit as st
 
-from f1 import charts, data, replay, store, style, ui
+from f1 import charts, data, replay, store, style, telemetry, ui
 
 
 @st.cache_data(show_spinner="Loading telemetry (slow the first time)...")
@@ -66,6 +66,10 @@ def render():
                          splits=replay.splits_from_row(row), lap_time=float(pd.Timedelta(row["LapTime"]).total_seconds()),
                          tyre=row.get("Compound"), lap=lap_no))
     corners = _corners(year, rnd, kind)
+    estimated = corners.empty and bool(runs)
+    if estimated:  # no official corner map: guess one from the first driver's lap (before the reference sort, any lap will do)
+        corners = telemetry.estimate_corners(tels[f"{picks[0][0]}|{picks[0][1]}"]) if f"{picks[0][0]}|{picks[0][1]}" in tels else corners
+        estimated = not corners.empty
     runs.sort(key=lambda r: r["label"] != reference)  # the reference driver leads, the others are measured against them
     replay.attach_deltas(runs)
     if missing:
@@ -76,11 +80,14 @@ def render():
         st.caption("Sector times are not available for some of these laps, so their sector rows stay empty.")
 
     with ui.card("Replay", f"Dots start together at the line. The dotted line joins {runs[0]['label']} to each other driver: green when {runs[0]['label']} is ahead, "
-                           "red when behind, with the gap in seconds in the timing panel. Numbered circles are the corners. Purple is the quickest sector shown. Use the slider to jump anywhere."):
+                           "red when behind, with the gap in seconds in the timing panel. Numbered circles are the corners (amber ones are estimated). Purple is the quickest sector shown. Use the slider to jump anywhere."):
         fig = style.style_fig(charts.lap_replay(runs, float(speed.rstrip("x")), corners=corners), 600)
         fig.update_layout(margin=dict(l=0, r=0, t=10, b=120))
         st.plotly_chart(fig, width="stretch", config=style.PLOT_CONFIG)
-    if corners.empty:
+    if estimated:
+        st.caption("FastF1 has no official corner map for this event, so the amber corner circles are estimated from the lap (slow points and "
+                   "tight bends). Their numbers can differ from the official ones.")
+    elif corners.empty:
         st.caption("No corner numbers are saved for this event yet." + (
             f" On your computer run: `python -m f1.sync --year {year} --rounds {rnd} --fix-corners --push`" if data.offline() else ""))
     with ui.card("Lap summary", "Sector times and lap time for the laps replayed above."):

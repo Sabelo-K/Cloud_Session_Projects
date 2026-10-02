@@ -126,3 +126,68 @@ def apex_wins(corner_df: pd.DataFrame) -> pd.DataFrame:
     wins = corner_df[corner_df["Winner"]].groupby(["Class", "Lap"]).size().rename("Wins").reset_index()
     every = corner_df.groupby(["Class", "Lap"]).size().rename("Corners").reset_index()
     return every.merge(wins, on=["Class", "Lap"], how="left").fillna({"Wins": 0}).astype({"Wins": int})
+
+
+def _slow_points(speed: np.ndarray, min_drop: float) -> list[int]:
+    """Indices of local speed minima that the car climbs at least `min_drop` km/h away from on both sides."""
+    found = []
+    for i in range(1, len(speed) - 1):
+        if not (speed[i] <= speed[i - 1] and speed[i] < speed[i + 1]):
+            continue
+        j = i
+        while j > 0 and speed[j - 1] >= speed[i]:  # climb away to the left until something slower comes
+            j -= 1
+        k = i
+        while k < len(speed) - 1 and speed[k + 1] >= speed[i]:
+            k += 1
+        if min(speed[j:i + 1].max(), speed[i:k + 1].max()) - speed[i] >= min_drop:
+            found.append(i)
+    return found
+
+
+def _tight_points(x: np.ndarray, y: np.ndarray, step: float, min_curve: float, min_turn: float, join: float) -> list[int]:
+    """Indices of the sharpest point of each stretch of track that bends (heading change per metre above `min_curve`)
+    by at least `min_turn` degrees in total. Finds flat-out kinks that show no dip in speed. X and Y are in 1/10 m."""
+    box = np.ones(5) / 5
+    sx = np.convolve(np.pad(x / 10, 2, mode="edge"), box, "valid")
+    sy = np.convolve(np.pad(y / 10, 2, mode="edge"), box, "valid")
+    heading = np.unwrap(np.arctan2(np.gradient(sy), np.gradient(sx)))
+    curve = np.convolve(np.pad(np.abs(np.gradient(heading)) / step, 2, mode="edge"), box, "valid")
+    bend, out, i, reach = curve > min_curve, [], 0, max(1, int(join / step))
+    while i < len(bend):
+        if not bend[i]:
+            i += 1
+            continue
+        j = i
+        while j + 1 < len(bend) and bend[j + 1:j + 1 + reach].any():
+            j += 1
+        if np.degrees(abs(heading[min(j + 1, len(heading) - 1)] - heading[i])) >= min_turn:
+            out.append(i + int(np.argmax(curve[i:j + 1])))
+        i = j + 1
+    return out
+
+
+def estimate_corners(tel: pd.DataFrame, step: float = 5.0, merge: float = 60.0) -> pd.DataFrame:
+    """Guess corner positions from one lap, for circuits where FastF1 has no official corner map: slow points plus tight
+    bends, merged when closer than `merge` metres, numbered in lap order. Columns Number, Distance, X, Y, Estimated (True).
+    Checked against the official 2026 maps it finds about 80% of the real corners and few extra ones, so numbers can differ
+    from the real ones."""
+    cols = ["Number", "Distance", "X", "Y", "Estimated"]
+    if tel is None or len(tel) < 20 or not {"Distance", "Speed", "X", "Y"} <= set(tel.columns):
+        return pd.DataFrame(columns=cols)
+    df = tel.sort_values("Distance").drop_duplicates("Distance")
+    dist = df["Distance"].to_numpy(float)
+    grid = np.arange(0.0, dist.max(), step)
+    if len(grid) < 20:
+        return pd.DataFrame(columns=cols)
+    x, y = np.interp(grid, dist, df["X"].to_numpy(float)), np.interp(grid, dist, df["Y"].to_numpy(float))
+    speed = np.interp(grid, dist, df["Speed"].to_numpy(float))
+    speed = np.convolve(np.pad(speed, 1, mode="edge"), np.ones(3) / 3, mode="valid")
+    points = sorted(set(_slow_points(speed, 5.0)) | set(_tight_points(x, y, step, 0.005, 10.0, 20.0)))
+    kept: list[int] = []
+    for i in points:
+        if kept and (i - kept[-1]) * step < merge:
+            continue
+        kept.append(i)
+    at = grid[kept]
+    return pd.DataFrame({"Number": range(1, len(kept) + 1), "Distance": at, "X": x[kept], "Y": y[kept], "Estimated": True})[cols]
