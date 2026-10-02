@@ -88,3 +88,21 @@ def _slope(x: pd.Series, y: pd.Series) -> float:
     xm, ym = x.mean(), y.mean()
     denom = ((x - xm) ** 2).sum()
     return float(((x - xm) * (y - ym)).sum() / denom) if denom else 0.0
+
+
+def teammate_gaps(laps: pd.DataFrame) -> pd.DataFrame:
+    """Race-pace gap inside each team (its two drivers with the most clean laps).
+    gap > 0 means the second driver is slower. Needs a Team column."""
+    if "Team" not in laps.columns:
+        return pd.DataFrame(columns=["Team", "Faster", "Slower", "gap", "laps"])
+    pace = race_pace(laps)
+    team = laps.dropna(subset=["Team"]).groupby("Driver")["Team"].first()
+    pace["Team"] = pace["Driver"].map(team)
+    rows = []
+    for t, g in pace.dropna(subset=["Team"]).groupby("Team"):
+        if len(g) < 2:
+            continue
+        a, b = g.nlargest(2, "laps").sort_values("median").to_dict("records")
+        rows.append({"Team": t, "Faster": a["Driver"], "Slower": b["Driver"],
+                     "gap": b["median"] - a["median"], "laps": int(min(a["laps"], b["laps"]))})
+    return pd.DataFrame(rows, columns=["Team", "Faster", "Slower", "gap", "laps"]).sort_values("gap").reset_index(drop=True)

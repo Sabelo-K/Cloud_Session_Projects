@@ -234,8 +234,22 @@ tests/                                pytest (~240), fixture data only, no live 
 brief/summary.py                      optional paid SA economy briefing (off by default)
 ```
 
-## F1 analysis (work in progress)
+## F1 analysis
 
-A separate app in `f1/`: lap times, race pace, tyre stints and degradation, championship progression, and qualifying/telemetry comparison for any race since 2018.
-Data: FastF1 (laps) and Jolpica (schedule). Run: `pip install -r requirements-f1.txt && python -m streamlit run f1/app.py`.
-Pace maths lives in `f1/pace.py` and is unit-tested with synthetic laps (`tests/test_f1_pace.py`).
+A separate app in `f1/` (dark, phone-friendly): an overview with fastest lap, race pace and teammate battles,
+lap times, tyre stints and degradation, championship progression, and qualifying/telemetry comparison for any
+race since 2018. Data: FastF1 (laps, telemetry) and Jolpica (schedule, standings). Lines and bars use team
+colours; a team's second driver is dashed.
+
+Run: `pip install -r requirements-f1.txt && python -m streamlit run f1/app.py`.
+
+### Open it on your phone
+
+- **Same Wi-Fi (quickest):** start it with `python -m streamlit run f1/app.py --server.address 0.0.0.0`, find
+  your PC's IP with `ipconfig` (IPv4 Address), then open `http://<that-ip>:8501` on your phone. Allow Python
+  through the Windows firewall if asked. Works only while the PC is on and running the app.
+- **Anywhere (free):** deploy on Streamlit Community Cloud (share.streamlit.io): New app, pick this repo and
+  branch, main file `f1/app.py`. It installs `f1/requirements.txt` itself. Data is re-downloaded after the app
+  sleeps, so the first load of a race is slow.
+
+Pace maths lives in `f1/pace.py`, `f1/telemetry.py` and `f1/standings.py` and is unit-tested with synthetic data.
