@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 st.set_page_config(page_title="F1 Insights", page_icon="🏁", layout="wide")
 
 from f1 import ui  # noqa: E402  (after set_page_config, which must be the first Streamlit call)
-from f1.views import (car_performance, championship, home, practice, race_pace, sectors_maps, season_pace,  # noqa: E402
+from f1.views import (car_performance, championship, home, lap_replay, practice, race_pace, sectors_maps, season_pace,  # noqa: E402
                       prediction_league, single_lap, strategy_weather, telemetry_analyser, weekend)
 
 ui.inject_css()
@@ -21,6 +21,7 @@ PAGES = [
     st.Page(race_pace.render, title="Race Pace Insights", icon="⏱️", url_path="race-pace"),
     st.Page(telemetry_analyser.render, title="Telemetry Analyser", icon="📈", url_path="telemetry"),
     st.Page(single_lap.render, title="Single Lap Comparison", icon="🗺️", url_path="single-lap"),
+    st.Page(lap_replay.render, title="Lap Replay", icon="🎬", url_path="replay"),
     st.Page(practice.render, title="Practice Insights", icon="🛞", url_path="practice"),
     st.Page(sectors_maps.render, title="Sectors & Maps", icon="🧭", url_path="sectors"),
     st.Page(strategy_weather.render, title="Strategy & Weather", icon="⛅", url_path="strategy"),

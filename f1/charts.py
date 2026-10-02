@@ -151,3 +151,76 @@ def stint_timeline(laps: pd.DataFrame, order: list[str]) -> go.Figure:
     fig.update_layout(barmode="overlay", bargap=0.12, yaxis=dict(categoryorder="array", categoryarray=order[::-1]),
                       xaxis_title="Lap")
     return fig
+
+
+def lap_replay(runs: list[dict], speed: float = 1.0, tail: int = 25) -> go.Figure:
+    """Animated track map: one dot per run driving its lap, a short tail behind it and a timing panel that fills in each
+    sector time as the dot passes the sector line. Play / pause buttons and a time slider are part of the figure,
+    so playback runs in the browser. `runs` are dicts from the replay page: label, colour, tl (replay.timeline), splits,
+    lap_time, tyre. `speed` is the playback speed (1 = real time)."""
+    from f1 import replay
+
+    ref = runs[0]
+    fig = go.Figure()
+    fig.add_trace(track_outline(ref["tl"]["X"], ref["tl"]["Y"]))
+    marks = [("S/F", 0.0)]
+    if ref.get("splits"):
+        s1, s2, _ = ref["splits"]
+        marks += [("S2", s1), ("S3", s1 + s2)]
+    mx, my, mt = [], [], []
+    for text, at in marks:
+        i = int(np.clip(round(at / replay.STEP), 0, len(ref["tl"]) - 1))
+        mx.append(float(ref["tl"]["X"].iloc[i]))
+        my.append(float(ref["tl"]["Y"].iloc[i]))
+        mt.append(text)
+    fig.add_trace(go.Scatter(x=mx, y=my, mode="markers+text", text=mt, textposition="top center", hoverinfo="skip", showlegend=False,
+                             marker=dict(symbol="line-ns", size=16, color="#F2F3F5", line=dict(width=2, color="#F2F3F5")),
+                             textfont=dict(size=11, color="#98A4B3")))
+    first_dynamic = len(fig.data)
+    label_at = ["top center", "bottom center", "middle right"]  # different sides, so close cars keep readable names
+    for k, r in enumerate(runs):
+        tl = r["tl"]
+        fig.add_trace(go.Scatter(x=tl["X"].iloc[:1], y=tl["Y"].iloc[:1], mode="lines", line=dict(color=r["colour"], width=5),
+                                 hoverinfo="skip", showlegend=False))
+        fig.add_trace(go.Scatter(x=tl["X"].iloc[:1], y=tl["Y"].iloc[:1], mode="markers+text", text=[r["label"]], textposition=label_at[k % 3],
+                                 textfont=dict(size=12, color="#F2F3F5"), hoverinfo="skip", name=r["label"],
+                                 marker=dict(size=15, color=r["colour"], line=dict(color="#F2F3F5", width=2))))
+    n = max(len(r["tl"]) for r in runs)
+    traces = list(range(first_dynamic, first_dynamic + 2 * len(runs)))
+    frames = []
+    for i in range(n):
+        data = []
+        for r in runs:
+            tl = r["tl"]
+            j = min(i, len(tl) - 1)
+            lo = max(0, j - tail)
+            data.append(go.Scatter(x=np.round(tl["X"].iloc[lo:j + 1].to_numpy(), 0), y=np.round(tl["Y"].iloc[lo:j + 1].to_numpy(), 0)))
+            data.append(go.Scatter(x=[round(float(tl["X"].iloc[j]))], y=[round(float(tl["Y"].iloc[j]))]))
+        frames.append(go.Frame(data=data, traces=traces, name=str(i),
+                               layout=dict(annotations=[_panel(replay.panel_html(runs, i * replay.STEP))])))
+    fig.frames = frames
+    duration = max(16, int(replay.STEP * 1000 / speed))
+    play = dict(frame=dict(duration=duration, redraw=True), transition=dict(duration=0), fromcurrent=True, mode="immediate")
+    ticks = sorted({int(v) for v in np.linspace(0, n - 1, 21)})
+    fig.update_layout(
+        annotations=[_panel(replay.panel_html(runs, 0.0))],
+        updatemenus=[dict(type="buttons", direction="left", bgcolor="#C9D1DA", bordercolor="#29313A", font=dict(color="#090B0E"), active=-1, x=0, y=-0.02, xanchor="left", yanchor="top", pad=dict(t=4, r=8),
+                          buttons=[dict(label="▶ Play", method="animate", args=[None, play]),
+                                   dict(label="⏸ Pause", method="animate",
+                                        args=[[None], dict(frame=dict(duration=0, redraw=False), mode="immediate", transition=dict(duration=0))]),
+                                   dict(label="↺ Reset", method="animate",
+                                        args=[["0"], dict(frame=dict(duration=0, redraw=True), mode="immediate", transition=dict(duration=0))])])],
+        sliders=[dict(active=0, bgcolor="#29313A", bordercolor="#29313A", font=dict(color="#98A4B3", size=10),
+                      tickcolor="#29313A", x=0.0, y=-0.11, len=1.0, xanchor="left", yanchor="top", pad=dict(t=0, b=0),
+                      currentvalue=dict(prefix="Lap time ", font=dict(size=12, color="#98A4B3")),
+                      steps=[dict(method="animate", label=replay.fmt_time(i * replay.STEP),
+                                  args=[[str(i)], dict(mode="immediate", frame=dict(duration=0, redraw=True), transition=dict(duration=0))])
+                             for i in ticks])],
+    )
+    fig.update_layout(showlegend=False)  # the dots carry their own names
+    return finish_map(fig, 520)
+
+
+def _panel(html: str) -> dict:
+    return dict(xref="paper", yref="paper", x=0.0, y=1.0, xanchor="left", yanchor="top", align="left", showarrow=False, text=html,
+                font=dict(size=13, color="#F2F3F5"), bgcolor="rgba(20,24,30,0.88)", bordercolor="#29313A", borderwidth=1, borderpad=8)
