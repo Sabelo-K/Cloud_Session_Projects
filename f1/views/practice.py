@@ -3,7 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from f1 import data, pace, style, tyres, ui
+from f1 import charts, data, pace, style, tyres, ui
 
 
 def _hex_rgba(hex_colour: str, alpha: float) -> str:
@@ -35,6 +35,10 @@ def render():
     runs = runs.assign(Label=runs["Run"].map(label), Adjusted=runs["LapSeconds"] + fuel_effect * runs["LapInRun"])
     mean_of = summary.set_index("Run")["mean"]
     best_mean = summary["mean"].min()
+
+    with ui.card("Long run pace violin plot", "One violin per driver, in the team colour. Each dot is a clean long-run lap in its tyre colour. "
+                                              "Under each violin: the driver's average lap and the gap to the quickest driver."):
+        ui.show(charts.long_run_violin(runs, colours, f"Long Run Pace Violin Plot: {event} {year} {kind}"), 560)
 
     with ui.card("Long-run pace distribution", "One violin per run, coloured by tyre (S soft, M medium, H hard, I intermediate, W wet, ? unknown). Hover for the mean lap and gap to the quickest run; the table below lists them all."):
         fig = go.Figure()
