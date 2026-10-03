@@ -63,7 +63,7 @@ def style_fig(fig, height: int = 380):
     fig.update_layout(
         height=height, margin=dict(l=8, r=8, t=fig.layout.margin.t or 40, b=8),
         legend=legend,
-        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor=fig.layout.paper_bgcolor or "rgba(0,0,0,0)", plot_bgcolor=fig.layout.plot_bgcolor or "rgba(0,0,0,0)",
         title=dict(font=dict(size=15), x=0),
     )
     return fig

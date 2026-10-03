@@ -104,24 +104,55 @@ CHANNELS = [("Speed", "Speed (km/h)", None), ("Throttle", "Throttle (%)", None),
             ("Brake", "Brake (off/on)", "hv"), ("nGear", "Gear", "hv"), ("RPM", "Engine RPM", None)]
 
 
+TRACE_BG = "#0A0B0E"
+TRACE_GRID = "#262A31"
+TRACE_TEXT = "#C9D1D9"
+
+
 def telemetry_stack(res: dict, colours: dict, dashes: dict, corners: pd.DataFrame | None = None) -> go.Figure:
-    """Five linked charts (speed, throttle, brake, gear, RPM) against distance. Brake and gear are drawn as steps."""
-    fig = make_subplots(rows=len(CHANNELS), cols=1, shared_xaxes=True, vertical_spacing=0.035,
-                        row_heights=[0.28, 0.17, 0.13, 0.17, 0.25], subplot_titles=[c[1] for c in CHANNELS])
+    """Five linked charts (speed, throttle, brake, gear, RPM) against distance, styled like a pro speed trace:
+    near-black canvas, dashed grid, a dashed hover line with one tooltip listing every lap, and a Reset Zoom button."""
+    fig = make_subplots(rows=len(CHANNELS), cols=1, shared_xaxes=True, vertical_spacing=0.045,
+                        row_heights=[0.34, 0.15, 0.11, 0.15, 0.25], subplot_titles=[c[1] for c in CHANNELS])
     for i, (col, _, shape) in enumerate(CHANNELS, start=1):
+        unit = {"Speed": " km/h", "Throttle": "%", "Brake": "", "nGear": "", "RPM": " rpm"}[col]
         for label, df in res.items():
             if col not in df:
                 continue
-            line = dict(color=colours.get(driver_of(label)), dash=dashes.get(label, "solid"), width=2)
+            line = dict(color=colours.get(driver_of(label)), dash=dashes.get(label, "solid"), width=1.8)
             if shape:
                 line["shape"] = shape
-            fig.add_trace(go.Scatter(x=df["Distance"], y=df[col], name=pretty(label), line=line, legendgroup=label,
-                                     showlegend=(i == 1)), row=i, col=1)
-    fig.update_yaxes(fixedrange=True)  # dragging zooms along the lap only, and all five charts zoom together
-    fig.update_yaxes(tickvals=[0, 1], ticktext=["Off", "On"], row=3, col=1)
-    fig.update_xaxes(title_text="Distance (m)", row=len(CHANNELS), col=1)
-    fig.update_xaxes(showspikes=True, spikemode="across", spikethickness=1, spikecolor="#98A4B3")
-    fig.update_layout(hovermode="x unified", margin=dict(t=75))
+            y = df[col]
+            if col == "Brake":
+                text = pd.Series(np.where(y > 0, "On", "Off"), index=df.index)
+                hover = "%{fullData.name}: %{text}<extra></extra>"
+            else:
+                text = None
+                hover = "%{fullData.name}: %{y:.0f}" + unit + "<extra></extra>"
+            fig.add_trace(go.Scatter(x=df["Distance"], y=y, text=text, name=pretty(label), line=line, legendgroup=label,
+                                     showlegend=(i == 1), hovertemplate=hover), row=i, col=1)
+    n = len(CHANNELS)
+    drivers = [driver_of(l) for l in res]
+    if len(set(drivers)) == len(drivers):  # one lap per driver: tooltip reads "LEC: 310 km/h" like a broadcast graphic
+        for tr in fig.data:
+            tr.name = driver_of(tr.legendgroup)
+    axis = dict(gridcolor=TRACE_GRID, griddash="dot", zeroline=False, linecolor=TRACE_GRID, tickfont=dict(color=TRACE_TEXT, size=11))
+    fig.update_yaxes(fixedrange=True, **axis)  # dragging zooms along the lap only, and all five charts zoom together
+    fig.update_yaxes(tickvals=[0, 1], ticktext=["Off", "On"], range=[-0.1, 1.15], row=3, col=1)
+    fig.update_xaxes(ticksuffix="m", hoverformat=".0f", showspikes=True, spikemode="across", spikesnap="cursor",
+                     spikethickness=1, spikedash="dot", spikecolor="#B8C0CC", **axis)
+    fig.update_xaxes(title_text="Distance", title_font=dict(color=TRACE_TEXT), row=n, col=1)
+    for ann in fig.layout.annotations:  # subplot titles
+        ann.update(font=dict(size=13, color="#FFFFFF"), x=0, xanchor="left")
+    fig.update_layout(
+        hovermode="x unified", margin=dict(t=75), paper_bgcolor=TRACE_BG, plot_bgcolor=TRACE_BG,
+        font=dict(color=TRACE_TEXT), legend=dict(orientation="h", yanchor="top", y=-0.08, x=0, title_text="", font=dict(color=TRACE_TEXT)),
+        hoverlabel=dict(bgcolor="#14171C", bordercolor="#2B3038", font=dict(color="#FFFFFF", size=13)),
+        updatemenus=[dict(type="buttons", direction="right", x=1, xanchor="right", y=1.0, yanchor="bottom", pad=dict(t=0, r=0),
+                          bgcolor="#14171C", bordercolor="#2B3038", font=dict(color=TRACE_TEXT, size=12), showactive=False,
+                          buttons=[dict(label="Reset Zoom", method="relayout",
+                                        args=[{f"xaxis{'' if k == 1 else k}.autorange": True for k in range(1, n + 1)}])])],
+    )
     add_corner_markers(fig, corners, res)
     return fig
 
