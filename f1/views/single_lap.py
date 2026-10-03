@@ -4,7 +4,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from f1 import charts, data, pace, store, style, telemetry, tyres, ui
+from f1 import charts, data, pace, replay, store, style, telemetry, tyres, ui
 
 
 @st.cache_data(show_spinner="Loading telemetry (slow the first time)...")
@@ -15,6 +15,18 @@ def _telemetry(year, rnd, kind, picks):
 @st.cache_data(show_spinner=False)
 def _corners(year, rnd, kind):
     return data.load_corners(year, rnd, kind)
+
+
+def _splits(laps, labels):
+    """{'LEC|14': (S1, S2, S3) in seconds} for the compared laps that have all three sector times."""
+    out = {}
+    for label in labels:
+        drv, _, lap = label.partition("|")
+        row = laps[(laps["Driver"] == drv) & (laps["LapNumber"] == int(lap))]
+        sp = replay.splits_from_row(row.iloc[0]) if not row.empty else None
+        if sp:
+            out[label] = sp
+    return out
 
 
 def render():
@@ -96,7 +108,7 @@ def render():
     if not same_driver:
         dashes = {l: "solid" for l in labels}
     with ui.card("Speed trace and time delta", f"Zero is {charts.pretty(ref)}. Above zero means slower than {charts.pretty(ref)} at that point on the lap. Drag to zoom, double-click to reset."):
-        ui.show(charts.speed_with_corners(res, colours, dashes, corners, ref), 560)
+        ui.show(charts.speed_with_corners(res, colours, dashes, corners, ref, _splits(laps, labels)), 560)
 
     with ui.card("Raw telemetry", "Throttle, brake, RPM and gear against distance."):
         tabs = st.tabs(["Throttle", "Brake", "RPM", "Gear"])
