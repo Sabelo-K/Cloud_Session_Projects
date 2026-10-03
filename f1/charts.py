@@ -188,11 +188,12 @@ def long_run_violin(runs: pd.DataFrame, colours: dict, title: str = "Long Run Pa
             name=tyres.name(c).upper(), marker=dict(color=tyres.colour(c), size=6, line=dict(color="#111418", width=1)),
             text=[f"{d} lap {int(n)}<br>{tyres.name(c)}" for d, n in zip(g["Driver"], g["LapNumber"])],
             hovertemplate="%{text}<br>Lap Time: %{y:.3f}s<extra></extra>"))
+    style.lap_time_axis(fig)
     fig.update_layout(
         title=dict(text=f"<b>{title}</b>", x=0.5, xanchor="center", font=dict(size=17, color="#FFFFFF")), violingap=0.12, violinmode="overlay",
         paper_bgcolor=TRACE_BG, plot_bgcolor=TRACE_BG, font=dict(color=TRACE_TEXT), margin=dict(t=70, b=30),
         legend=dict(orientation="v", x=1, xanchor="right", y=1, title_text="Tire Compound"),
-        yaxis=dict(title="Lap Time (seconds)", gridcolor=TRACE_GRID, zeroline=False), xaxis=dict(showgrid=False, tickmode="array", tickvals=list(pos.values()), ticktext=list(pos), range=[-0.6, len(pos) - 0.4]),
+        yaxis=dict(title="Lap Time", gridcolor=TRACE_GRID, zeroline=False), xaxis=dict(showgrid=False, tickmode="array", tickvals=list(pos.values()), ticktext=list(pos), range=[-0.6, len(pos) - 0.4]),
         hoverlabel=dict(bgcolor="#FFD60A", font=dict(color="#000000")))
     return fig
 

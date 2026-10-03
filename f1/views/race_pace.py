@@ -19,9 +19,9 @@ def _box(tagged, stats, colours, show_excluded):
         fig.add_trace(go.Scatter(x=[labels[d] for d in ex["Driver"]], y=ex["LapSeconds"], mode="markers", name="Excluded laps",
                                  marker=dict(symbol="x", color="#98A4B3", size=7), text=ex["Reason"],
                                  hovertemplate="%{y:.3f}s<br>%{text}<extra>Excluded</extra>"))
-    fig.update_layout(yaxis_title="Lap time (s)", xaxis_title="Driver and median gap to the best (s)",
+    fig.update_layout(yaxis_title="Lap time", xaxis_title="Driver and median gap to the best (s)",
                       showlegend=show_excluded)
-    return fig
+    return style.lap_time_axis(fig)
 
 
 def _raw(tagged, colours, dashes, show_excluded):
@@ -40,8 +40,8 @@ def _raw(tagged, colours, dashes, show_excluded):
         fig.add_trace(go.Scatter(x=ex["LapNumber"], y=ex["LapSeconds"], mode="markers", name="Excluded laps",
                                  marker=dict(symbol="x", color="#98A4B3", size=7), text=ex["Reason"] + " · " + ex["Driver"],
                                  hovertemplate="Lap %{x} · %{y:.3f}s<br>%{text}<extra></extra>"))
-    fig.update_layout(xaxis_title="Lap", yaxis_title="Lap time (s)", dragmode="zoom")
-    return fig
+    fig.update_layout(xaxis_title="Lap", yaxis_title="Lap time", dragmode="zoom")
+    return style.lap_time_axis(fig)
 
 
 def render():

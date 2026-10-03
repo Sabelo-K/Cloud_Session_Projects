@@ -78,8 +78,7 @@ SAVED_ONLY_HINT = (" This hosted copy only has the laps saved with `python -m f1
 
 
 def fmt_lap(seconds: float) -> str:
-    m, s = divmod(float(seconds), 60)
-    return f"{int(m)}:{s:06.3f}"
+    return style.fmt_lap(seconds)
 
 
 def _remembered(label, options, page, name, default, fmt=None, container=st):

@@ -87,4 +87,36 @@ def dark_theme(fig):
     return fig
 
 
+def fmt_lap(seconds: float) -> str:
+    """101.5 -> '1:41.500'."""
+    m, s = divmod(float(seconds), 60)
+    return f"{int(m)}:{s:06.3f}"
+
+
+_LAP_STEPS = [0.1, 0.2, 0.5, 1, 2, 5, 10, 15, 30, 60, 120, 300]
+
+
+def lap_time_axis(fig, axis: str = "y"):
+    """Show a lap-time axis as m:ss instead of raw seconds, and every hover that printed '%{y:.3f}s' as m:ss.sss.
+    Call once the traces are added; the ticks are fixed, so very deep zooms show only the coarse marks."""
+    vals = [v for t in fig.data if getattr(t, axis, None) is not None
+            for v in pd.to_numeric(pd.Series(list(getattr(t, axis))), errors="coerce").dropna()]
+    if not vals:
+        return fig
+    lo, hi = min(vals), max(vals)
+    step = next((s for s in _LAP_STEPS if (hi - lo) / s <= 12), _LAP_STEPS[-1])
+    first = int(lo // step) * step
+    ticks = [round(first + i * step, 3) for i in range(int((hi - first) // step) + 2)]
+    ticks = [t for t in ticks if t >= lo - step and t <= hi + step]
+    text = [fmt_lap(t)[:-2] if step < 1 else fmt_lap(t)[:-4] for t in ticks]
+    (fig.update_yaxes if axis == "y" else fig.update_xaxes)(tickmode="array", tickvals=ticks, ticktext=text)
+    if axis == "y":
+        for t in fig.data:
+            tpl = getattr(t, "hovertemplate", None)
+            if isinstance(tpl, str) and "%{y:.3f}s" in tpl:
+                t.hovertext = [fmt_lap(v) if v == v else "" for v in pd.to_numeric(pd.Series(list(t.y)), errors="coerce")]
+                t.hovertemplate = tpl.replace("%{y:.3f}s", "%{hovertext}")
+    return fig
+
+
 PLOT_CONFIG = {"displayModeBar": False}
