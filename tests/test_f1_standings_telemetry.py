@@ -80,3 +80,15 @@ def test_long_run_violin_one_violin_per_driver_with_tyre_legend():
     assert [t.name for t in fig.data if t.type == "violin"] == ["VER", "NOR"]  # quickest average first
     assert {t.name for t in fig.data if t.type == "scatter"} == {"SOFT", "MEDIUM", "HARD"}
     assert "+0.400s" in fig.layout.annotations[1].text
+
+
+def test_speed_with_corners_hover_lists_every_driver_and_the_corner():
+    from f1 import charts
+    res = {k: df.assign(TimeS=df["Distance"] / 80.0) for k, df in _stack_res(["LEC|5", "HAM|7"]).items()}
+    corners = pd.DataFrame({"Number": [1, 2], "Distance": [100.0, 400.0]})
+    fig = charts.speed_with_corners(res, {"LEC": "#E8002D", "HAM": "#E8002D"}, {}, corners)
+    assert fig.layout.hovermode == "x unified"
+    speed = [t for t in fig.data if t.yaxis == "y"]
+    assert len(speed) == 2 and all("km/h" in t.hovertemplate for t in speed)
+    assert speed[0].customdata[20] == "Corner T1<br>" and speed[0].customdata[0] == ""  # tag only within 60 m of a corner
+    assert speed[0].customdata[50] == ""  # 250 m is far from both corners
