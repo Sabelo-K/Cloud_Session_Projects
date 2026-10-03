@@ -3,7 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from f1 import data, pace, style, tyres, ui
+from f1 import charts, data, pace, style, tyres, ui
 
 
 def _hex_rgba(hex_colour: str, alpha: float) -> str:
@@ -35,6 +35,10 @@ def render():
     runs = runs.assign(Label=runs["Run"].map(label), Adjusted=runs["LapSeconds"] + fuel_effect * runs["LapInRun"])
     mean_of = summary.set_index("Run")["mean"]
     best_mean = summary["mean"].min()
+
+    with ui.card("Long run pace violin plot", "One violin per driver, in the team colour. Each dot is a clean long-run lap in its tyre colour. "
+                                              "Under each violin: the driver's average lap and the gap to the quickest driver."):
+        ui.show(charts.long_run_violin(runs, colours, f"Long Run Pace Violin Plot: {event} {year} {kind}"), 560)
 
     with ui.card("Long-run pace distribution", "One violin per run, coloured by tyre (S soft, M medium, H hard, I intermediate, W wet, ? unknown). Hover for the mean lap and gap to the quickest run; the table below lists them all."):
         fig = go.Figure()
@@ -70,15 +74,19 @@ def render():
         st.dataframe(shown.round(3), width="stretch", hide_index=True)
 
     left, right = st.columns(2)
-    with left, ui.card("Driver consistency", "Standard deviation of lap time within each run, after removing its trend. Lower is better."):
-        fig = px.bar(summary.sort_values("resid_std"), x="Run", y="resid_std", color="Compound",
-                     color_discrete_map=tyres.COLOURS, category_orders={"Compound": tyres.ORDER}, labels={"resid_std": "Std dev (s)"})
+    with left, ui.card("Driver consistency", "Standard deviation of lap time within each run, after removing its trend. Lower is better. Bars are in team colours."):
+        ordered = summary.sort_values("resid_std")
+        fig = px.bar(ordered, x="Run", y="resid_std", color="Driver", color_discrete_map=colours, labels={"resid_std": "Std dev (s)"},
+                     category_orders={"Run": list(ordered["Run"])})
+        fig.update_layout(showlegend=False, bargap=0.25)
         ui.show(fig, 320)
     with right, ui.card("Straight-line speed", "Average speed-trap speed over each run's laps."):
         if "SpeedST" in runs and runs["SpeedST"].notna().any():
             trap = runs.groupby("Run").agg(speed=("SpeedST", "mean"), laps=("SpeedST", "count"), Compound=("Compound", "first")).reset_index()
-            fig = px.bar(trap.sort_values("speed", ascending=False), x="Run", y="speed", color="Compound",
-                         color_discrete_map=tyres.COLOURS, category_orders={"Compound": tyres.ORDER}, labels={"speed": "Speed trap (km/h)"})
+            trap = trap.merge(summary[["Run", "Driver"]], on="Run").sort_values("speed", ascending=False)
+            fig = px.bar(trap, x="Run", y="speed", color="Driver", color_discrete_map=colours, labels={"speed": "Speed trap (km/h)"},
+                         category_orders={"Run": list(trap["Run"])})
+            fig.update_layout(showlegend=False, bargap=0.25)
             fig.update_yaxes(range=[trap["speed"].min() - 8, trap["speed"].max() + 3])
             ui.show(fig, 320)
             st.caption("Whether DRS was open on each lap is not available here, so compare runs with care.")

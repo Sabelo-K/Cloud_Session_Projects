@@ -63,9 +63,27 @@ def style_fig(fig, height: int = 380):
     fig.update_layout(
         height=height, margin=dict(l=8, r=8, t=fig.layout.margin.t or 40, b=8),
         legend=legend,
-        paper_bgcolor=fig.layout.paper_bgcolor or "rgba(0,0,0,0)", plot_bgcolor=fig.layout.plot_bgcolor or "rgba(0,0,0,0)",
         title=dict(font=dict(size=15), x=0),
     )
+    return dark_theme(fig)
+
+
+CHART_BG = "#0A0B0E"
+CHART_GRID = "#262A31"
+CHART_TEXT = "#C9D1D9"
+
+
+def dark_theme(fig):
+    """The broadcast-graphic look shared by every chart: near-black canvas, dotted grid, light text, dark tooltips.
+    Only fills in what a chart has not set itself."""
+    fig.update_layout(
+        paper_bgcolor=fig.layout.paper_bgcolor or CHART_BG, plot_bgcolor=fig.layout.plot_bgcolor or CHART_BG,
+        font=dict(color=CHART_TEXT),
+        hoverlabel=dict(bgcolor=fig.layout.hoverlabel.bgcolor or "#14171C", bordercolor="#2B3038",
+                        font=dict(color=fig.layout.hoverlabel.font.color or "#FFFFFF")),
+    )
+    fig.update_xaxes(gridcolor=CHART_GRID, griddash="dot", zeroline=False, linecolor=CHART_GRID)
+    fig.update_yaxes(gridcolor=CHART_GRID, griddash="dot", zeroline=False, linecolor=CHART_GRID)
     return fig
 
 

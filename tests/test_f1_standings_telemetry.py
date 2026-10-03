@@ -70,3 +70,13 @@ def test_telemetry_stack_keeps_lap_in_name_for_two_laps_of_one_driver():
     from f1 import charts
     fig = charts.telemetry_stack(_stack_res(["LEC|5", "LEC|7"]), {"LEC": "#E8002D"}, {})
     assert {t.name for t in fig.data} == {"LEC · lap 5", "LEC · lap 7"}
+
+
+def test_long_run_violin_one_violin_per_driver_with_tyre_legend():
+    from f1 import charts
+    runs = pd.DataFrame({"Driver": ["VER"] * 3 + ["NOR"] * 3, "Adjusted": [90.1, 90.3, 90.2, 90.6, 90.5, 90.7],
+                         "LapNumber": [1, 2, 3, 1, 2, 3], "Compound": ["SOFT", "SOFT", "MEDIUM", "MEDIUM"] * 1 + ["HARD", "HARD"][:2]})
+    fig = charts.long_run_violin(runs, {"VER": "#3671C6", "NOR": "#FF8000"})
+    assert [t.name for t in fig.data if t.type == "violin"] == ["VER", "NOR"]  # quickest average first
+    assert {t.name for t in fig.data if t.type == "scatter"} == {"SOFT", "MEDIUM", "HARD"}
+    assert "+0.400s" in fig.layout.annotations[1].text

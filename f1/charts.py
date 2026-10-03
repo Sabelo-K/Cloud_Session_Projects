@@ -157,6 +157,46 @@ def telemetry_stack(res: dict, colours: dict, dashes: dict, corners: pd.DataFram
     return fig
 
 
+def _lap_text(seconds: float) -> str:
+    m, sec = divmod(float(seconds), 60)
+    return f"{int(m)}:{sec:06.3f}"
+
+
+def long_run_violin(runs: pd.DataFrame, colours: dict, title: str = "Long Run Pace Violin Plot") -> go.Figure:
+    """One violin per driver (all their long-run laps), filled in the team colour, with a dot per lap in its tyre colour
+    and the average and gap to the quickest driver printed under it. `runs` needs Driver, Adjusted (s) and Compound."""
+    stats = runs.groupby("Driver")["Adjusted"].agg(["mean", "count"]).sort_values("mean")
+    best = stats["mean"].min()
+    pos = {d: i for i, d in enumerate(stats.index)}
+    rng = np.random.default_rng(1)  # fixed seed: the dots do not shuffle on every rerun
+    fig = go.Figure()
+    for drv, row in stats.iterrows():
+        g = runs[runs["Driver"] == drv]
+        col = colours.get(drv, "#98A4B3")
+        fig.add_trace(go.Violin(
+            x=[pos[drv]] * len(g), y=g["Adjusted"], name=drv, points=False, spanmode="hard", line=dict(color=col, width=1),
+            fillcolor=col, opacity=0.85, width=0.8, meanline_visible=True, meanline=dict(color="rgba(255,255,255,0.7)", width=1),
+            showlegend=False, hoverinfo="skip"))
+        fig.add_annotation(x=pos[drv], y=g["Adjusted"].min(), yshift=-26 - 30 * (pos[drv] % 2), showarrow=False, align="center",  # staggered so neighbours do not collide
+                           text=f"<b>Avg: {_lap_text(row['mean'])}</b><br>{row['mean'] - best:+.3f}s",
+                           font=dict(size=11, color="#E6EBF1"))
+    comp = runs["Compound"].map(tyres.normalise)
+    for c in [c for c in tyres.ORDER if (comp == c).any()]:  # one dot series per tyre, so the legend doubles as a filter
+        g = runs[comp == c]
+        fig.add_trace(go.Scatter(
+            x=[pos[d] + j for d, j in zip(g["Driver"], rng.uniform(-0.12, 0.12, len(g)))], y=g["Adjusted"], mode="markers",
+            name=tyres.name(c).upper(), marker=dict(color=tyres.colour(c), size=6, line=dict(color="#111418", width=1)),
+            text=[f"{d} lap {int(n)}<br>{tyres.name(c)}" for d, n in zip(g["Driver"], g["LapNumber"])],
+            hovertemplate="%{text}<br>Lap Time: %{y:.3f}s<extra></extra>"))
+    fig.update_layout(
+        title=dict(text=f"<b>{title}</b>", x=0.5, xanchor="center", font=dict(size=17, color="#FFFFFF")), violingap=0.12, violinmode="overlay",
+        paper_bgcolor=TRACE_BG, plot_bgcolor=TRACE_BG, font=dict(color=TRACE_TEXT), margin=dict(t=70, b=30),
+        legend=dict(orientation="v", x=1, xanchor="right", y=1, title_text="Tire Compound"),
+        yaxis=dict(title="Lap Time (seconds)", gridcolor=TRACE_GRID, zeroline=False), xaxis=dict(showgrid=False, tickmode="array", tickvals=list(pos.values()), ticktext=list(pos), range=[-0.6, len(pos) - 0.4]),
+        hoverlabel=dict(bgcolor="#FFD60A", font=dict(color="#000000")))
+    return fig
+
+
 def stint_timeline(laps: pd.DataFrame, order: list[str]) -> go.Figure:
     """One row per driver, one block per stint, coloured by compound and labelled with its initial.
     Hover shows the compound, laps, tyre age at the start and whether the set was new. Unknown tyres are hatched grey."""
