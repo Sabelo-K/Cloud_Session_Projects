@@ -55,7 +55,7 @@ def resample_lap(tel: pd.DataFrame, step: float = 5.0, end: float | None = None)
     df = prepare_lap(tel)
     dist = df["Distance"].to_numpy(float)
     grid = np.arange(0.0, end if end is not None else dist.max(), step)
-    out = {"Distance": grid}
+    out = {"Distance": grid, "LapS": np.full(len(grid), df["TimeS"].iloc[-1])}  # LapS: the whole lap's time, for pinning deltas
     for c in CONTINUOUS:
         if c in df:
             out[c] = np.interp(grid, dist, df[c].to_numpy(float))
@@ -72,10 +72,57 @@ def resample_all(tels: dict, step: float = 5.0) -> dict:
     return {k: resample_lap(t, step, end) for k, t in tels.items()}
 
 
-def delta_vs_reference(res: dict, ref: str) -> dict:
+def _time_at_position(ox, oy, ot, px, py, window: int) -> np.ndarray:
+    """For each point (px, py) on the reference path, the time the other car reaches the same spot on track. The
+    spot is found by position, not by Distance (which is integrated from speed and drifts, or jumps where samples
+    dropped out), looking within `window` samples either side of the same index; the nearest path segment is
+    projected onto so the answer is smooth rather than snapped to the 5 m grid. Never runs backwards."""
+    n = len(ox)
+    out = np.empty(len(px))
+    for i in range(len(px)):
+        c = min(i, n - 1)
+        lo, hi = max(0, c - window), min(n - 1, c + window)
+        ax, ay, bx, by = ox[lo:hi], oy[lo:hi], ox[lo + 1:hi + 1], oy[lo + 1:hi + 1]
+        dx, dy = bx - ax, by - ay
+        seg = np.maximum(dx * dx + dy * dy, 1e-9)
+        u = np.clip(((px[i] - ax) * dx + (py[i] - ay) * dy) / seg, 0.0, 1.0)
+        d2 = (ax + u * dx - px[i]) ** 2 + (ay + u * dy - py[i]) ** 2
+        j = int(np.argmin(d2))
+        out[i] = ot[lo + j] + u[j] * (ot[lo + j + 1] - ot[lo + j])
+    return np.maximum.accumulate(out)
+
+
+def delta_vs_reference(res: dict, ref: str, splits: dict | None = None, window: int = 150) -> dict:
     """Cumulative time difference to the reference lap along the lap (seconds). Positive = slower than the
-    reference at that point, negative = ahead."""
-    return {k: df["TimeS"] - res[ref]["TimeS"] for k, df in res.items()}
+    reference at that point, negative = ahead. Laps are compared at the same place on track (X/Y), so a lap
+    whose Distance channel drifted is not mistaken for a faster or slower one. The gap starts at zero and ends at the
+    difference between the two laps' times (the cars are taken to finish where the shared grid ends). `splits` maps a
+    lap label to its (S1, S2, S3) times in seconds; when both laps have them, the gap is also pinned to the timing
+    system's exact gaps at the two sector lines."""
+    r = res[ref]
+    out = {}
+    for k, df in res.items():
+        if k == ref or not {"X", "Y"} <= set(df.columns) or not {"X", "Y"} <= set(r.columns):
+            out[k] = df["TimeS"] - r["TimeS"] if k != ref else df["TimeS"] * 0.0
+            continue
+        t = _time_at_position(df["X"].to_numpy(float), df["Y"].to_numpy(float), df["TimeS"].to_numpy(float),
+                              r["X"].to_numpy(float), r["Y"].to_numpy(float), window)
+        d = pd.Series(t - r["TimeS"].to_numpy(float), index=df.index)
+        d = d.rolling(41, center=True, min_periods=1).mean()  # position data is coarse and lags; a 200 m window keeps the real trend, not the jitter
+        d = d - d.iloc[0]  # both cars start on the line
+        rt = r["TimeS"].to_numpy(float)
+        sp_k, sp_r = (splits or {}).get(k), (splits or {}).get(ref)
+        if sp_k and sp_r and abs(sum(sp_k) - df["LapS"].iloc[-1]) < 0.2 and abs(sum(sp_r) - r["LapS"].iloc[-1]) < 0.2:
+            ck, cr = np.cumsum(sp_k), np.cumsum(sp_r)  # the timing system's gap at the sector lines and the finish
+            anchors = np.array([0.0, *cr])
+            truth = np.array([0.0, *(ck - cr)])
+            d = d + np.interp(rt, anchors, truth - np.interp(anchors, rt, d.to_numpy()))
+        elif "LapS" in df and "LapS" in r:  # otherwise just the lap times say where the gap ends up
+            truth = float(df["LapS"].iloc[-1] - r["LapS"].iloc[-1])
+            d = d + (truth - d.iloc[-1]) * np.linspace(0.0, 1.0, len(d))
+        out[k] = d
+    out[ref] = r["TimeS"] * 0.0
+    return out
 
 
 def track_dominance(res: dict, segment_m: float = 25.0) -> pd.DataFrame:

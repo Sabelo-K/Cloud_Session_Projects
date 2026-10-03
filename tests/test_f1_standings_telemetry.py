@@ -92,3 +92,33 @@ def test_speed_with_corners_hover_lists_every_driver_and_the_corner():
     assert len(speed) == 2 and all("km/h" in t.hovertemplate for t in speed)
     assert speed[0].customdata[20] == "Corner T1<br>" and speed[0].customdata[0] == ""  # tag only within 60 m of a corner
     assert speed[0].customdata[50] == ""  # 250 m is far from both corners
+
+
+def _two_laps(lap_a=90.0, lap_b=90.4):
+    """Two laps round the same circle; B's Distance channel drifts 40 m ahead mid-lap (as a dropout does)."""
+    import numpy as np
+    out = {}
+    for name, lap in (("A|1", lap_a), ("B|1", lap_b)):
+        t = np.linspace(0, lap, 600)
+        ang = 2 * np.pi * t / lap
+        dist = 5000 * t / lap + (40 * (t > lap / 2) if name == "B|1" else 0)
+        out[name] = pd.DataFrame({"Distance": dist, "Time": pd.to_timedelta(t, unit="s"), "Speed": 200.0, "X": 800 * np.cos(ang),
+                                  "Y": 800 * np.sin(ang), "Throttle": 100.0, "RPM": 11000.0, "Brake": 0.0, "nGear": 6, "DRS": 0})
+    return out
+
+
+def test_delta_follows_track_position_not_distance_and_ends_at_the_lap_time_gap():
+    import numpy as np
+    res = telemetry.resample_all(_two_laps(), step=5.0)
+    d = telemetry.delta_vs_reference(res, "A|1")["B|1"]
+    assert d.iloc[0] == 0 and abs(d.iloc[-1] - 0.4) < 1e-6  # B is 0.4 s slower over the lap
+    assert d.iloc[:-10].diff().abs().max() < 0.05  # no jump where B's Distance channel drifted (the last few points sit at the cut)
+
+
+def test_delta_pins_to_sector_times():
+    res = telemetry.resample_all(_two_laps(), step=5.0)
+    splits = {"A|1": (30.0, 30.0, 30.0), "B|1": (30.3, 30.0, 30.1)}  # B loses 0.3 s in S1, level in S2, 0.1 s more in S3
+    d = telemetry.delta_vs_reference(res, "A|1", splits)["B|1"]
+    rt = res["A|1"]["TimeS"].to_numpy()
+    assert abs(d.iloc[(abs(rt - 30.0)).argmin()] - 0.3) < 0.02
+    assert abs(d.iloc[(abs(rt - 60.0)).argmin()] - 0.3) < 0.02

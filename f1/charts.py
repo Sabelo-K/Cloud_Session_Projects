@@ -78,13 +78,14 @@ def _corner_distances(corners: pd.DataFrame | None, lap_len: float) -> tuple[np.
     return corners["Number"].astype(int).to_numpy(), dist
 
 
-def speed_with_corners(res: dict, colours: dict, dashes: dict, corners: pd.DataFrame | None, ref: str | None = None):
+def speed_with_corners(res: dict, colours: dict, dashes: dict, corners: pd.DataFrame | None, ref: str | None = None,
+                       splits: dict | None = None):
     """Speed traces and, underneath, time delta against `ref` (positive = slower than ref), sharing the distance axis.
     Hovering shows one tooltip with every driver's speed (and delta) at that distance, plus the nearest corner."""
     from f1 import telemetry
 
     ref = ref or next(iter(res))
-    delta = telemetry.delta_vs_reference(res, ref)
+    delta = telemetry.delta_vs_reference(res, ref, splits)
     fig = make_subplots(rows=2, cols=1, shared_xaxes=True, row_heights=[0.65, 0.35], vertical_spacing=0.08,
                         subplot_titles=("Speed (km/h)", f"Time delta vs {pretty(ref)} (s): above zero = slower"))
     lap_len = max(df["Distance"].max() for df in res.values())
