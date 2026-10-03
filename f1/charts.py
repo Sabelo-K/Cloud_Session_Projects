@@ -68,22 +68,46 @@ def sector_map(tel: pd.DataFrame, sector: pd.Series, palette: dict | None = None
     return finish_map(fig)
 
 
+def _corner_distances(corners: pd.DataFrame | None, lap_len: float) -> tuple[np.ndarray, np.ndarray]:
+    """(corner numbers, distances in metres) with the same unit repair add_corner_markers applies."""
+    if corners is None or corners.empty:
+        return np.array([]), np.array([])
+    dist = corners["Distance"].astype(float).to_numpy()
+    if dist.max() > lap_len * 1.5:
+        dist = dist / 10.0
+    return corners["Number"].astype(int).to_numpy(), dist
+
+
 def speed_with_corners(res: dict, colours: dict, dashes: dict, corners: pd.DataFrame | None, ref: str | None = None):
-    """Speed traces and, underneath, time delta against `ref` (positive = slower than ref), sharing the distance axis."""
+    """Speed traces and, underneath, time delta against `ref` (positive = slower than ref), sharing the distance axis.
+    Hovering shows one tooltip with every driver's speed (and delta) at that distance, plus the nearest corner."""
     from f1 import telemetry
 
     ref = ref or next(iter(res))
     delta = telemetry.delta_vs_reference(res, ref)
     fig = make_subplots(rows=2, cols=1, shared_xaxes=True, row_heights=[0.65, 0.35], vertical_spacing=0.08,
                         subplot_titles=("Speed (km/h)", f"Time delta vs {pretty(ref)} (s): above zero = slower"))
-    for label, df in res.items():
-        line = dict(color=colours.get(driver_of(label)), dash=dashes.get(label, "solid"))
-        fig.add_trace(go.Scatter(x=df["Distance"], y=df["Speed"], name=pretty(label), line=line, legendgroup=label), row=1, col=1)
+    lap_len = max(df["Distance"].max() for df in res.values())
+    nums, cdist = _corner_distances(corners, lap_len)
+    for i, (label, df) in enumerate(res.items()):
+        line = dict(color=colours.get(driver_of(label)), dash=dashes.get(label, "solid"), width=1.8)
+        if i == 0 and len(nums):  # the corner is listed once, in the first row of the tooltip
+            near = np.abs(df["Distance"].to_numpy()[:, None] - cdist[None, :]).argmin(axis=1)
+            close = np.abs(df["Distance"].to_numpy() - cdist[near]) <= 60
+            tag = np.where(close, [f"Corner T{n}<br>" for n in nums[near]], "")
+        else:
+            tag = None
+        hover = ("%{customdata}" if tag is not None else "") + "%{fullData.name}: %{y:.0f} km/h<extra></extra>"
+        fig.add_trace(go.Scatter(x=df["Distance"], y=df["Speed"], name=pretty(label), line=line, legendgroup=label,
+                                 customdata=tag, hovertemplate=hover), row=1, col=1)
         fig.add_trace(go.Scatter(x=df["Distance"], y=delta[label], name=pretty(label), line=line, legendgroup=label,
-                                 showlegend=False), row=2, col=1)
+                                 showlegend=False, hovertemplate="%{fullData.name}: %{y:+.3f} s<extra></extra>"), row=2, col=1)
     fig.add_hline(y=0, line=dict(color="#98A4B3", width=1, dash="dot"), row=2, col=1)
     add_corner_markers(fig, corners, res)
-    fig.update_xaxes(title_text="Distance (m)", row=2, col=1)
+    fig.update_xaxes(title_text="Distance", row=2, col=1)
+    fig.update_xaxes(ticksuffix="m", hoverformat=".0f", showspikes=True, spikemode="across", spikesnap="cursor",
+                     spikethickness=1, spikedash="dot", spikecolor="#B8C0CC")
+    fig.update_layout(hovermode="x unified", margin=dict(t=75))
     return fig
 
 
@@ -188,11 +212,12 @@ def long_run_violin(runs: pd.DataFrame, colours: dict, title: str = "Long Run Pa
             name=tyres.name(c).upper(), marker=dict(color=tyres.colour(c), size=6, line=dict(color="#111418", width=1)),
             text=[f"{d} lap {int(n)}<br>{tyres.name(c)}" for d, n in zip(g["Driver"], g["LapNumber"])],
             hovertemplate="%{text}<br>Lap Time: %{y:.3f}s<extra></extra>"))
+    style.lap_time_axis(fig)
     fig.update_layout(
         title=dict(text=f"<b>{title}</b>", x=0.5, xanchor="center", font=dict(size=17, color="#FFFFFF")), violingap=0.12, violinmode="overlay",
         paper_bgcolor=TRACE_BG, plot_bgcolor=TRACE_BG, font=dict(color=TRACE_TEXT), margin=dict(t=70, b=30),
         legend=dict(orientation="v", x=1, xanchor="right", y=1, title_text="Tire Compound"),
-        yaxis=dict(title="Lap Time (seconds)", gridcolor=TRACE_GRID, zeroline=False), xaxis=dict(showgrid=False, tickmode="array", tickvals=list(pos.values()), ticktext=list(pos), range=[-0.6, len(pos) - 0.4]),
+        yaxis=dict(title="Lap Time", gridcolor=TRACE_GRID, zeroline=False), xaxis=dict(showgrid=False, tickmode="array", tickvals=list(pos.values()), ticktext=list(pos), range=[-0.6, len(pos) - 0.4]),
         hoverlabel=dict(bgcolor="#FFD60A", font=dict(color="#000000")))
     return fig
 

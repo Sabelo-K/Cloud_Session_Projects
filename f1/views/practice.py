@@ -50,8 +50,9 @@ def render():
                                     points="all", pointpos=0, jitter=0.4, meanline_visible=True, line_color=col,
                                     fillcolor=_hex_rgba(col, 0.25), marker=dict(color=col, size=4), spanmode="hard",
                                     showlegend=False, width=0.9))
-        fig.update_layout(yaxis_title="Lap time (s)" + (" (fuel adjusted)" if fuel else ""), violingap=0.1)
+        fig.update_layout(yaxis_title="Lap time" + (" (fuel adjusted)" if fuel else ""), violingap=0.1)
         fig.update_xaxes(tickangle=-60)
+        style.lap_time_axis(fig)
         ui.show(fig, 460)
         st.caption(f"Laps per run: {', '.join(f'{r.Run} {r.laps}' for r in summary.itertuples())}. "
                    "Only clean laps (no pit, non-green or >107% laps) are used.")
@@ -69,11 +70,13 @@ def render():
                 marker=dict(color=[tyres.colour(c) for c in g["Compound"]], size=9, line=dict(color="#0A0B0E", width=1)),
                 text=[f"{label[r.Run]} lap {int(n)}<br>{tyres.name(c)}" for n, c in zip(g["LapNumber"], g["Compound"])],
                 hovertemplate="%{text}<br>Lap Time: %{y:.3f}s<extra></extra>"))
-        fig.update_layout(xaxis_title="Lap Number in Stint", yaxis_title="Lap Time (s)",
+        fig.update_layout(xaxis_title="Lap Number in Stint", yaxis_title="Lap Time",
                           legend=dict(orientation="v", x=1.01, y=1, title_text="Stints (Click to toggle)", itemclick="toggle", itemdoubleclick="toggleothers"))
+        style.lap_time_axis(fig)
         ui.show(fig, 440)
         shown = summary[["Run", "Compound", "laps", "mean", "slope", "std", "resid_std"]].rename(
             columns={"slope": "deg s/lap", "std": "std dev", "resid_std": "std dev after trend"})
+        shown["mean"] = shown["mean"].map(ui.fmt_lap)
         st.dataframe(shown.round(3), width="stretch", hide_index=True)
 
     left, right = st.columns(2)

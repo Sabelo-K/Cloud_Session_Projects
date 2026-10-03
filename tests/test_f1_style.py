@@ -53,3 +53,16 @@ def test_distinct_colours_lightens_second_teammate():
     c = style.distinct_colours(laps)
     assert c["HAM"] == "#E8002D" and c["LEC"] != c["HAM"] and c["RUS"] == "#27F4D2"
     assert style.lighten("#000000", 0.5) == "#808080"
+
+
+def test_lap_time_axis_shows_minutes_and_rewrites_hover():
+    import plotly.graph_objects as go
+    fig = go.Figure(go.Scatter(x=[1, 2, 3], y=[101.5, 101.2, 101.8], hovertemplate="Lap %{x} · %{y:.3f}s<extra></extra>"))
+    style.lap_time_axis(fig)
+    assert all(t.startswith("1:41") for t in fig.layout.yaxis.ticktext)
+    assert fig.data[0].hovertext[0] == "1:41.500"
+    assert "%{hovertext}" in fig.data[0].hovertemplate and ".3f" not in fig.data[0].hovertemplate
+
+
+def test_fmt_lap():
+    assert style.fmt_lap(101.5) == "1:41.500"
