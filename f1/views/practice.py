@@ -74,15 +74,19 @@ def render():
         st.dataframe(shown.round(3), width="stretch", hide_index=True)
 
     left, right = st.columns(2)
-    with left, ui.card("Driver consistency", "Standard deviation of lap time within each run, after removing its trend. Lower is better."):
-        fig = px.bar(summary.sort_values("resid_std"), x="Run", y="resid_std", color="Compound",
-                     color_discrete_map=tyres.COLOURS, category_orders={"Compound": tyres.ORDER}, labels={"resid_std": "Std dev (s)"})
+    with left, ui.card("Driver consistency", "Standard deviation of lap time within each run, after removing its trend. Lower is better. Bars are in team colours."):
+        ordered = summary.sort_values("resid_std")
+        fig = px.bar(ordered, x="Run", y="resid_std", color="Driver", color_discrete_map=colours, labels={"resid_std": "Std dev (s)"},
+                     category_orders={"Run": list(ordered["Run"])})
+        fig.update_layout(showlegend=False, bargap=0.25)
         ui.show(fig, 320)
     with right, ui.card("Straight-line speed", "Average speed-trap speed over each run's laps."):
         if "SpeedST" in runs and runs["SpeedST"].notna().any():
             trap = runs.groupby("Run").agg(speed=("SpeedST", "mean"), laps=("SpeedST", "count"), Compound=("Compound", "first")).reset_index()
-            fig = px.bar(trap.sort_values("speed", ascending=False), x="Run", y="speed", color="Compound",
-                         color_discrete_map=tyres.COLOURS, category_orders={"Compound": tyres.ORDER}, labels={"speed": "Speed trap (km/h)"})
+            trap = trap.merge(summary[["Run", "Driver"]], on="Run").sort_values("speed", ascending=False)
+            fig = px.bar(trap, x="Run", y="speed", color="Driver", color_discrete_map=colours, labels={"speed": "Speed trap (km/h)"},
+                         category_orders={"Run": list(trap["Run"])})
+            fig.update_layout(showlegend=False, bargap=0.25)
             fig.update_yaxes(range=[trap["speed"].min() - 8, trap["speed"].max() + 3])
             ui.show(fig, 320)
             st.caption("Whether DRS was open on each lap is not available here, so compare runs with care.")
