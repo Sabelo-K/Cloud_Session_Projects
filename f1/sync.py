@@ -87,14 +87,20 @@ def sync_session(year: int, round_no: int, kind: str, mode: str = "fastest", log
     corners = data.corners_frame(session) if mode != "none" else pd.DataFrame()
     telemetry = {}
     picks = laps_to_save(laps, mode, drivers)
+    if picks:
+        log(f"{label}: {len(laps)} laps loaded, fetching telemetry for {len(picks)} laps...")
+    failed = 0
     for i, (drv, lap_no) in enumerate(picks, 1):
         try:
             tel = data.fetch_lap_telemetry(session, drv, lap_no)
-        except Exception:
+        except Exception as exc:
+            failed += 1
+            if failed <= 3:
+                log(f"{label}: no telemetry for {drv} lap {lap_no} ({type(exc).__name__}: {str(exc)[:80]})")
             continue
         if tel is not None and len(tel):
             telemetry[(drv, lap_no)] = tel
-        if mode == "all" and i % 200 == 0:
+        if i % (200 if mode == "all" else 5) == 0:
             log(f"{label}: telemetry {i}/{len(picks)} laps")
     folder = store.write_session(year, round_no, kind, laps, weather, corners, telemetry, mode)
     size = sum(f.stat().st_size for f in folder.iterdir()) / 1e6
