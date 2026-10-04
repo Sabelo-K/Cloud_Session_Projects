@@ -122,3 +122,19 @@ def test_delta_pins_to_sector_times():
     rt = res["A|1"]["TimeS"].to_numpy()
     assert abs(d.iloc[(abs(rt - 30.0)).argmin()] - 0.3) < 0.02
     assert abs(d.iloc[(abs(rt - 60.0)).argmin()] - 0.3) < 0.02
+
+
+def test_stint_degradation_one_trace_per_stint_dashed_after_first():
+    import pandas as pd
+    from f1 import charts, pace, tyres
+
+    rows = [{"Driver": "VER", "Stint": s, "LapNumber": n, "LapSeconds": 90 + 0.1 * n, "Compound": "HARD" if s == 1 else "MEDIUM",
+             "LapInRun": n - (1 if s == 1 else 11), "Run": f"VER S{s}", "Adjusted": 90 + 0.1 * n}
+            for s, laps in ((1, range(1, 9)), (2, range(11, 19))) for n in laps]
+    runs = pd.DataFrame(rows)
+    summary = pd.DataFrame({"Run": ["VER S1", "VER S2"], "Driver": "VER", "Stint": [1, 2], "Compound": ["HARD", "MEDIUM"]})
+    label = {r: f"{r} {tyres.letter(c)}" for r, c in zip(summary["Run"], summary["Compound"])}
+    fig = charts.stint_degradation(runs, summary, {"VER": "#3671C6"}, label)
+    assert [t.name for t in fig.data] == list(label.values())
+    assert [t.line.dash for t in fig.data] == ["solid", "dash"]
+    assert fig.layout.legend.itemclick == "toggle"

@@ -339,3 +339,23 @@ def lap_replay(runs: list[dict], speed: float = 1.0, tail: int = 25, corners: pd
 def _panel(html: str) -> dict:
     return dict(xref="paper", yref="paper", x=0.0, y=1.0, xanchor="left", yanchor="top", align="left", showarrow=False, text=html,
                 font=dict(size=13, color="#F2F3F5"), bgcolor="rgba(20,24,30,0.88)", bordercolor="#29313A", borderwidth=1, borderpad=8)
+
+
+def stint_degradation(runs: pd.DataFrame, summary: pd.DataFrame, colours: dict, label: dict) -> go.Figure:
+    """Lap time against lap of the run: team-colour lines (a driver's later stints dashed), dots in tyre colour,
+    one clickable legend entry per stint. `runs` needs Run, LapInRun, LapNumber, Compound and Adjusted columns."""
+    fig = go.Figure()
+    seen: dict[str, int] = {}
+    for r in summary.sort_values(["Driver", "Stint"]).itertuples():
+        g = runs[runs["Run"] == r.Run].sort_values("LapInRun")
+        seen[r.Driver] = seen.get(r.Driver, 0) + 1
+        team = colours.get(r.Driver, "#98A4B3")
+        fig.add_trace(go.Scatter(
+            x=g["LapInRun"], y=g["Adjusted"], mode="lines+markers", name=label[r.Run], legendgroup=r.Run,
+            line=dict(color=team, width=2, dash="solid" if seen[r.Driver] == 1 else "dash"),
+            marker=dict(color=[tyres.colour(c) for c in g["Compound"]], size=9, line=dict(color="#0A0B0E", width=1)),
+            text=[f"{label[r.Run]} lap {int(n)}<br>{tyres.name(c)}" for n, c in zip(g["LapNumber"], g["Compound"])],
+            hovertemplate="%{text}<br>Lap Time: %{y:.3f}s<extra></extra>"))
+    fig.update_layout(xaxis_title="Lap Number in Stint", yaxis_title="Lap Time",
+                      legend=dict(orientation="v", x=1.01, y=1, title_text="Stints (Click to toggle)", itemclick="toggle", itemdoubleclick="toggleothers"))
+    return style.lap_time_axis(fig)

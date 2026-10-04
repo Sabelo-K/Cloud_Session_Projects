@@ -58,22 +58,7 @@ def render():
                    "Only clean laps (no pit, non-green or >107% laps) are used.")
 
     with ui.card("Stint consistency and tyre degradation", "Lap time against lap of the run, in team colours (a driver's later stints dashed), dots in tyre colour. Click a legend entry to hide a run, double-click to show only that run. The table gives each run's degradation in seconds per lap."):
-        fig = go.Figure()
-        seen: dict[str, int] = {}
-        for r in summary.sort_values(["Driver", "Stint"]).itertuples():
-            g = runs[runs["Run"] == r.Run].sort_values("LapInRun")
-            seen[r.Driver] = seen.get(r.Driver, 0) + 1
-            team = colours.get(r.Driver, "#98A4B3")
-            fig.add_trace(go.Scatter(
-                x=g["LapInRun"], y=g["Adjusted"], mode="lines+markers", name=label[r.Run], legendgroup=r.Run,
-                line=dict(color=team, width=2, dash="solid" if seen[r.Driver] == 1 else "dash"),  # a driver's later stints are dashed
-                marker=dict(color=[tyres.colour(c) for c in g["Compound"]], size=9, line=dict(color="#0A0B0E", width=1)),
-                text=[f"{label[r.Run]} lap {int(n)}<br>{tyres.name(c)}" for n, c in zip(g["LapNumber"], g["Compound"])],
-                hovertemplate="%{text}<br>Lap Time: %{y:.3f}s<extra></extra>"))
-        fig.update_layout(xaxis_title="Lap Number in Stint", yaxis_title="Lap Time",
-                          legend=dict(orientation="v", x=1.01, y=1, title_text="Stints (Click to toggle)", itemclick="toggle", itemdoubleclick="toggleothers"))
-        style.lap_time_axis(fig)
-        ui.show(fig, 440)
+        ui.show(charts.stint_degradation(runs, summary, colours, label), 440)
         shown = summary[["Run", "Compound", "laps", "mean", "slope", "std", "resid_std"]].rename(
             columns={"slope": "deg s/lap", "std": "std dev", "resid_std": "std dev after trend"})
         shown["mean"] = shown["mean"].map(ui.fmt_lap)

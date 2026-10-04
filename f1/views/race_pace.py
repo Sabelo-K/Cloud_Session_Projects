@@ -3,7 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from f1 import data, pace, style, tyres, ui
+from f1 import charts, data, pace, style, tyres, ui
 
 
 def _box(tagged, stats, colours, show_excluded):
@@ -71,6 +71,25 @@ def render():
         st.dataframe(stats.round(3), width="stretch", hide_index=True)
         ex = tagged[tagged["Excluded"]]
         st.write(ex["Reason"].str.replace(r"\(.*\)", "", regex=True).value_counts().rename("laps").to_frame())
+
+    with ui.card("Stint pace and tyre degradation", "Lap time against lap of the stint, in team colours (a driver's later stints dashed), dots in tyre colour. "
+                                                    "Click a legend entry to hide a stint, double-click to show only that stint. Only clean laps count."):
+        c1, c2 = st.columns(2)
+        min_stint = c1.slider("Minimum clean laps in a stint", 3, 20, 6, key="race_stint_min")
+        fuel = c2.toggle("Adjust for fuel burn (0.03 s per lap)", value=True, key="race_stint_fuel")
+        runs = pace.long_runs(sel, min_stint)
+        if runs.empty:
+            st.info("No stints that long for these drivers. Lower the minimum laps.")
+        else:
+            fuel_effect = pace.FUEL_EFFECT_S_PER_LAP if fuel else 0.0
+            summary = pace.run_summary(runs, fuel_effect)
+            label = {r.Run: f"{r.Run} {tyres.letter(r.Compound)}" for r in summary.itertuples()}
+            runs = runs.assign(Adjusted=runs["LapSeconds"] + fuel_effect * runs["LapInRun"])
+            ui.show(charts.stint_degradation(runs, summary, colours, label), 440)
+            shown = summary[["Run", "Compound", "laps", "mean", "slope", "resid_std"]].rename(
+                columns={"slope": "deg s/lap", "resid_std": "std dev after trend"})
+            shown["mean"] = shown["mean"].map(ui.fmt_lap)
+            st.dataframe(shown.round(3), width="stretch", hide_index=True)
 
     with ui.card("Gap to leader", "Seconds behind the race leader at the end of each lap. Zero is the leader; below zero means behind."):
         if "Time" in laps:
