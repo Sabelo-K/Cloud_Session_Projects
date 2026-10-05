@@ -6,6 +6,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from f1 import data, headtohead, store, style, ui
+from f1.views import championship
 
 
 @st.cache_data(show_spinner="Loading the season...")
@@ -82,6 +83,31 @@ def render():
         fig.update_layout(yaxis_title=f"{title} (above zero = {a} quicker, below = {b} quicker)", showlegend=False)
         fig.update_xaxes(tickangle=-45)
         ui.show(fig, 380)
+
+    with ui.card("Championship points", "Points after each completed round, from the official standings (sprints included)."):
+        try:
+            pts = headtohead.points_rows(championship._standings(year, tuple(done)), a, b)
+        except Exception as exc:  # Jolpica is a separate service and rate limited
+            pts = None
+            st.info(f"Championship points could not be loaded right now ({type(exc).__name__}). Try again in a minute.")
+        if pts is not None and not pts.empty:
+            last = pts.iloc[-1]
+            lead = a if last["PointsGap"] >= 0 else b
+            st.markdown(f'<p style="font-size:2rem;font-weight:700;margin:0">{a} {last["PointsA"]:g} – {last["PointsB"]:g} {b}</p>', unsafe_allow_html=True)
+            st.caption("Level on points." if last["PointsGap"] == 0 else f'{lead} leads by {abs(last["PointsGap"]):g} points after round {int(last["Round"])}.')
+            pts = pts.assign(Event=pts["Round"].map(lambda r: names.get(int(r), f"R{int(r)}")))
+            fig = go.Figure()
+            for drv, colour, col in ((a, ca, "PointsA"), (b, cb, "PointsB")):
+                fig.add_trace(go.Scatter(x=pts["Event"], y=pts[col], mode="lines+markers", name=drv, line=dict(color=colour, width=2)))
+            fig.update_layout(yaxis_title="Championship points", hovermode="x unified")
+            fig.update_xaxes(tickangle=-45)
+            ui.show(fig, 380)
+            gap_fig = go.Figure(go.Bar(x=pts["Event"], y=pts["PointsGap"], marker_color=[ca if v >= 0 else cb for v in pts["PointsGap"]],
+                                       hovertemplate="%{x}<br>%{customdata}<extra></extra>",
+                                       customdata=[f"{a if v >= 0 else b} ahead by {abs(v):g}" for v in pts["PointsGap"]]))
+            gap_fig.update_layout(yaxis_title=f"Points gap (above zero = {a} ahead, below = {b} ahead)", showlegend=False)
+            gap_fig.update_xaxes(tickangle=-45)
+            ui.show(gap_fig, 300)
 
     with ui.card("Qualifying gap", f"Best lap difference by weekend. Bars above zero are {a}, below zero are {b}."):
         bars("QualiGap", "Gap (s)", "s")

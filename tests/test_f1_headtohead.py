@@ -27,3 +27,15 @@ def test_driver_missing_from_a_session_is_skipped_not_counted():
     assert math.isnan(rows.iloc[0]["QualiGap"])
     board = headtohead.scoreboard(rows)
     assert board["quali"]["rounds"] == 0 and math.isnan(board["quali"]["avg_gap"])
+
+
+def test_points_rows_gap_and_missing_driver():
+    import pandas as pd
+
+    prog = pd.DataFrame({"Round": [1, 1, 2, 2, 2], "Driver": ["RUS", "ANT", "RUS", "ANT", "HAM"],
+                         "Points": [25.0, 18.0, 43.0, 43.0, 15.0]})
+    rows = headtohead.points_rows(prog, "RUS", "ANT")
+    assert list(rows["PointsGap"]) == [7.0, 0.0]
+    assert list(rows["Round"]) == [1, 2]
+    none = headtohead.points_rows(prog, "RUS", "XXX")  # a driver with no standings has 0 points
+    assert list(none["PointsB"]) == [0.0, 0.0] and list(none["PointsGap"]) == [25.0, 43.0]

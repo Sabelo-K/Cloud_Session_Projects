@@ -51,3 +51,14 @@ def scoreboard(rows: pd.DataFrame) -> dict:
     both = rows.dropna(subset=["FinishA", "FinishB"])
     out["finish"]["avg_places"] = float((both["FinishB"] - both["FinishA"]).mean()) if len(both) else float("nan")
     return out
+
+
+def points_rows(progression: pd.DataFrame, a: str, b: str) -> pd.DataFrame:
+    """Championship points of A and B after each round, from `standings.progression`. Gap is A minus B (positive = A ahead).
+    A driver with no standings yet has 0 points."""
+    grid = progression.pivot(index="Round", columns="Driver", values="Points").sort_index()
+    out = pd.DataFrame({"Round": grid.index,
+                        "PointsA": grid[a].fillna(0.0).to_numpy() if a in grid else 0.0,
+                        "PointsB": grid[b].fillna(0.0).to_numpy() if b in grid else 0.0})
+    out["PointsGap"] = out["PointsA"] - out["PointsB"]
+    return out.reset_index(drop=True)
