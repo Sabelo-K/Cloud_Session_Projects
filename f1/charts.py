@@ -68,6 +68,38 @@ def sector_map(tel: pd.DataFrame, sector: pd.Series, palette: dict | None = None
     return finish_map(fig)
 
 
+SPEED_SCALE = [[0.0, "#2B1B8F"], [0.25, "#1F77D0"], [0.5, "#00D5CF"], [0.75, "#FFD60A"], [1.0, "#E8002D"]]
+
+
+def speed_map(tel: pd.DataFrame, channel: str = "Speed", corners: pd.DataFrame | None = None) -> go.Figure:
+    """Circuit drawn along one lap's telemetry, coloured by speed (or gear). Hover shows speed, gear, throttle and brake."""
+    tel = tel.dropna(subset=["X", "Y", channel]).reset_index(drop=True)
+    if len(tel) > 1:  # telemetry is ~0.2 s apart (up to 20 m), so fill the gaps to draw a continuous ribbon
+        pos = np.linspace(0, len(tel) - 1, 5 * len(tel))
+        near = np.rint(pos).astype(int)
+        dense = tel.iloc[near].reset_index(drop=True)
+        for col in ("X", "Y", "Speed", "Throttle"):
+            if col in tel:
+                dense[col] = np.interp(pos, np.arange(len(tel)), tel[col].astype(float))
+        tel = dense
+    fig = go.Figure(track_outline(tel["X"], tel["Y"]))
+    gear = channel == "nGear"
+    bar = dict(title=dict(text="Gear" if gear else "km/h"), thickness=12, len=0.8)
+    if gear:
+        lo, hi = int(tel[channel].min()), int(tel[channel].max())
+        bar.update(tickmode="array", tickvals=list(range(lo, hi + 1)))
+    parts = {"Speed": "Speed: %{customdata[#]:.0f} km/h", "nGear": "Gear %{customdata[#]}",
+             "Throttle": "Throttle %{customdata[#]:.0f}%", "Brake": "Brake %{customdata[#]}"}
+    extra = [c for c in parts if c in tel]
+    custom = tel[extra].assign(**({"Brake": np.where(tel["Brake"].astype(bool), "on", "off")} if "Brake" in extra else {})).to_numpy()
+    hover = "<br>".join(parts[c].replace("#", str(i)) for i, c in enumerate(extra)) + "<extra></extra>"
+    fig.add_trace(go.Scatter(x=tel["X"], y=tel["Y"], mode="markers", showlegend=False, customdata=custom, hovertemplate=hover,
+                             marker=dict(size=7, color=tel[channel], colorscale=SPEED_SCALE, colorbar=bar,
+                                         cmin=tel[channel].min(), cmax=tel[channel].max())))
+    _corner_labels(fig, corners)
+    return finish_map(fig)
+
+
 def _corner_distances(corners: pd.DataFrame | None, lap_len: float) -> tuple[np.ndarray, np.ndarray]:
     """(corner numbers, distances in metres) with the same unit repair add_corner_markers applies."""
     if corners is None or corners.empty:

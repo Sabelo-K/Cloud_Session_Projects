@@ -138,3 +138,21 @@ def test_stint_degradation_one_trace_per_stint_dashed_after_first():
     assert [t.name for t in fig.data] == list(label.values())
     assert [t.line.dash for t in fig.data] == ["solid", "dash"]
     assert fig.layout.legend.itemclick == "toggle"
+
+
+def test_speed_map_colours_by_channel_and_fills_gaps():
+    import numpy as np
+    import pandas as pd
+    from f1 import charts
+
+    n = 40
+    tel = pd.DataFrame({"X": np.linspace(0, 400, n), "Y": np.zeros(n), "Speed": np.linspace(100, 300, n),
+                        "nGear": np.repeat([3, 5, 7, 8], n // 4), "Throttle": np.full(n, 100.0), "Brake": [False] * n})
+    fig = charts.speed_map(tel)
+    dots = fig.data[-1]
+    assert len(dots.x) > n  # densified
+    assert min(dots.marker.color) == 100 and max(dots.marker.color) == 300
+    assert "Speed" in dots.hovertemplate and "Brake" in dots.hovertemplate
+    gear = charts.speed_map(tel, "nGear").data[-1]
+    assert set(gear.marker.color) == {3, 5, 7, 8}
+    assert list(gear.marker.colorbar.tickvals) == [3, 4, 5, 6, 7, 8]
