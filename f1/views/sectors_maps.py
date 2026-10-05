@@ -41,19 +41,25 @@ def render():
                      color_discrete_sequence=["#E8002D", "#FFD60A", "#00D5CF"])
         fig.update_layout(yaxis=dict(categoryorder="array", categoryarray=list(d["Driver"])[::-1]))
         ui.show(fig, max(320, 26 * len(d) + 100))
-    with right, ui.card("Fastest lap map", "The session's quickest lap, coloured by timing sector."):
+    with right, ui.card("Lap map", "A driver's quickest lap drawn on the circuit: by timing sector, by speed (blue slow, red fast) or by gear."):
         fastest = best.sort_values("BestLap").iloc[0]["Driver"]
+        c1, c2 = st.columns(2)
+        pick = c1.selectbox("Driver", sorted(best["Driver"]), index=sorted(best["Driver"]).index(fastest), key="map_driver")
+        view = c2.segmented_control("Colour by", ["Sector", "Speed", "Gear"], default="Speed", key="map_view") or "Speed"
         if st.toggle("Show circuit map (loads telemetry, slower)", value=False):
-            got = _fastest_tel(year, rnd, kind, fastest)
+            got = _fastest_tel(year, rnd, kind, pick)
             if not got:
-                st.info("No telemetry for the fastest lap.")
+                st.info(f"No telemetry saved for {pick}'s fastest lap.")
             else:
                 label, frame = next(iter(got.items()))
-                row = laps[(laps["Driver"] == fastest) & (laps["LapNumber"] == int(label.split("|")[1]))].iloc[0]
-                s1 = row["Sector1Time"].total_seconds()
-                s2 = row["Sector2Time"].total_seconds()
-                ui.show(charts.sector_map(frame, sectors.sector_regions(frame, s1, s2)), 430)
-                st.caption(f"{fastest}'s fastest lap ({ui.fmt_lap(row['LapTime'].total_seconds())}).")
+                row = laps[(laps["Driver"] == pick) & (laps["LapNumber"] == int(label.split("|")[1]))].iloc[0]
+                if view == "Sector":
+                    s1 = row["Sector1Time"].total_seconds()
+                    s2 = row["Sector2Time"].total_seconds()
+                    ui.show(charts.sector_map(frame, sectors.sector_regions(frame, s1, s2)), 430)
+                else:
+                    ui.show(charts.speed_map(frame, "nGear" if view == "Gear" else "Speed", data.load_corners(year, rnd, kind)), 430)
+                st.caption(f"{pick}'s fastest lap ({ui.fmt_lap(row['LapTime'].total_seconds())}).")
         else:
             st.caption("Switch the toggle on to draw the circuit.")
 
