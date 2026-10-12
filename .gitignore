@@ -4,3 +4,9 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .fastf1-cache/
+scenesensei/renders/
+scenesensei/assets/hdri/*
+!scenesensei/assets/hdri/README.md
+scenesensei/assets/textures/*
+!scenesensei/assets/textures/README.md
+*.blend1

@@ -1,5 +1,8 @@
 # SA Morning Brief
 
+> Also in this repo: [`scenesensei/`](scenesensei/README.md), a free Blender-based 3D video pipeline for the
+> SceneSensei channel. It is independent of the morning brief below.
+
 One Telegram message every morning (~07:00 SAST) with what matters to a Durban-based data analyst
 following South African markets: weather, the rand, JSE and commodities, how your YouTube channels
 are doing, SA economy headlines, and a "watch today" line for scheduled events.
