@@ -2,11 +2,13 @@
 from __future__ import annotations
 
 import math
+import random
 from pathlib import Path
 
 import bmesh
 import bpy
 
+from scenesensei.studio import shapes
 from scenesensei.studio.compat import shade_smooth
 
 
@@ -101,3 +103,41 @@ def text(name: str, body: str, size: float = 1.0, extrude: float = 0.1, bevel: f
     obj.rotation_euler = (math.pi / 2, 0.0, 0.0)
     obj.location = location
     return obj
+
+
+def ground(name: str = "Ground", radius: float = 400.0, material=None, segments: int = 96):
+    """A huge flat disc at z=0 that reaches the horizon, for outdoor scenes. UVs are in metres."""
+    bm = bmesh.new()
+    bmesh.ops.create_circle(bm, cap_ends=True, radius=radius, segments=segments)
+    uv = bm.loops.layers.uv.new("UVMap")
+    for face in bm.faces:
+        if face.normal.z < 0:
+            face.normal_flip()
+        for loop in face.loops:
+            loop[uv].uv = (loop.vert.co.x, loop.vert.co.y)
+    return _mesh_object(name, bm, material)
+
+
+def scatter(name: str, count: int, kind: str, inner: float, outer: float, size: tuple[float, float],
+            seed: int = 0, material=None, keep_clear: tuple[float, float, float] | None = None):
+    """Scatter rocks around the origin between radii `inner` and `outer` (metres): `kind` "boulder"
+    for rounded stones or "spire" for tall jagged pillars. `size` is the (min, max) base radius; spires
+    are 4-9 times taller than wide. `keep_clear` = (x, y, radius) leaves a circle empty."""
+    rng = random.Random(seed)
+    made = []
+    while len(made) < count:
+        angle, dist = rng.uniform(0, 2 * math.pi), rng.uniform(inner, outer)
+        x, y = dist * math.cos(angle), dist * math.sin(angle)
+        if keep_clear and math.hypot(x - keep_clear[0], y - keep_clear[1]) < keep_clear[2]:
+            continue
+        r = rng.uniform(*size)
+        if kind == "spire":
+            made.append(shapes.cone(f"{name}{len(made)}", None, (x, y, -0.5), r, r * rng.uniform(4, 9),
+                                    material, rotation=(rng.uniform(-6, 6), rng.uniform(-6, 6),
+                                                        rng.uniform(0, 360)),
+                                    tip_radius=r * rng.uniform(0.0, 0.25), segments=rng.choice((5, 6, 7))))
+        else:
+            made.append(shapes.ellipsoid(f"{name}{len(made)}", None, (x, y, r * 0.3),
+                                         (r, r * rng.uniform(0.7, 1.2), r * rng.uniform(0.5, 0.9)), material,
+                                         rotation=(0, 0, rng.uniform(0, 360)), segments=10))
+    return made

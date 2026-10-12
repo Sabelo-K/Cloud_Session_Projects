@@ -103,6 +103,12 @@ def build_ffmpeg_command(ffmpeg: str, out_dir: Path, info: dict) -> list[str]:
     ]
 
 
+def build_mux_command(ffmpeg: str, video: Path, audio: str, out: Path) -> list[str]:
+    """Add a sound track to a finished video without re-encoding the picture."""
+    return [ffmpeg, "-y", "-loglevel", "error", "-i", str(video), "-i", audio,
+            "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", str(out)]
+
+
 def read_info(out_dir: Path) -> dict:
     try:
         return json.loads((out_dir / INFO_FILE).read_text(encoding="utf-8"))
@@ -150,9 +156,16 @@ def run(args: argparse.Namespace) -> int:
         return 0
 
     preset = get_preset(args.preset)
-    if preset.output == "frames" and not args.no_mp4:
+    try:
         info = read_info(out_dir)
-        ffmpeg = shutil.which("ffmpeg")
+    except RenderError:
+        if preset.output == "frames":      # needed to stitch; an MP4 preset is already finished
+            raise
+        print(f"Done: {out_dir}")
+        return 0
+    ffmpeg = shutil.which("ffmpeg")
+    video = out_dir / f"{info['name']}_{info['preset']}.mp4"
+    if preset.output == "frames" and not args.no_mp4:
         if not ffmpeg:
             print(f"Frames are in {out_dir / 'frames'}. ffmpeg is not installed, so no MP4 was made: "
                   "install ffmpeg (free) and re-run, or drag the frames into DaVinci Resolve as an "
@@ -161,6 +174,18 @@ def run(args: argparse.Namespace) -> int:
         code = subprocess.call(build_ffmpeg_command(ffmpeg, out_dir, info))
         if code != 0:
             raise RenderError(f"ffmpeg exited with code {code}; the frames are intact in {out_dir / 'frames'}.")
+
+    audio = info.get("audio")
+    if audio:
+        if not ffmpeg:
+            print(f"This scene has sound ({audio}) but ffmpeg is not installed, so the video is silent. "
+                  "Install ffmpeg (free) and re-run, or add the sound in your editor.")
+        elif video.is_file():
+            with_audio = video.with_name(video.stem + "_with_audio.mp4")
+            code = subprocess.call(build_mux_command(ffmpeg, video, audio, with_audio))
+            if code != 0:
+                raise RenderError(f"ffmpeg could not add the sound (exit code {code}); the silent video is {video}.")
+            print(f"With sound: {with_audio}")
     print(f"Done: {out_dir}")
     return 0
 

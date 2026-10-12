@@ -62,11 +62,27 @@ the camera, then `output.configure(...)` and `output.render(...)`. The helpers (
 
 | Module | What it gives you |
 |---|---|
-| `stage` | `reset_scene`, `cyclorama` (seamless curved studio backdrop), `sphere`, `text` (extruded 3D text), `empty` |
-| `materials` | `gold`, `chrome`, `metal`, `glass`, `glossy`, `emissive`, `principled` (everything), `textured` (a Poly Haven texture folder). Colours are `"#RRGGBB"`. |
-| `lighting` | `three_point` (key, fill, rim), `area_light`, `hdri` (realistic reflections), `ambient`, `aim` |
-| `camera` | `create` (lens, f-stop, depth of field), `orbit`, `dolly`, `animate` (any path), all eased in and out |
-| `output` | `configure` (applies the preset), `render`, `save_blend` |
+| `stage` | `reset_scene`, `cyclorama` (seamless curved studio backdrop), `ground` (outdoor floor to the horizon), `scatter` (boulders and rock spires), `sphere`, `text` (extruded 3D text), `empty` |
+| `shapes` | `ellipsoid`, `cone` (spikes, cylinders), `box`, `torus`: the building blocks for anything you model in code |
+| `materials` | `gold`, `chrome`, `metal`, `glass`, `glossy`, `emissive`, `principled` (everything), `textured` (a Poly Haven texture folder), `aura` (see-through glowing flames), `fade` (a sheet you can fade for flashes and whiteouts). Colours are `"#RRGGBB"`. |
+| `lighting` | `three_point` (key, fill, rim), `area_light`, `sky` (sun and sky), `hdri` (realistic reflections), `ambient`, `aim` |
+| `camera` | `create` (lens, f-stop, depth of field), `orbit`, `dolly`, `animate` (any path), all eased in and out; `cut_to` (hard cuts between cameras), `shake` (impact jolts) |
+| `figure` | `humanoid`: a posable character built from primitives. `fig.pose(frame, shoulder_r=(0, -85, 0), ...)` keys the joint angles; feet stay on the ground automatically |
+| `fx` | `aura`, `shockwave`, `flash`, `debris`, `ball`, `beam`, `fade_sheet`, `key`, `visible_between`: action effects that appear only between the frames you give them |
+| `output` | `configure` (applies the preset; `audio=` attaches a sound track), `render`, `save_blend` |
+
+`scenesensei/audio.py` synthesises simple sound effects (boom, hit, whoosh, riser, zap, rumble) into a WAV with
+only the standard library, so there is nothing to license. If a scene passes `audio=` to `output.configure`, the
+launcher adds the sound to the finished video (needs ffmpeg) as `<scene>_<preset>_with_audio.mp4`. They are
+placeholder-quality effects: replace them with real sound design in your editor for a finished video.
+
+## Included scenes
+
+| Scene | What it is |
+|---|---|
+| `logo_reveal` | Gold 3D title on a glossy dark floor with a sweeping light. 6 s. |
+| `beerus_vs_goku` | A 10 s stylised clash: stand-off, close-ups, charge, impact, flurry, beam struggle, whiteout, title card. Low-poly stand-ins built in code, with synthesised sound. An unofficial fan homage: Dragon Ball belongs to its rights holders, so check the platform's rules before monetising it. |
+| `_template` | Blank starting point to copy. |
 
 To import a model (a `.glb`/`.fbx` from Sketchfab or your own), use `bpy.ops.import_scene.gltf(filepath=...)`
 inside the scene after `stage.reset_scene()`, then give it materials and aim the camera at it.

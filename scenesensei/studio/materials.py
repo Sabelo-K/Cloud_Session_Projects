@@ -121,3 +121,78 @@ def textured(name: str, folder: str | Path, tile_m: float = 2.0, normal_strength
         else:
             links.new(tex.outputs["Color"], bsdf.inputs[socket])
     return mat
+
+
+def _bare(name: str):
+    """A material with an empty node tree, to build custom shaders from scratch."""
+    mat = bpy.data.materials.new(name)
+    ensure_nodes(mat)
+    mat.node_tree.nodes.clear()
+    return mat, mat.node_tree.nodes, mat.node_tree.links
+
+
+def aura(name: str, color="#4fa3ff", strength: float = 4.0, edge: float = 0.35, flame: bool = False):
+    """A see-through glowing shell: bright at the silhouette, clear in the middle (like a force field).
+    Put it on a slightly oversized copy of the subject. Animate "Strength" on the node named "Glow"
+    (`fx.animate_input`) to make it flare, and turn off the shell's shadows (`fx.glow_only`).
+    With `flame=True` the glow breaks up into licking flames; animate "W" on the node named "Flow"
+    to make them move."""
+    mat, nodes, links = _bare(name)
+    weight = nodes.new("ShaderNodeLayerWeight")
+    weight.inputs["Blend"].default_value = edge
+    glow = nodes.new("ShaderNodeEmission")
+    glow.name = "Glow"
+    glow.inputs["Color"].default_value = (*parse_color(color), 1.0)
+    glow.inputs["Strength"].default_value = strength
+    clear = nodes.new("ShaderNodeBsdfTransparent")
+    mix = nodes.new("ShaderNodeMixShader")
+    out = nodes.new("ShaderNodeOutputMaterial")
+    mask = weight.outputs["Facing"]
+    if flame:
+        coord = nodes.new("ShaderNodeTexCoord")
+        mapping = nodes.new("ShaderNodeMapping")
+        mapping.inputs["Scale"].default_value = (2.6, 2.6, 1.5)    # stretched vertically, like flames
+        noise = nodes.new("ShaderNodeTexNoise")
+        noise.name = "Flow"
+        noise.noise_dimensions = "4D"
+        noise.inputs["Scale"].default_value = 1.4
+        noise.inputs["Detail"].default_value = 6.0
+        noise.inputs["Roughness"].default_value = 0.62
+        ramp = nodes.new("ShaderNodeValToRGB")
+        ramp.color_ramp.elements[0].position = 0.47
+        ramp.color_ramp.elements[1].position = 0.6
+        lift = nodes.new("ShaderNodeMath")
+        lift.operation = "ADD"
+        lift.inputs[1].default_value = 0.05
+        gate = nodes.new("ShaderNodeMath")
+        gate.operation = "MULTIPLY"
+        links.new(coord.outputs["Object"], mapping.inputs["Vector"])
+        links.new(mapping.outputs["Vector"], noise.inputs["Vector"])
+        links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
+        links.new(ramp.outputs["Color"], lift.inputs[0])
+        links.new(lift.outputs["Value"], gate.inputs[0])
+        links.new(mask, gate.inputs[1])
+        mask = gate.outputs["Value"]
+    links.new(mask, mix.inputs["Fac"])
+    links.new(clear.outputs["BSDF"], mix.inputs[1])
+    links.new(glow.outputs["Emission"], mix.inputs[2])
+    links.new(mix.outputs["Shader"], out.inputs["Surface"])
+    return mat
+
+
+def fade(name: str, color="#ffffff", strength: float = 8.0, opacity: float = 1.0):
+    """A uniform glowing sheet whose opacity ("Opacity" on the node named "Fade") you can animate: a
+    flash, a whiteout, a fade to black (use color "#000000"). Opacity 0 is invisible, 1 solid."""
+    mat, nodes, links = _bare(name)
+    glow = nodes.new("ShaderNodeEmission")
+    glow.inputs["Color"].default_value = (*parse_color(color), 1.0)
+    glow.inputs["Strength"].default_value = strength
+    clear = nodes.new("ShaderNodeBsdfTransparent")
+    mix = nodes.new("ShaderNodeMixShader")
+    mix.name = "Fade"
+    mix.inputs["Fac"].default_value = opacity
+    out = nodes.new("ShaderNodeOutputMaterial")
+    links.new(clear.outputs["BSDF"], mix.inputs[1])
+    links.new(glow.outputs["Emission"], mix.inputs[2])
+    links.new(mix.outputs["Shader"], out.inputs["Surface"])
+    return mat

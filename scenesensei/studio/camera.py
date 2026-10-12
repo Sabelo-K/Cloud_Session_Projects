@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import random
 from collections.abc import Callable
 
 import bpy
@@ -64,3 +65,24 @@ def dolly(obj: bpy.types.Object, start: Vec, end: Vec, frame_start: int, frame_e
     def position(t: float) -> Vec:
         return tuple(a + (b - a) * t for a, b in zip(start, end))  # type: ignore[return-value]
     animate(obj, position, frame_start, frame_end)
+
+
+def cut_to(cam: bpy.types.Object, frame: int) -> None:
+    """Make `cam` the active camera from `frame` on (a hard cut). Add one for every shot, including the
+    first, in any order. Works by binding the camera to a timeline marker."""
+    marker = bpy.context.scene.timeline_markers.new(f"cut_{cam.name}_{frame}", frame=frame)
+    marker.camera = cam
+
+
+def shake(cam: bpy.types.Object, frame_start: int, frame_end: int, amplitude: float = 0.15,
+          seed: int = 0, decay: bool = True) -> None:
+    """Jolt the camera (an impact, an explosion). `amplitude` is in metres; with `decay` it dies away
+    over the range. It is added on top of any move already keyed on the camera."""
+    rng = random.Random(seed)
+    span = max(1, frame_end - frame_start)
+    for frame in range(frame_start, frame_end + 1):
+        k = amplitude * ((1 - (frame - frame_start) / span) if decay else 1.0)
+        cam.delta_location = (rng.uniform(-k, k), rng.uniform(-k, k), rng.uniform(-k, k))
+        cam.keyframe_insert("delta_location", frame=frame)
+    cam.delta_location = (0.0, 0.0, 0.0)
+    cam.keyframe_insert("delta_location", frame=frame_end + 1)

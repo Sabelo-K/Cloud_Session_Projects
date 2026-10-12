@@ -6,7 +6,7 @@ import math
 import bpy
 
 from scenesensei.color import parse_color
-from scenesensei.studio.compat import ensure_nodes
+from scenesensei.studio.compat import ensure_nodes, pick_enum
 from scenesensei.studio import stage
 
 
@@ -26,6 +26,29 @@ def ambient(color="#0b0d12", strength: float = 1.0) -> None:
     bg.inputs["Color"].default_value = (*parse_color(color), 1.0)
     bg.inputs["Strength"].default_value = strength
     out = nt.nodes.new("ShaderNodeOutputWorld")
+    nt.links.new(bg.outputs["Background"], out.inputs["Surface"])
+
+
+def sky(sun_elevation_deg: float = 8.0, sun_rotation_deg: float = 0.0, strength: float = 1.0,
+        dust: float = 2.0, sun_size_deg: float = 0.6) -> None:
+    """A physically based sky with a sun. A low sun (3-10 degrees) gives a long golden-hour glow; raise
+    it for daylight. `sun_rotation_deg` turns the sun around the horizon, `dust` hazes the air."""
+    nt = _fresh_world()
+    node = nt.nodes.new("ShaderNodeTexSky")
+    # Blender 4.x calls the model "Nishita"; 5.x calls it single/multiple scattering.
+    kind = pick_enum(node, "sky_type", "NISHITA", "MULTIPLE_SCATTERING", "SINGLE_SCATTERING")
+    if kind:
+        node.sky_type = kind
+    for attr, value in (("sun_elevation", math.radians(sun_elevation_deg)),
+                        ("sun_rotation", math.radians(sun_rotation_deg)),
+                        ("sun_size", math.radians(sun_size_deg)), ("dust_density", dust),
+                        ("sun_disc", True)):
+        if hasattr(node, attr):
+            setattr(node, attr, value)
+    bg = nt.nodes.new("ShaderNodeBackground")
+    bg.inputs["Strength"].default_value = strength
+    out = nt.nodes.new("ShaderNodeOutputWorld")
+    nt.links.new(node.outputs["Color"], bg.inputs["Color"])
     nt.links.new(bg.outputs["Background"], out.inputs["Surface"])
 
 

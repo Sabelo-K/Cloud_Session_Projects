@@ -10,7 +10,9 @@ from pathlib import Path
 
 import pytest
 
-from scenesensei import fetch_hdri, render
+import wave
+
+from scenesensei import audio, fetch_hdri, render
 from scenesensei.color import parse_color, srgb_to_linear
 from scenesensei.presets import PRESETS, get_preset, scaled_size
 from scenesensei.scene_args import RENDERS_DIR, parse_scene_args
@@ -235,3 +237,85 @@ def test_fetch_cli_reports_errors(monkeypatch, capsys):
     monkeypatch.setattr(fetch_hdri, "_get_json", boom)
     assert fetch_hdri.main(["nonsense"]) == 1
     assert "no such asset" in capsys.readouterr().err
+
+
+# ---- sound effects ----------------------------------------------------------------------------
+
+def test_sound_validates_its_arguments():
+    with pytest.raises(ValueError, match="unknown sound"):
+        audio.Sound("kazoo", 0, 1)
+    with pytest.raises(ValueError):
+        audio.Sound("boom", -1, 1)
+    with pytest.raises(ValueError):
+        audio.Sound("boom", 0, 0)
+
+
+def test_every_sound_kind_synthesises_and_the_mix_is_normalised():
+    rate = 4000                                                   # tiny sample rate: fast test
+    sounds = [audio.Sound(kind, 0.1 * i, 0.5, 1.0, pan=-1 + 0.4 * i) for i, kind in enumerate(audio.KINDS)]
+    left, right = audio.mix(sounds, seconds=2, rate=rate, seed=1)
+    assert len(left) == len(right) == 2 * rate
+    peak = max(abs(v) for v in left + right)
+    assert peak == pytest.approx(0.9)
+    assert any(abs(v) > 0.05 for v in left) and any(abs(v) > 0.05 for v in right)
+
+
+def test_pan_places_a_sound_in_one_ear():
+    left, right = audio.mix([audio.Sound("hit", 0, 0.3, 1, pan=-1)], seconds=0.5, rate=4000)
+    assert max(abs(v) for v in right) < 1e-6 < max(abs(v) for v in left)
+
+
+def test_mix_clips_sounds_that_run_past_the_end():
+    left, _ = audio.mix([audio.Sound("boom", 0.9, 2.0)], seconds=1.0, rate=4000)
+    assert len(left) == 4000
+
+
+def test_write_wav_roundtrip(tmp_path):
+    channels = audio.mix([audio.Sound("hit", 0, 0.2)], seconds=0.5, rate=8000)
+    path = audio.write_wav(tmp_path / "sub" / "x.wav", channels, rate=8000)
+    with wave.open(str(path)) as f:
+        assert (f.getnchannels(), f.getsampwidth(), f.getframerate(), f.getnframes()) == (2, 2, 8000, 4000)
+
+
+def test_mux_command_copies_the_picture_and_encodes_aac():
+    cmd = render.build_mux_command("ffmpeg", Path("/o/v.mp4"), "/o/sfx.wav", Path("/o/v_with_audio.mp4"))
+    assert cmd[cmd.index("-c:v") + 1] == "copy" and cmd[cmd.index("-c:a") + 1] == "aac"
+    assert "-shortest" in cmd and cmd[-1] == str(Path("/o/v_with_audio.mp4"))
+
+
+@pytest.fixture
+def run_with_audio(tmp_path, monkeypatch):
+    """Like fake_run, but the scene recorded a sound track and Blender 'wrote' the MP4."""
+    calls: list[list[str]] = []
+    exe = tmp_path / "blender"
+    exe.write_text("")
+
+    def call(cmd):
+        calls.append(cmd)
+        if cmd[0] == str(exe):
+            out = Path(cmd[cmd.index("--out") + 1])
+            out.mkdir(parents=True, exist_ok=True)
+            (out / "logo_reveal_draft.mp4").write_bytes(b"video")
+            (out / render.INFO_FILE).write_text(json.dumps(
+                {"name": "logo_reveal", "preset": "draft", "fps": 24, "frame_start": 1, "frame_end": 4,
+                 "audio": str(out / "sfx.wav")}))
+        return 0
+
+    monkeypatch.setattr(render.subprocess, "call", call)
+    return calls, exe, tmp_path / "out"
+
+
+def test_sound_is_added_to_the_finished_video(run_with_audio, monkeypatch, capsys):
+    calls, exe, out = run_with_audio
+    monkeypatch.setattr(render.shutil, "which", lambda name: "/usr/bin/ffmpeg")
+    assert render.main(["logo_reveal", "--preset", "draft", "--blender", str(exe), "--out", str(out)]) == 0
+    assert [Path(c[0]).name for c in calls] == ["blender", "ffmpeg"]
+    assert calls[1][-1].endswith("logo_reveal_draft_with_audio.mp4")
+    assert "With sound" in capsys.readouterr().out
+
+
+def test_missing_ffmpeg_leaves_a_silent_video_and_says_so(run_with_audio, monkeypatch, capsys):
+    calls, exe, out = run_with_audio
+    monkeypatch.setattr(render.shutil, "which", lambda name: None)
+    assert render.main(["logo_reveal", "--preset", "draft", "--blender", str(exe), "--out", str(out)]) == 0
+    assert len(calls) == 1 and "video is silent" in capsys.readouterr().out

@@ -4,7 +4,6 @@ across the letters while the camera drifts in. 6 seconds.
 Run:  python -m scenesensei.render logo_reveal --preset draft
 Copy this file to start your own scene; everything you would change is in the CONFIG block.
 """
-import math
 import sys
 from pathlib import Path
 

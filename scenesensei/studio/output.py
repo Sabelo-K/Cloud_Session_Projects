@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+from pathlib import Path
 
 import bpy
 
@@ -93,8 +94,12 @@ def _output(scene: bpy.types.Scene, args: SceneArgs) -> None:
         r.filepath = str(out / f"{args.name}_{args.preset.name}.mp4")
 
 
-def configure(args: SceneArgs, frame_start: int = 1, frame_end: int = 120) -> None:
-    """Apply the preset (size, quality, colour, device, output) to the current scene."""
+def configure(args: SceneArgs, frame_start: int = 1, frame_end: int = 120,
+              audio: str | Path | None = None) -> None:
+    """Apply the preset (size, quality, colour, device, output) to the current scene.
+
+    `audio` (a .wav/.mp3 path) is recorded for the launcher, which adds it to the finished MP4 when
+    ffmpeg is installed."""
     scene = bpy.context.scene
     r, p = scene.render, args.preset
     width, height = scaled_size(p, args.scale)
@@ -106,7 +111,8 @@ def configure(args: SceneArgs, frame_start: int = 1, frame_end: int = 120) -> No
     _colour(scene)
     _output(scene, args)
     info = {"name": args.name, "preset": p.name, "fps": p.fps, "frame_start": frame_start,
-            "frame_end": frame_end, "width": width, "height": height, "output": p.output}
+            "frame_end": frame_end, "width": width, "height": height, "output": p.output,
+            "audio": str(audio) if audio else None}
     (args.out_dir / INFO_FILE).write_text(json.dumps(info, indent=2), encoding="utf-8")
 
 
