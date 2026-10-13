@@ -1,6 +1,7 @@
 # Faceless Animated Finance Channel: Launch Plan
 
 **Format:** hand-animated long-form videos, about 5 minutes each, uploaded twice a week.
+**Channel:** Money Mechanics (AI voiceover).
 **Niche:** animated money explainers. The core series is "How X Actually Makes Money".
 **Goal:** reach YPP in about 60 days.
 **Keyword data:** vidIQ, pulled 2026-10-12/13. Search volumes are estimates.
