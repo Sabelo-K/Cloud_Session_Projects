@@ -956,6 +956,103 @@ const EndScreen: React.FC = () => {
 	);
 };
 
+
+// ---------------------------------------------------------------- Sound design
+// All SFX and music are synthesised by scripts/synth_audio.py (original, no licences).
+const SFX: [number, string, number][] = [
+	// [global seconds, file, volume]
+	[1.6, 'whoosh', 0.5],
+	[3.2, 'chaching', 0.6],
+	[5.9, 'rise', 0.35],
+	[7.7, 'scratch', 0.5],
+	[11.6, 'whirr', 0.5],
+	[12.2, 'whirr', 0.4],
+	[21.9, 'pop', 0.6],
+	[25.7, 'sting', 0.6],
+	[29.7, 'rewind', 0.5],
+	[31.6, 'sputter', 0.5],
+	[32.4, 'slap', 0.6],
+	[35.5, 'pop', 0.5],
+	[37.1, 'bloop', 0.5],
+	[40.6, 'buzzer', 0.35],
+	[41.5, 'buzzer', 0.35],
+	[44.5, 'pop', 0.4],
+	[51.0, 'whoosh', 0.45],
+	[51.8, 'whoosh', 0.45],
+	[54.85, 'stamp', 0.7],
+	[58.45, 'pop', 0.5],
+	[59.6, 'rise', 0.35],
+	[68.6, 'pop', 0.45],
+	[70.4, 'pop', 0.45],
+	[73.0, 'chaching', 0.5],
+	[79.8, 'sting_dark', 0.5],
+	[81.0, 'pop', 0.5],
+	[82.4, 'buzzer', 0.3],
+	[89.0, 'rise', 0.3],
+	[97.0, 'pop', 0.45],
+	[101.6, 'coin', 0.45],
+	[110.7, 'pop', 0.4],
+	[116.1, 'coin', 0.55],
+	[117.5, 'coin', 0.55],
+	[119.0, 'coin', 0.55],
+	[121.9, 'bloop', 0.5],
+	[127.1, 'gasp', 0.5],
+	[128.6, 'flip', 0.6],
+	[129.0, 'sting_dark', 0.45],
+	[132.57, 'pop', 0.5],
+	[135.4, 'chaching', 0.55],
+	[139.4, 'chaching', 0.55],
+	[143.6, 'rise', 0.3],
+	[156.0, 'tick', 0.4],
+	[156.5, 'tick', 0.4],
+	[157.0, 'tick', 0.4],
+	[161.8, 'beep', 0.5],
+	[163.4, 'chaching', 0.45],
+	[169.4, 'neon', 0.6],
+	[172.0, 'plink', 0.4],
+	[173.0, 'plink', 0.4],
+	[174.0, 'plink', 0.4],
+	[174.5, 'rise', 0.3],
+	[190.3, 'ding', 0.4],
+	[191.1, 'ding', 0.4],
+	[191.9, 'ding', 0.4],
+	[195.9, 'chaching', 0.4],
+	[203.0, 'tick', 0.5],
+	[205.2, 'tick', 0.5],
+	[211.2, 'tick', 0.5],
+	[214.1, 'tick', 0.5],
+	[217.7, 'tick', 0.5],
+	[219.6, 'coin', 0.5],
+	[224.5, 'whoosh', 0.45],
+	[226.2, 'clock', 0.45],
+	[229.6, 'coin', 0.4],
+	[237.5, 'hum', 0.5],
+	[241.7, 'sting_dark', 0.5],
+	[VO_SECONDS + 0.2, 'sting', 0.5],
+];
+
+const MUSIC_BED = 0.14;
+const musicVolume = (sec: number) => {
+	// Drop out for the beat before "Either way, the house wins", swell on the end screen.
+	if (sec > 168.4 && sec < 169.4) return interpolate(sec, [168.4, 168.7, 169.1, 169.4], [MUSIC_BED, 0, 0, MUSIC_BED]);
+	if (sec > VO_SECONDS - 0.5) return interpolate(sec, [VO_SECONDS - 0.5, VO_SECONDS + 1], [MUSIC_BED, 0.4], {extrapolateRight: 'clamp'});
+	return MUSIC_BED;
+};
+
+const Soundtrack: React.FC = () => {
+	const {fps} = useVideoConfig();
+	return (
+		<>
+			<Audio src={staticFile('sfx/music_lofi.mp3')} volume={(f) => musicVolume(f / fps)} />
+			{SFX.map(([at, file, vol], i) => (
+				<Sequence key={i} from={Math.round(at * fps)} durationInFrames={Math.round(3.5 * fps)}>
+					<Audio src={staticFile(`sfx/${file}.wav`)} volume={vol} />
+				</Sequence>
+			))}
+		</>
+	);
+};
+
 const scenes: [number, number, React.FC][] = [
 	[S1, S2, Hook],
 	[S2, S3, Promise_],
@@ -975,6 +1072,7 @@ export const Ep01: React.FC = () => {
 	return (
 		<AbsoluteFill style={{background: C.paper}}>
 			<Audio src={staticFile('ep01_vo.mp3')} />
+			<Soundtrack />
 			{scenes.map(([a, b, Comp], i) => (
 				<Sequence key={i} from={Math.round(a * fps)} durationInFrames={Math.round((b - a) * fps)}>
 					<Comp />

@@ -38,8 +38,17 @@ In the cloud container, Chrome must be pointed at the pre-installed headless she
 3. Copy `src/ep01/` to `src/epNN/` and rewrite the scenes. Reuse Penny, the props and the palette, and add only the new props the story needs.
 4. Register the composition in `src/Root.tsx`, preview in Studio, then render.
 
-## Still to add by hand (free)
-- **Music bed:** a YouTube Audio Library track at about −24 LUFS under the voice.
-- **Sound effects:** cha-ching, stamp, coin drops and whooshes, from the YouTube Audio Library or freesound.org (CC0 only), dropped in at the cue times in `PRODUCTION_BIBLE.md`.
+## Sound design (original, $0)
+`scripts/synth_audio.py` generates every sound from scratch with sine waves and noise, so there are no samples, no licences and no Content ID claims:
+- **Music:** `music_lofi.mp3`, an 84 bpm lo-fi loop (Fmaj7 / Em7 / Dm7 / Cmaj7) with soft drums and vinyl crackle.
+- **25 sound effects:** cha-ching, coin, pop, whoosh, stamp, record scratch, ding, tick, beep, buzzer, paper slap, bloop, riser, card flip, gasp, rewind, hum, neon buzz, gear whirr, car sputter, plink, clock, and two stings.
 
-Either add them in DaVinci Resolve, or put them in `public/` and add `<Audio>` tags in the episode file.
+```bash
+python scripts/synth_audio.py public/sfx 257   # needs numpy; last arg = music length in seconds
+```
+Cues live in the `SFX` table in `src/ep01/Ep01.tsx`. The music bed sits at 0.14 volume, drops out for the beat before "the house wins", and swells on the end screen.
+
+**Final loudness:** normalise the render to YouTube's −14 LUFS:
+```bash
+ffmpeg -i out/ep01_raw.mp4 -c:v copy -af loudnorm=I=-14:TP=-1:LRA=11 -c:a aac -b:a 192k -ar 48000 out/ep01.mp4
+```
