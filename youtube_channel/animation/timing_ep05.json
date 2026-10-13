@@ -1,0 +1,404 @@
+[
+ {
+  "i": 0,
+  "text": "Penny has never paid a cent for her favourite apps.",
+  "start": 0.0,
+  "end": 3.09
+ },
+ {
+  "i": 1,
+  "text": "Not one.",
+  "start": 3.41,
+  "end": 4.33
+ },
+ {
+  "i": 2,
+  "text": "And yet last year, the company behind Facebook, Instagram and WhatsApp made two hundred and one billion dollars.",
+  "start": 4.65,
+  "end": 12.05
+ },
+ {
+  "i": 3,
+  "text": "So if Penny isn't paying, who is?",
+  "start": 12.37,
+  "end": 14.76
+ },
+ {
+  "i": 4,
+  "text": "Last episode, the casino let Penny play for free drinks.",
+  "start": 15.41,
+  "end": 19.23
+ },
+ {
+  "i": 5,
+  "text": "Free apps run a quieter version of the same deal.",
+  "start": 19.55,
+  "end": 23.05
+ },
+ {
+  "i": 6,
+  "text": "Here are the three engines that turn a free app into one of the biggest money machines on Earth.",
+  "start": 23.37,
+  "end": 29.45
+ },
+ {
+  "i": 7,
+  "text": "Engine number one:",
+  "start": 30.1,
+  "end": 31.83
+ },
+ {
+  "i": 8,
+  "text": "attention.",
+  "start": 32.15,
+  "end": 33.17
+ },
+ {
+  "i": 9,
+  "text": "Every time Penny scrolls, a few of the posts aren't posts.",
+  "start": 33.49,
+  "end": 37.31
+ },
+ {
+  "i": 10,
+  "text": "They're ads.",
+  "start": 37.63,
+  "end": 38.7
+ },
+ {
+  "i": 11,
+  "text": "And advertisers pay for every one she sees.",
+  "start": 39.02,
+  "end": 42.07
+ },
+ {
+  "i": 12,
+  "text": "In twenty twenty-five, ninety-eight percent of Meta's money came from advertising.",
+  "start": 42.39,
+  "end": 47.72
+ },
+ {
+  "i": 13,
+  "text": "One hundred and ninety-six billion dollars.",
+  "start": 48.04,
+  "end": 51.18
+ },
+ {
+  "i": 14,
+  "text": "So the business has two levers.",
+  "start": 51.83,
+  "end": 54.07
+ },
+ {
+  "i": 15,
+  "text": "Show more ads, or charge more for each one.",
+  "start": 54.39,
+  "end": 57.2
+ },
+ {
+  "i": 16,
+  "text": "Last year, Meta pulled both.",
+  "start": 57.52,
+  "end": 59.7
+ },
+ {
+  "i": 17,
+  "text": "Ad impressions were up twelve percent, and the average price per ad was up nine.",
+  "start": 60.02,
+  "end": 65.4
+ },
+ {
+  "i": 18,
+  "text": "Which means the real product isn't the app.",
+  "start": 65.72,
+  "end": 68.66
+ },
+ {
+  "i": 19,
+  "text": "It's the hours Penny spends inside it.",
+  "start": 68.98,
+  "end": 71.65
+ },
+ {
+  "i": 20,
+  "text": "Every extra minute she scrolls is more inventory to sell.",
+  "start": 71.97,
+  "end": 75.87
+ },
+ {
+  "i": 21,
+  "text": "And Meta isn't alone.",
+  "start": 76.52,
+  "end": 78.44
+ },
+ {
+  "i": 22,
+  "text": "Google's parent company runs the same play with search and YouTube.",
+  "start": 78.76,
+  "end": 83.3
+ },
+ {
+  "i": 23,
+  "text": "In just the last three months of twenty twenty-five, it made eighty-two billion dollars from ads.",
+  "start": 83.62,
+  "end": 89.38
+ },
+ {
+  "i": 24,
+  "text": "More than eleven billion of that came from YouTube alone.",
+  "start": 89.7,
+  "end": 93.44
+ },
+ {
+  "i": 25,
+  "text": "Free to watch.",
+  "start": 93.76,
+  "end": 94.91
+ },
+ {
+  "i": 26,
+  "text": "Very much not free to run.",
+  "start": 95.23,
+  "end": 97.32
+ },
+ {
+  "i": 27,
+  "text": "Engine number two:",
+  "start": 97.97,
+  "end": 99.72
+ },
+ {
+  "i": 28,
+  "text": "data.",
+  "start": 100.04,
+  "end": 100.94
+ },
+ {
+  "i": 29,
+  "text": "An ad for running shoes is worth more if it's shown to someone who just searched for running shoes.",
+  "start": 101.26,
+  "end": 107.19
+ },
+ {
+  "i": 30,
+  "text": "So every like, every search, every pause on a video helps the app guess what Penny wants and when she's most likely to buy it.",
+  "start": 107.51,
+  "end": 115.31
+ },
+ {
+  "i": 31,
+  "text": "That's why targeted ads sell for more than random ones.",
+  "start": 115.96,
+  "end": 119.61
+ },
+ {
+  "i": 32,
+  "text": "Penny isn't the customer.",
+  "start": 119.93,
+  "end": 121.7
+ },
+ {
+  "i": 33,
+  "text": "The advertisers are the customers.",
+  "start": 122.02,
+  "end": 124.52
+ },
+ {
+  "i": 34,
+  "text": "Penny's attention, and everything the app learns about her, is what's being sold.",
+  "start": 124.84,
+  "end": 129.75
+ },
+ {
+  "i": 35,
+  "text": "Engine number three:",
+  "start": 130.4,
+  "end": 132.17
+ },
+ {
+  "i": 36,
+  "text": "the auction.",
+  "start": 132.49,
+  "end": 133.49
+ },
+ {
+  "i": 37,
+  "text": "The price of an ad isn't fixed.",
+  "start": 133.81,
+  "end": 136.22
+ },
+ {
+  "i": 38,
+  "text": "Every time a slot opens on Penny's screen, advertisers compete for it in an automatic auction that runs in a fraction of a second.",
+  "start": 136.54,
+  "end": 145.8
+ },
+ {
+  "i": 39,
+  "text": "The more advertisers want people like Penny, the higher the price goes.",
+  "start": 146.12,
+  "end": 150.75
+ },
+ {
+  "i": 40,
+  "text": "And it runs on a staggering scale.",
+  "start": 151.4,
+  "end": 153.91
+ },
+ {
+  "i": 41,
+  "text": "In December, three point five eight billion people used Meta's apps every day.",
+  "start": 154.23,
+  "end": 159.55
+ },
+ {
+  "i": 42,
+  "text": "Divide the ad money by all those people, and each one is worth roughly fifty-five dollars a year.",
+  "start": 159.87,
+  "end": 166.35
+ },
+ {
+  "i": 43,
+  "text": "Penny never sees a bill.",
+  "start": 166.67,
+  "end": 168.61
+ },
+ {
+  "i": 44,
+  "text": "But somebody is paying for her.",
+  "start": 168.93,
+  "end": 171.11
+ },
+ {
+  "i": 45,
+  "text": "Here's the clearest proof of what Penny's attention is worth.",
+  "start": 171.76,
+  "end": 175.75
+ },
+ {
+  "i": 46,
+  "text": "When European regulators pushed back on tracking, Meta started offering people in Europe a version with no ads.",
+  "start": 176.07,
+  "end": 183.34
+ },
+ {
+  "i": 47,
+  "text": "The price?",
+  "start": 183.66,
+  "end": 184.62
+ },
+ {
+  "i": 48,
+  "text": "Starting at nine ninety-nine euros a month.",
+  "start": 184.94,
+  "end": 188.16
+ },
+ {
+  "i": 49,
+  "text": "That's roughly what the company thinks your attention is worth to it.",
+  "start": 188.48,
+  "end": 192.62
+ },
+ {
+  "i": 50,
+  "text": "So here's the machine.",
+  "start": 193.27,
+  "end": 194.98
+ },
+ {
+  "i": 51,
+  "text": "Attention creates the ad space.",
+  "start": 195.3,
+  "end": 197.65
+ },
+ {
+  "i": 52,
+  "text": "Data makes it valuable.",
+  "start": 197.97,
+  "end": 199.84
+ },
+ {
+  "i": 53,
+  "text": "And the auction squeezes out the highest price.",
+  "start": 200.16,
+  "end": 202.92
+ },
+ {
+  "i": 54,
+  "text": "The app doesn't need your money.",
+  "start": 203.24,
+  "end": 205.31
+ },
+ {
+  "i": 55,
+  "text": "It needs your time.",
+  "start": 205.63,
+  "end": 207.14
+ },
+ {
+  "i": 56,
+  "text": "So spend it on purpose.",
+  "start": 207.46,
+  "end": 209.53
+ },
+ {
+  "i": 57,
+  "text": "One:",
+  "start": 209.85,
+  "end": 210.68
+ },
+ {
+  "i": 58,
+  "text": "turn off notifications you didn't ask for.",
+  "start": 211.0,
+  "end": 214.09
+ },
+ {
+  "i": 59,
+  "text": "Every ping is an invitation back in.",
+  "start": 214.41,
+  "end": 217.25
+ },
+ {
+  "i": 60,
+  "text": "Two:",
+  "start": 217.57,
+  "end": 218.28
+ },
+ {
+  "i": 61,
+  "text": "check your ad settings, and limit the tracking you're comfortable with.",
+  "start": 218.6,
+  "end": 222.44
+ },
+ {
+  "i": 62,
+  "text": "Three:",
+  "start": 222.76,
+  "end": 223.55
+ },
+ {
+  "i": 63,
+  "text": "set a daily screen-time limit, because your hours are the product.",
+  "start": 223.87,
+  "end": 228.03
+ },
+ {
+  "i": 64,
+  "text": "Free apps sell your time.",
+  "start": 228.68,
+  "end": 230.64
+ },
+ {
+  "i": 65,
+  "text": "But some apps want your money too, every month, forever.",
+  "start": 230.96,
+  "end": 234.46
+ },
+ {
+  "i": 66,
+  "text": "The subscription trap, next on Money Mechanics.",
+  "start": 234.78,
+  "end": 237.83
+ }
+]
