@@ -1,27 +1,27 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
 import {Broker, Penny} from '../lib/characters';
 import {Cash} from '../lib/props';
-import {C, G, R, T} from '../lib/rough';
+import {G} from '../lib/rough';
+import {Arrow, Burst, Glow, Headline, ThumbPenny, Ribbon, ThumbFrame} from '../lib/thumbkit';
 
-/** Ep. 1 thumbnail, concept A: shocked Penny, huge hand offering tiny cash, "$150?!". */
+/** Ep. 1 thumbnail: shocked Penny, smirking broker, tiny cash for her guitar, "$150?!". */
 export const Ep01Thumb: React.FC = () => (
-	<AbsoluteFill style={{background: C.paper}}>
-		<svg viewBox="0 0 1280 720" width="100%" height="100%">
-			<rect x={0} y={0} width={1280} height={720} fill={C.paper} />
-			<R s={{kind: 'polygon', pts: [[700, 0], [1280, 0], [1280, 720], [560, 720]]}} o={{fill: C.ink, fillStyle: 'solid'}} seed={1} boil={false} />
-			<G x={330} y={830} s={1.75}>
-				<Penny mood="shocked" holdGuitar />
-			</G>
-			<G x={1090} y={820} s={1.3}>
-				<Broker mood="smirk" arm={1} look={-1} />
-			</G>
-			<G x={810} y={650} s={0.9} r={-10}>
-				<Cash />
-			</G>
-			<T x={930} y={190} size={190} font="marker" color={C.yellow} stroke={C.ink} rotate={-6}>
-				$150?!
-			</T>
-		</svg>
-	</AbsoluteFill>
+	<ThumbFrame>
+		<Burst bg="#1B3A8C" ray="#24489F" cx={300} cy={420} />
+		<G x={290} y={980} s={2.2}>
+			<ThumbPenny><Penny mood="shocked" holdGuitar /></ThumbPenny>
+		</G>
+		<G x={1110} y={860} s={1.35}>
+			<Broker mood="smirk" arm={1} look={-1} />
+		</G>
+		<Glow x={850} y={560} r={170} />
+		<G x={850} y={560} s={1.5} r={-12}>
+			<Cash />
+		</G>
+		<Arrow x1={720} y1={300} x2={815} y2={485} />
+		<Headline x={870} y={150} size={200}>
+			$150?!
+		</Headline>
+		<Ribbon x={860} y={655} w={760} text="THE PAWN SHOP TRICK" />
+	</ThumbFrame>
 );

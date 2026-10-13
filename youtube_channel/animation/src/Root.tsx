@@ -6,6 +6,8 @@ import {EP02_SECONDS, Ep02} from './ep02/Ep02';
 import {Ep02Thumb} from './ep02/Thumb';
 import {EP03_SECONDS, Ep03} from './ep03/Ep03';
 import {Ep03Thumb} from './ep03/Thumb';
+import {EP04_SECONDS, Ep04} from './ep04/Ep04';
+import {Ep04Thumb} from './ep04/Thumb';
 
 import {Avatar, Banner, Watermark} from './brand/Brand';
 
@@ -19,6 +21,8 @@ export const RemotionRoot: React.FC = () => (
 	<Composition id="Ep02Thumb" component={Ep02Thumb} durationInFrames={1} fps={FPS} width={1280} height={720} />
 	<Composition id="Ep03" component={Ep03} durationInFrames={Math.round(EP03_SECONDS * FPS)} fps={FPS} width={1920} height={1080} />
 	<Composition id="Ep03Thumb" component={Ep03Thumb} durationInFrames={1} fps={FPS} width={1280} height={720} />
+	<Composition id="Ep04" component={Ep04} durationInFrames={Math.round(EP04_SECONDS * FPS)} fps={FPS} width={1920} height={1080} />
+	<Composition id="Ep04Thumb" component={Ep04Thumb} durationInFrames={1} fps={FPS} width={1280} height={720} />
 	<Composition id="Avatar" component={Avatar} durationInFrames={1} fps={FPS} width={800} height={800} />
 	<Composition id="Banner" component={Banner} durationInFrames={1} fps={FPS} width={2560} height={1440} />
 	<Composition id="Watermark" component={Watermark} durationInFrames={1} fps={FPS} width={150} height={150} />
