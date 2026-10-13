@@ -15,10 +15,9 @@ Everything to paste or upload is in this folder. Steps marked **👤** need you,
 1. Go to **youtube.com** and sign in with the Google account you want to own the channel.
 2. Click your profile icon, then **Create a channel**. Use a **Brand Account** (Settings → Add or manage channels → *Create a channel*). That way the channel isn't tied to your personal name, and you can add managers later.
 3. **Name:** `Money Mechanics`
-4. **Handle:** try these in order until one is free:
-   `@MoneyMechanics` · `@MoneyMechanicsTV` · `@MoneyMechanicsHQ` · `@TheMoneyMechanics` · `@MoneyMechanicsExplained`
+4. **Handle:** ✅ **`@MoneyMechanicsAnimated`** (claimed). Channel URL: https://www.youtube.com/@MoneyMechanicsAnimated
 
-   Use the same name on TikTok and Instagram if it's free there too, for the Shorts.
+   Claim the same handle on TikTok and Instagram for the Shorts.
 
 ## 2. Verify the channel 👤 (needed for custom thumbnails)
 YouTube Studio → **Settings → Channel → Feature eligibility → Intermediate features → Verify phone number**.
@@ -61,6 +60,7 @@ YouTube Studio → **Settings → Upload defaults**:
 - **Description** (appended to each video):
   ```
   Money Mechanics explains how the money machines around you actually work, in 5 animated minutes. New videos every Tuesday and Friday.
+  🔔 Subscribe: https://www.youtube.com/@MoneyMechanicsAnimated?sub_confirmation=1
   Educational content only, not financial advice.
   ```
 - **Tags:** `personal finance, finance explained, finance animation, money animation, how companies make money, money mechanics`

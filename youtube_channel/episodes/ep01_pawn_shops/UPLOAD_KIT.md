@@ -29,8 +29,9 @@ Educational content only, not financial advice. Pawn rules and fee caps vary by 
 • SoFi, Pawnshop loans: https://www.sofi.com/learn/content/pawnshop-loan
 
 Money Mechanics explains how the money machines around you actually work, in 5 animated minutes. New videos every Tuesday and Friday.
+🔔 Subscribe: https://www.youtube.com/@MoneyMechanicsAnimated?sub_confirmation=1
 
-#PawnShop #PersonalFinance #MoneyMechanics
+#PawnShop #PersonalFinance #MoneyMechanics #MoneyMechanicsAnimated
 ```
 > Re-time the chapters to the final edit. YouTube needs the first chapter at 0:00, at least 3 chapters, and each chapter at least 10 seconds long.
 

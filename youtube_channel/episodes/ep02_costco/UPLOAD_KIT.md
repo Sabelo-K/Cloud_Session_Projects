@@ -30,8 +30,9 @@ Educational content only, not financial advice.
 • Kiro7, 2024 membership fee increase: https://www.kiro7.com/news/local/costco-membership-fees-going-up-first-time-since-2017-hot-dog-combo-still-150/EXRSLGOAX5DZ5PBLATAFIIX2D4
 
 Money Mechanics explains how the money machines around you actually work, in 5 animated minutes. New videos every Tuesday and Friday.
+🔔 Subscribe: https://www.youtube.com/@MoneyMechanicsAnimated?sub_confirmation=1
 
-#Costco #PersonalFinance #MoneyMechanics
+#Costco #PersonalFinance #MoneyMechanics #MoneyMechanicsAnimated
 ```
 
 ## Tags

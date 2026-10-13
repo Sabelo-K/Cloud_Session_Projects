@@ -30,8 +30,9 @@ Educational content only, not financial advice. Example assumes a 22% APR and a 
 • CFPB, What is APR: https://www.consumerfinance.gov/ask-cfpb/what-is-apr-en-47/
 
 Money Mechanics explains how the money machines around you actually work, in 5 animated minutes. New videos every Tuesday and Friday.
+🔔 Subscribe: https://www.youtube.com/@MoneyMechanicsAnimated?sub_confirmation=1
 
-#CreditCards #PersonalFinance #MoneyMechanics
+#CreditCards #PersonalFinance #MoneyMechanics #MoneyMechanicsAnimated
 ```
 
 ## Tags
