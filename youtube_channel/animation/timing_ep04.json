@@ -1,0 +1,428 @@
+[
+ {
+  "i": 0,
+  "text": "Penny walks into a casino with one hundred dollars.",
+  "start": 0.0,
+  "end": 3.41
+ },
+ {
+  "i": 1,
+  "text": "She never bets more than a dollar at a time.",
+  "start": 3.73,
+  "end": 6.76
+ },
+ {
+  "i": 2,
+  "text": "But by the time that hundred is gone, she'll have bet, on average, almost fourteen hundred dollars.",
+  "start": 7.08,
+  "end": 13.1
+ },
+ {
+  "i": 3,
+  "text": "And the casino never had to cheat her once.",
+  "start": 13.42,
+  "end": 16.23
+ },
+ {
+  "i": 4,
+  "text": "Last episode, Costco sold Penny the feeling of belonging.",
+  "start": 16.88,
+  "end": 20.77
+ },
+ {
+  "i": 5,
+  "text": "Casinos sell her something stranger:",
+  "start": 21.09,
+  "end": 23.78
+ },
+ {
+  "i": 6,
+  "text": "the feeling that she might win.",
+  "start": 24.1,
+  "end": 26.06
+ },
+ {
+  "i": 7,
+  "text": "Here are the three engines that turn that feeling into seventy-eight billion dollars a year.",
+  "start": 26.38,
+  "end": 32.16
+ },
+ {
+  "i": 8,
+  "text": "Engine number one:",
+  "start": 32.81,
+  "end": 34.54
+ },
+ {
+  "i": 9,
+  "text": "the edge.",
+  "start": 34.86,
+  "end": 35.75
+ },
+ {
+  "i": 10,
+  "text": "Take American roulette.",
+  "start": 36.07,
+  "end": 37.76
+ },
+ {
+  "i": 11,
+  "text": "The wheel has thirty-eight pockets.",
+  "start": 38.08,
+  "end": 40.36
+ },
+ {
+  "i": 12,
+  "text": "Thirty-six numbers, plus two green zeros.",
+  "start": 40.68,
+  "end": 43.75
+ },
+ {
+  "i": 13,
+  "text": "Bet a dollar on one number and win, and the casino pays you thirty-five dollars.",
+  "start": 44.07,
+  "end": 49.36
+ },
+ {
+  "i": 14,
+  "text": "Sounds fair.",
+  "start": 50.01,
+  "end": 51.14
+ },
+ {
+  "i": 15,
+  "text": "It isn't.",
+  "start": 51.46,
+  "end": 52.45
+ },
+ {
+  "i": 16,
+  "text": "Fair odds would pay thirty-seven.",
+  "start": 52.77,
+  "end": 55.33
+ },
+ {
+  "i": 17,
+  "text": "So spin it thirty-eight times, win once, and you're still two dollars down.",
+  "start": 55.65,
+  "end": 60.42
+ },
+ {
+  "i": 18,
+  "text": "That's about five cents of every dollar you bet, gone, on average, forever.",
+  "start": 60.74,
+  "end": 65.65
+ },
+ {
+  "i": 19,
+  "text": "Every game in the building is built this way.",
+  "start": 65.97,
+  "end": 68.79
+ },
+ {
+  "i": 20,
+  "text": "Blackjack, craps, baccarat.",
+  "start": 69.11,
+  "end": 71.24
+ },
+ {
+  "i": 21,
+  "text": "The edge can be tiny, but it always points the same way.",
+  "start": 71.56,
+  "end": 75.27
+ },
+ {
+  "i": 22,
+  "text": "And sometimes, it's not so tiny.",
+  "start": 75.92,
+  "end": 78.44
+ },
+ {
+  "i": 23,
+  "text": "Some wheels have just one green zero, and that one extra pocket nearly doubles the casino's cut, from under three cents a dollar to over five.",
+  "start": 78.76,
+  "end": 88.68
+ },
+ {
+  "i": 24,
+  "text": "Same wheel.",
+  "start": 89.0,
+  "end": 90.09
+ },
+ {
+  "i": 25,
+  "text": "Same game.",
+  "start": 90.41,
+  "end": 91.47
+ },
+ {
+  "i": 26,
+  "text": "Twice the edge.",
+  "start": 91.79,
+  "end": 93.03
+ },
+ {
+  "i": 27,
+  "text": "Engine number two is where the real money is:",
+  "start": 93.68,
+  "end": 96.75
+ },
+ {
+  "i": 28,
+  "text": "slot machines.",
+  "start": 97.07,
+  "end": 98.4
+ },
+ {
+  "i": 29,
+  "text": "In Nevada, slots brought in about ten and a half billion dollars in twenty twenty-four.",
+  "start": 98.72,
+  "end": 104.33
+ },
+ {
+  "i": 30,
+  "text": "That's roughly two thirds of everything the state's casinos won.",
+  "start": 104.65,
+  "end": 108.72
+ },
+ {
+  "i": 31,
+  "text": "And on average, Nevada's slots kept about seven cents of every dollar played.",
+  "start": 109.04,
+  "end": 114.2
+ },
+ {
+  "i": 32,
+  "text": "Seven cents sounds small.",
+  "start": 114.85,
+  "end": 116.88
+ },
+ {
+  "i": 33,
+  "text": "But here's the trick.",
+  "start": 117.2,
+  "end": 118.59
+ },
+ {
+  "i": 34,
+  "text": "When Penny wins, she doesn't walk away.",
+  "start": 118.91,
+  "end": 121.55
+ },
+ {
+  "i": 35,
+  "text": "She puts the winnings back in.",
+  "start": 121.87,
+  "end": 123.81
+ },
+ {
+  "i": 36,
+  "text": "The same money goes round and round, and the machine takes its little slice every single time.",
+  "start": 124.13,
+  "end": 130.34
+ },
+ {
+  "i": 37,
+  "text": "That's how one hundred dollars turns into almost fourteen hundred dollars of bets, until the casino has all of it.",
+  "start": 130.66,
+  "end": 138.02
+ },
+ {
+  "i": 38,
+  "text": "It's not one big loss.",
+  "start": 138.34,
+  "end": 140.09
+ },
+ {
+  "i": 39,
+  "text": "It's a thousand tiny ones that feel like a game.",
+  "start": 140.41,
+  "end": 143.63
+ },
+ {
+  "i": 40,
+  "text": "And now, the machine doesn't even need a building.",
+  "start": 144.28,
+  "end": 147.31
+ },
+ {
+  "i": 41,
+  "text": "Last year, Americans lost almost seventeen billion dollars to sportsbooks, and almost eleven billion to online casino games, both growing by more than a fifth in a single year.",
+  "start": 147.63,
+  "end": 159.34
+ },
+ {
+  "i": 42,
+  "text": "The slot machine is now in Penny's pocket, open all night.",
+  "start": 159.66,
+  "end": 163.63
+ },
+ {
+  "i": 43,
+  "text": "Engine number three:",
+  "start": 164.28,
+  "end": 166.05
+ },
+ {
+  "i": 44,
+  "text": "the freebies.",
+  "start": 166.37,
+  "end": 167.46
+ },
+ {
+  "i": 45,
+  "text": "Free drinks.",
+  "start": 167.78,
+  "end": 168.85
+ },
+ {
+  "i": 46,
+  "text": "Free rooms.",
+  "start": 169.17,
+  "end": 170.26
+ },
+ {
+  "i": 47,
+  "text": "Free buffets.",
+  "start": 170.58,
+  "end": 171.77
+ },
+ {
+  "i": 48,
+  "text": "Casinos hand out a lot for free.",
+  "start": 172.09,
+  "end": 174.63
+ },
+ {
+  "i": 49,
+  "text": "But that loyalty card Penny swipes tracks how much she bets and how long she plays.",
+  "start": 174.95,
+  "end": 180.37
+ },
+ {
+  "i": 50,
+  "text": "The casino knows its edge, so it can work out roughly how much she'll lose, and hand a slice of that back as gifts.",
+  "start": 180.69,
+  "end": 187.83
+ },
+ {
+  "i": 51,
+  "text": "Those freebies aren't generosity.",
+  "start": 188.48,
+  "end": 191.02
+ },
+ {
+  "i": 52,
+  "text": "They're a rebate on her own losses, designed to keep her playing longer, and to bring her back next month.",
+  "start": 191.34,
+  "end": 197.74
+ },
+ {
+  "i": 53,
+  "text": "So here's the machine.",
+  "start": 198.39,
+  "end": 200.1
+ },
+ {
+  "i": 54,
+  "text": "The edge makes sure the casino wins over enough bets.",
+  "start": 200.42,
+  "end": 204.07
+ },
+ {
+  "i": 55,
+  "text": "The churn makes sure you place enough bets.",
+  "start": 204.39,
+  "end": 207.08
+ },
+ {
+  "i": 56,
+  "text": "And the freebies make sure you come back to place more.",
+  "start": 207.4,
+  "end": 210.72
+ },
+ {
+  "i": 57,
+  "text": "The casino doesn't need you to lose big.",
+  "start": 211.04,
+  "end": 213.86
+ },
+ {
+  "i": 58,
+  "text": "It just needs you to keep playing.",
+  "start": 214.18,
+  "end": 216.36
+ },
+ {
+  "i": 59,
+  "text": "So if you gamble, treat it like a ticket to a show, not a way to make money.",
+  "start": 216.68,
+  "end": 221.43
+ },
+ {
+  "i": 60,
+  "text": "One:",
+  "start": 221.75,
+  "end": 222.59
+ },
+ {
+  "i": 61,
+  "text": "decide your budget before you walk in, and leave your cards at home.",
+  "start": 222.91,
+  "end": 227.09
+ },
+ {
+  "i": 62,
+  "text": "Two:",
+  "start": 227.41,
+  "end": 228.11
+ },
+ {
+  "i": 63,
+  "text": "when you win, walk away with it.",
+  "start": 228.43,
+  "end": 230.48
+ },
+ {
+  "i": 64,
+  "text": "Don't feed it back.",
+  "start": 230.8,
+  "end": 232.23
+ },
+ {
+  "i": 65,
+  "text": "Three:",
+  "start": 232.55,
+  "end": 233.34
+ },
+ {
+  "i": 66,
+  "text": "skip the games with the biggest edge, like keno and double-zero roulette.",
+  "start": 233.66,
+  "end": 238.37
+ },
+ {
+  "i": 67,
+  "text": "Casinos don't win by luck.",
+  "start": 239.02,
+  "end": 241.41
+ },
+ {
+  "i": 68,
+  "text": "They win by math, repeated millions of times.",
+  "start": 241.73,
+  "end": 245.1
+ },
+ {
+  "i": 69,
+  "text": "But some of the biggest money machines in the world don't charge you anything at all.",
+  "start": 245.42,
+  "end": 250.41
+ },
+ {
+  "i": 70,
+  "text": "How free apps make billions, next on Money Mechanics.",
+  "start": 250.73,
+  "end": 254.32
+ }
+]
