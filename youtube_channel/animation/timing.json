@@ -1,0 +1,452 @@
+[
+ {
+  "i": 0,
+  "text": "Penny just walked out of a pawn shop with a hundred and fifty dollars.",
+  "start": 0,
+  "end": 3.23
+ },
+ {
+  "i": 1,
+  "text": "The pawnbroker is thrilled.",
+  "start": 4.07,
+  "end": 5.37
+ },
+ {
+  "i": 2,
+  "text": "And here's the strange part:",
+  "start": 5.84,
+  "end": 7.13
+ },
+ {
+  "i": 3,
+  "text": "he's actually hoping she comes back to pay it off.",
+  "start": 7.74,
+  "end": 10.19
+ },
+ {
+  "i": 4,
+  "text": "Most people think pawn shops make money by buying your stuff cheap and selling it high.",
+  "start": 11.3,
+  "end": 17.53
+ },
+ {
+  "i": 5,
+  "text": "That's part of it.",
+  "start": 17.96,
+  "end": 20.96
+ },
+ {
+  "i": 6,
+  "text": "But the real engine is something most customers never notice.",
+  "start": 21.9,
+  "end": 25.43
+ },
+ {
+  "i": 7,
+  "text": "By the end of this video, you'll know exactly how the machine works, and how not to get caught in it.",
+  "start": 25.73,
+  "end": 29.07
+ },
+ {
+  "i": 8,
+  "text": "Rewind a week.",
+  "start": 29.74,
+  "end": 31.09
+ },
+ {
+  "i": 9,
+  "text": "Penny's car breaks down.",
+  "start": 31.64,
+  "end": 32.09
+ },
+ {
+  "i": 10,
+  "text": "The bill:",
+  "start": 32.43,
+  "end": 33.46
+ },
+ {
+  "i": 11,
+  "text": "four hundred dollars.",
+  "start": 34.25,
+  "end": 35.05
+ },
+ {
+  "i": 12,
+  "text": "Her bank account:",
+  "start": 35.49,
+  "end": 36.32
+ },
+ {
+  "i": 13,
+  "text": "sixty-two.",
+  "start": 37.08,
+  "end": 39.54
+ },
+ {
+  "i": 14,
+  "text": "No credit card, no time for a bank loan.",
+  "start": 40.32,
+  "end": 42.29
+ },
+ {
+  "i": 15,
+  "text": "So she does what millions of people do:",
+  "start": 42.84,
+  "end": 45.58
+ },
+ {
+  "i": 16,
+  "text": "she grabs something valuable and heads to a pawn shop.",
+  "start": 46.44,
+  "end": 47.64
+ },
+ {
+  "i": 17,
+  "text": "She has two choices.",
+  "start": 48.31,
+  "end": 50.57
+ },
+ {
+  "i": 18,
+  "text": "Sell the guitar outright, or pawn it, which means using it as collateral for a short-term loan.",
+  "start": 51.01,
+  "end": 54.04
+ },
+ {
+  "i": 19,
+  "text": "She pawns it.",
+  "start": 54.85,
+  "end": 55.62
+ },
+ {
+  "i": 20,
+  "text": "She's getting it back, right?",
+  "start": 56.24,
+  "end": 57.48
+ },
+ {
+  "i": 21,
+  "text": "First trick:",
+  "start": 58.45,
+  "end": 59.1
+ },
+ {
+  "i": 22,
+  "text": "the loan is only a fraction of what the item is worth, usually somewhere between a quarter and sixty percent of what the shop could resell it for.",
+  "start": 59.59,
+  "end": 67.71
+ },
+ {
+  "i": 23,
+  "text": "That gap isn't greed.",
+  "start": 68.64,
+  "end": 70.0
+ },
+ {
+  "i": 24,
+  "text": "It's insurance.",
+  "start": 70.39,
+  "end": 71.3
+ },
+ {
+  "i": 25,
+  "text": "If Penny never comes back, the shop still makes a profit selling the guitar.",
+  "start": 72.06,
+  "end": 76.19
+ },
+ {
+  "i": 26,
+  "text": "But the shop would actually rather she came back.",
+  "start": 77.0,
+  "end": 79.18
+ },
+ {
+  "i": 27,
+  "text": "Here's why.",
+  "start": 79.8,
+  "end": 80.49
+ },
+ {
+  "i": 28,
+  "text": "Pawn loans don't charge interest the way a bank does.",
+  "start": 81.08,
+  "end": 83.97
+ },
+ {
+  "i": 29,
+  "text": "They charge monthly fees, and depending on where you live, those fees can run from two percent all the way up to twenty-five percent of the loan every single month.",
+  "start": 84.58,
+  "end": 96.29
+ },
+ {
+  "i": 30,
+  "text": "Let's run Penny's numbers.",
+  "start": 97.0,
+  "end": 99.46
+ },
+ {
+  "i": 31,
+  "text": "Say her shop charges twenty percent a month.",
+  "start": 100.19,
+  "end": 101.26
+ },
+ {
+  "i": 32,
+  "text": "That's thirty dollars, every month, just to keep the loan alive.",
+  "start": 101.52,
+  "end": 103.93
+ },
+ {
+  "i": 33,
+  "text": "At the end of month one, she can't pay back the full one-eighty.",
+  "start": 104.74,
+  "end": 110.2
+ },
+ {
+  "i": 34,
+  "text": "No problem, says the shop.",
+  "start": 110.69,
+  "end": 112.28
+ },
+ {
+  "i": 35,
+  "text": "Just pay the thirty-dollar fee, and we'll extend it.",
+  "start": 112.6,
+  "end": 115.04
+ },
+ {
+  "i": 36,
+  "text": "So she does.",
+  "start": 115.74,
+  "end": 116.35
+ },
+ {
+  "i": 37,
+  "text": "Then again.",
+  "start": 117.09,
+  "end": 117.7
+ },
+ {
+  "i": 38,
+  "text": "Then again.",
+  "start": 118.64,
+  "end": 121.6
+ },
+ {
+  "i": 39,
+  "text": "Three months later, she's paid ninety dollars in fees and she still owes the original one-fifty.",
+  "start": 121.98,
+  "end": 124.2
+ },
+ {
+  "i": 40,
+  "text": "Her guitar hasn't moved.",
+  "start": 125.0,
+  "end": 126.35
+ },
+ {
+  "i": 41,
+  "text": "Even a ten percent monthly fee works out to a hundred and twenty percent a year.",
+  "start": 127.1,
+  "end": 131.53
+ },
+ {
+  "i": 42,
+  "text": "So here's the machine.",
+  "start": 132.57,
+  "end": 133.66
+ },
+ {
+  "i": 43,
+  "text": "If Penny pays it back, the shop keeps the fees.",
+  "start": 134.16,
+  "end": 137.0
+ },
+ {
+  "i": 44,
+  "text": "If she doesn't, the shop keeps the guitar and sells it for much more than it lent.",
+  "start": 137.74,
+  "end": 142.11
+ },
+ {
+  "i": 45,
+  "text": "In Oregon, for example, about two out of three pawn loans get redeemed, and the other third end up for sale.",
+  "start": 143.11,
+  "end": 149.59
+ },
+ {
+  "i": 46,
+  "text": "And the shop rarely gets burned on the resale.",
+  "start": 150.2,
+  "end": 154.68
+ },
+ {
+  "i": 47,
+  "text": "Before lending a cent, it checks what similar items actually sold for online.",
+  "start": 154.98,
+  "end": 158.36
+ },
+ {
+  "i": 48,
+  "text": "And for gold, it doesn't even guess.",
+  "start": 159.02,
+  "end": 161.02
+ },
+ {
+  "i": 49,
+  "text": "It just weighs it.",
+  "start": 161.7,
+  "end": 162.66
+ },
+ {
+  "i": 50,
+  "text": "Gold has a price per gram, so the shop knows the minimum it can get, almost to the dollar.",
+  "start": 163.31,
+  "end": 168.53
+ },
+ {
+  "i": 51,
+  "text": "Either way, the house wins.",
+  "start": 169.37,
+  "end": 171.07
+ },
+ {
+  "i": 52,
+  "text": "And this isn't just a few corner shops.",
+  "start": 171.87,
+  "end": 173.81
+ },
+ {
+  "i": 53,
+  "text": "The biggest pawn company, FirstCash, is publicly traded, with more than three thousand three hundred stores, and the people they serve are usually the ones banks turned away.",
+  "start": 174.54,
+  "end": 184.72
+ },
+ {
+  "i": 54,
+  "text": "Because here's what a pawn shop really sells:",
+  "start": 185.51,
+  "end": 190.0
+ },
+ {
+  "i": 55,
+  "text": "a yes, in ten minutes, with no paperwork and no awkward questions.",
+  "start": 190.3,
+  "end": 192.8
+ },
+ {
+  "i": 56,
+  "text": "That convenience is the product.",
+  "start": 193.56,
+  "end": 195.19
+ },
+ {
+  "i": 57,
+  "text": "And convenience is expensive.",
+  "start": 195.94,
+  "end": 197.54
+ },
+ {
+  "i": 58,
+  "text": "So, is pawning always bad?",
+  "start": 198.36,
+  "end": 200.11
+ },
+ {
+  "i": 59,
+  "text": "Not necessarily.",
+  "start": 200.85,
+  "end": 201.78
+ },
+ {
+  "i": 60,
+  "text": "Pawn loans don't need a credit check, and if you can't pay, you lose the item, but your credit score isn't touched.",
+  "start": 202.59,
+  "end": 207.19
+ },
+ {
+  "i": 61,
+  "text": "But if you ever do it:",
+  "start": 207.49,
+  "end": 209.21
+ },
+ {
+  "i": 62,
+  "text": "One:",
+  "start": 210.05,
+  "end": 211.0
+ },
+ {
+  "i": 63,
+  "text": "know the monthly fee before you sign.",
+  "start": 211.92,
+  "end": 212.35
+ },
+ {
+  "i": 64,
+  "text": "Two:",
+  "start": 212.92,
+  "end": 215.02
+ },
+ {
+  "i": 65,
+  "text": "borrow the least you can.",
+  "start": 215.69,
+  "end": 216.05
+ },
+ {
+  "i": 66,
+  "text": "Three:",
+  "start": 216.52,
+  "end": 217.81
+ },
+ {
+  "i": 67,
+  "text": "pay it off in the first cycle if you possibly can.",
+  "start": 218.59,
+  "end": 218.98
+ },
+ {
+  "i": 68,
+  "text": "Every extra month is a coin in that jar.",
+  "start": 219.58,
+  "end": 222.15
+ },
+ {
+  "i": 69,
+  "text": "Pawn shops aren't really in the buying and selling business.",
+  "start": 222.79,
+  "end": 225.17
+ },
+ {
+  "i": 70,
+  "text": "They're in the time business.",
+  "start": 226.19,
+  "end": 228.9
+ },
+ {
+  "i": 71,
+  "text": "They profit from how long it takes you to pay them back.",
+  "start": 229.56,
+  "end": 233.91
+ },
+ {
+  "i": 72,
+  "text": "And they're not the only ones playing that game.",
+  "start": 234.59,
+  "end": 236.72
+ },
+ {
+  "i": 73,
+  "text": "Your credit card company plays it too, and they're even better at it.",
+  "start": 237.52,
+  "end": 241.01
+ },
+ {
+  "i": 74,
+  "text": "That's next, on Money Mechanics.",
+  "start": 241.78,
+  "end": 243.64
+ }
+]
