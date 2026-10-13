@@ -1,0 +1,244 @@
+1
+00:00:00,000 --> 00:00:06,139
+Ask Penny how much she spends on subscriptions, and she'll guess about eighty-six dollars a month.
+
+2
+00:00:06,459 --> 00:00:09,660
+In one survey, that's exactly what people guessed.
+
+3
+00:00:09,980 --> 00:00:14,660
+When they actually added it up, the real number was two hundred and nineteen.
+
+4
+00:00:14,980 --> 00:00:16,980
+More than twice as much.
+
+5
+00:00:17,629 --> 00:00:20,750
+Last episode, free apps sold Penny's time.
+
+6
+00:00:21,070 --> 00:00:25,480
+Subscriptions go straight for her wallet, quietly, every single month.
+
+7
+00:00:25,800 --> 00:00:29,769
+Here are the three engines that make the subscription trap work.
+
+8
+00:00:30,420 --> 00:00:34,070
+That gap is a hundred and thirty-three dollars a month.
+
+9
+00:00:34,390 --> 00:00:39,490
+Over a year, that's almost sixteen hundred dollars Penny didn't know she was spending.
+
+10
+00:00:39,810 --> 00:00:44,710
+And the companies on the other side of that gap know exactly what they're doing.
+
+11
+00:00:45,359 --> 00:00:47,090
+Engine number one:
+
+12
+00:00:47,409 --> 00:00:48,689
+the free trial.
+
+13
+00:00:49,009 --> 00:00:50,820
+Free sounds harmless.
+
+14
+00:00:51,140 --> 00:00:54,810
+But to start it, Penny has to type in her card details.
+
+15
+00:00:55,130 --> 00:00:56,609
+That's the whole trick.
+
+16
+00:00:56,929 --> 00:01:00,100
+The company isn't betting she'll love the product.
+
+17
+00:01:00,420 --> 00:01:02,600
+It's betting she'll forget the date.
+
+18
+00:01:03,250 --> 00:01:05,730
+When the trial ends, it doesn't ask.
+
+19
+00:01:06,049 --> 00:01:08,519
+It just converts into a paid plan.
+
+20
+00:01:08,840 --> 00:01:11,760
+Nothing happens that Penny has to notice.
+
+21
+00:01:12,079 --> 00:01:13,849
+No new box arrives.
+
+22
+00:01:14,170 --> 00:01:16,030
+No reminder pops up.
+
+23
+00:01:16,349 --> 00:01:20,150
+Just one more line on a statement most people never read.
+
+24
+00:01:20,799 --> 00:01:22,549
+Engine number two:
+
+25
+00:01:22,870 --> 00:01:27,000
+forgetting. Each subscription is small on its own.
+
+26
+00:01:27,319 --> 00:01:28,859
+Five dollars here.
+
+27
+00:01:29,180 --> 00:01:30,650
+Ten dollars there.
+
+28
+00:01:30,969 --> 00:01:32,439
+Too small to feel.
+
+29
+00:01:32,760 --> 00:01:34,109
+And that's the point.
+
+30
+00:01:34,430 --> 00:01:42,090
+In that same survey, forty-two percent of people said they'd forgotten they were still paying for something they no longer used.
+
+31
+00:01:42,739 --> 00:01:46,000
+The industry even has a word for this kind of money:
+
+32
+00:01:46,319 --> 00:01:51,719
+breakage. It's revenue from people who pay but don't use what they paid for.
+
+33
+00:01:52,040 --> 00:01:54,709
+For a business, it's almost pure profit.
+
+34
+00:01:55,030 --> 00:01:58,250
+A customer who forgets costs nothing to serve.
+
+35
+00:01:58,900 --> 00:02:00,670
+Engine number three:
+
+36
+00:02:00,989 --> 00:02:04,290
+friction. Signing up takes one click.
+
+37
+00:02:04,609 --> 00:02:06,980
+Cancelling can feel like a maze.
+
+38
+00:02:07,299 --> 00:02:10,219
+Are you sure? Here's a discount.
+
+39
+00:02:10,539 --> 00:02:13,419
+Tell us why. Are you really sure?
+
+40
+00:02:13,740 --> 00:02:18,370
+Every extra step is another chance for Penny to give up and keep paying.
+
+41
+00:02:19,020 --> 00:02:20,969
+This isn't just annoying.
+
+42
+00:02:21,289 --> 00:02:33,379
+In twenty twenty-five, Amazon agreed to pay two and a half billion dollars to settle the Federal Trade Commission's case over how people were signed up for Prime, and how hard it was to leave.
+
+43
+00:02:33,699 --> 00:02:39,180
+According to the F T C, the cancellation process was nicknamed the Iliad.
+
+44
+00:02:39,500 --> 00:02:41,569
+After a famously long war.
+
+45
+00:02:42,219 --> 00:02:44,680
+Regulators tried to fix this.
+
+46
+00:02:45,000 --> 00:02:49,599
+In twenty twenty-four, the F T C finalised a click-to-cancel rule:
+
+47
+00:02:49,919 --> 00:02:52,400
+leaving should be as easy as joining.
+
+48
+00:02:52,719 --> 00:02:58,780
+But in July twenty twenty-five, a federal appeals court threw the rule out before it took effect.
+
+49
+00:02:59,099 --> 00:03:02,259
+So for now, the maze is mostly still there.
+
+50
+00:03:02,909 --> 00:03:04,610
+So here's the machine.
+
+51
+00:03:04,930 --> 00:03:07,300
+The free trial gets your card.
+
+52
+00:03:07,620 --> 00:03:09,860
+Forgetting keeps the money coming.
+
+53
+00:03:10,180 --> 00:03:13,060
+And friction makes leaving feel like work.
+
+54
+00:03:13,379 --> 00:03:17,750
+Companies make the most from the customers who stopped paying attention.
+
+55
+00:03:18,069 --> 00:03:19,569
+So pay attention.
+
+56
+00:03:19,889 --> 00:03:25,409
+One: when you start a free trial, set a reminder for the day before it ends.
+
+57
+00:03:25,729 --> 00:03:31,830
+Two: once a quarter, go through your bank statement and list every recurring charge.
+
+58
+00:03:32,150 --> 00:03:36,610
+Three: if you wouldn't sign up for it today, cancel it today.
+
+59
+00:03:37,259 --> 00:03:40,080
+Subscriptions charge you a little, forever.
+
+60
+00:03:40,400 --> 00:03:45,969
+But there's a new way to buy that splits the price into tiny pieces and calls it free.
+
+61
+00:03:46,289 --> 00:03:50,509
+How buy now, pay later makes money, next on Money Mechanics.
+

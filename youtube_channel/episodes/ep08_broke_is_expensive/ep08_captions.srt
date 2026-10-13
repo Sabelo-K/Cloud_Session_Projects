@@ -1,0 +1,220 @@
+1
+00:00:00,000 --> 00:00:02,940
+Penny buys lunch for twenty-four dollars.
+
+2
+00:00:03,259 --> 00:00:05,669
+Her account is a few dollars short.
+
+3
+00:00:05,990 --> 00:00:10,730
+The bank pays it anyway, and charges her thirty-four dollars for the favour.
+
+4
+00:00:11,050 --> 00:00:13,400
+She pays it back three days later.
+
+5
+00:00:13,720 --> 00:00:18,469
+If that were a loan, it would cost about seventeen thousand percent a year.
+
+6
+00:00:19,120 --> 00:00:22,789
+Last episode, pay later made small debts feel free.
+
+7
+00:00:23,109 --> 00:00:24,690
+Today, the opposite.
+
+8
+00:00:25,010 --> 00:00:30,000
+Here are three ways the system charges the most to the people who have the least.
+
+9
+00:00:30,649 --> 00:00:32,380
+Engine number one:
+
+10
+00:00:32,700 --> 00:00:39,679
+overdraft. When an account dips below zero, many banks will cover the purchase and charge a fee.
+
+11
+00:00:40,000 --> 00:00:49,490
+The government's consumer watchdog found the typical fee was thirty-four dollars, and most were triggered by purchases of twenty-four dollars or less.
+
+12
+00:00:49,810 --> 00:00:54,829
+More than half of those negative balances were paid back within three days.
+
+13
+00:00:55,479 --> 00:00:57,439
+And it isn't spread evenly.
+
+14
+00:00:57,759 --> 00:01:02,520
+Roughly eight percent of accounts generate most of the overdraft fees.
+
+15
+00:01:02,840 --> 00:01:05,159
+People living closest to zero.
+
+16
+00:01:05,480 --> 00:01:16,129
+Even after many banks cut these fees, Americans still paid more than five point eight billion dollars in overdraft and bounced-payment fees in twenty twenty-three.
+
+17
+00:01:16,780 --> 00:01:19,250
+And that's after the fees came down.
+
+18
+00:01:19,569 --> 00:01:26,010
+Before the pandemic, big banks were collecting eleven to twelve billion dollars a year from these fees.
+
+19
+00:01:26,659 --> 00:01:28,409
+Engine number two:
+
+20
+00:01:28,730 --> 00:01:37,519
+fast cash. When rent is due before payday, and there's no savings to fall back on, a payday loan can look like a lifeline.
+
+21
+00:01:37,840 --> 00:01:43,409
+A typical one charges fifteen dollars for every hundred borrowed, due in two weeks.
+
+22
+00:01:43,730 --> 00:01:46,780
+Fifteen percent doesn't sound outrageous.
+
+23
+00:01:47,430 --> 00:01:49,180
+But that's for just two weeks.
+
+24
+00:01:49,500 --> 00:01:53,700
+Stretched across a year, it works out to almost four hundred percent.
+
+25
+00:01:54,019 --> 00:02:00,849
+And if Penny can't repay it all on payday, she can pay another fee to roll it over, and the clock starts again.
+
+26
+00:02:01,170 --> 00:02:03,769
+The loan was supposed to bridge the gap.
+
+27
+00:02:04,090 --> 00:02:06,269
+Instead, the gap gets wider.
+
+28
+00:02:06,920 --> 00:02:08,689
+Engine number three:
+
+29
+00:02:09,009 --> 00:02:10,740
+not having a bank at all.
+
+30
+00:02:11,060 --> 00:02:17,349
+In twenty twenty-three, about five point six million American households had no bank account.
+
+31
+00:02:17,669 --> 00:02:19,330
+The most common reason?
+
+32
+00:02:19,650 --> 00:02:23,069
+They didn't have enough money to meet the minimum balance.
+
+33
+00:02:23,719 --> 00:02:27,710
+So the people with the least money end up paying to use their own.
+
+34
+00:02:28,030 --> 00:02:30,139
+A fee to cash a paycheck.
+
+35
+00:02:30,460 --> 00:02:32,080
+A fee to pay a bill.
+
+36
+00:02:32,400 --> 00:02:34,900
+A fee to load a prepaid card.
+
+37
+00:02:35,219 --> 00:02:36,669
+Each one is small.
+
+38
+00:02:36,990 --> 00:02:42,039
+Together, they're a tax on being broke that people with a little cushion never pay.
+
+39
+00:02:42,689 --> 00:02:45,680
+The novelist Terry Pratchett had a name for this.
+
+40
+00:02:46,000 --> 00:02:47,259
+The boots theory.
+
+41
+00:02:47,580 --> 00:02:51,889
+A rich person buys one good pair of boots that lasts for years.
+
+42
+00:02:52,210 --> 00:03:00,849
+A poor person can only afford cheap boots, which fall apart, so they keep buying them, and end up spending more and still have wet feet.
+
+43
+00:03:01,169 --> 00:03:07,650
+It's fiction. But overdrafts, payday loans and check-cashing fees are the real-world version.
+
+44
+00:03:08,300 --> 00:03:10,009
+So here's the machine.
+
+45
+00:03:10,330 --> 00:03:13,340
+Overdraft charges you for being a little short.
+
+46
+00:03:13,659 --> 00:03:16,990
+Fast cash charges you for being short on time.
+
+47
+00:03:17,310 --> 00:03:20,629
+And no bank charges you for being short, full stop.
+
+48
+00:03:20,949 --> 00:03:24,129
+The cheapest thing you can own is a small cushion.
+
+49
+00:03:24,449 --> 00:03:32,580
+One: turn off overdraft coverage, so a short balance means a declined card, not a thirty-four dollar fee.
+
+50
+00:03:32,900 --> 00:03:37,569
+Two: look for a free checking account with no minimum balance.
+
+51
+00:03:37,889 --> 00:03:43,229
+Three: start an emergency fund, even if it's just ten dollars a week.
+
+52
+00:03:43,550 --> 00:03:46,789
+The first five hundred dollars does the most work.
+
+53
+00:03:47,439 --> 00:03:52,599
+Being broke is expensive because the system prices in your lack of options.
+
+54
+00:03:52,919 --> 00:03:56,930
+But there's one con that starts with a simple wrong-number text.
+
+55
+00:03:57,250 --> 00:04:01,050
+How the pig-butchering scam works, next on Money Mechanics.
+
