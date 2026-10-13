@@ -1,0 +1,416 @@
+[
+ {
+  "i": 0,
+  "text": "Ask Penny how much she spends on subscriptions, and she'll guess about eighty-six dollars a month.",
+  "start": 0.0,
+  "end": 6.14
+ },
+ {
+  "i": 1,
+  "text": "In one survey, that's exactly what people guessed.",
+  "start": 6.46,
+  "end": 9.66
+ },
+ {
+  "i": 2,
+  "text": "When they actually added it up, the real number was two hundred and nineteen.",
+  "start": 9.98,
+  "end": 14.66
+ },
+ {
+  "i": 3,
+  "text": "More than twice as much.",
+  "start": 14.98,
+  "end": 16.98
+ },
+ {
+  "i": 4,
+  "text": "Last episode, free apps sold Penny's time.",
+  "start": 17.63,
+  "end": 20.75
+ },
+ {
+  "i": 5,
+  "text": "Subscriptions go straight for her wallet, quietly, every single month.",
+  "start": 21.07,
+  "end": 25.48
+ },
+ {
+  "i": 6,
+  "text": "Here are the three engines that make the subscription trap work.",
+  "start": 25.8,
+  "end": 29.77
+ },
+ {
+  "i": 7,
+  "text": "That gap is a hundred and thirty-three dollars a month.",
+  "start": 30.42,
+  "end": 34.07
+ },
+ {
+  "i": 8,
+  "text": "Over a year, that's almost sixteen hundred dollars Penny didn't know she was spending.",
+  "start": 34.39,
+  "end": 39.49
+ },
+ {
+  "i": 9,
+  "text": "And the companies on the other side of that gap know exactly what they're doing.",
+  "start": 39.81,
+  "end": 44.71
+ },
+ {
+  "i": 10,
+  "text": "Engine number one:",
+  "start": 45.36,
+  "end": 47.09
+ },
+ {
+  "i": 11,
+  "text": "the free trial.",
+  "start": 47.41,
+  "end": 48.69
+ },
+ {
+  "i": 12,
+  "text": "Free sounds harmless.",
+  "start": 49.01,
+  "end": 50.82
+ },
+ {
+  "i": 13,
+  "text": "But to start it, Penny has to type in her card details.",
+  "start": 51.14,
+  "end": 54.81
+ },
+ {
+  "i": 14,
+  "text": "That's the whole trick.",
+  "start": 55.13,
+  "end": 56.61
+ },
+ {
+  "i": 15,
+  "text": "The company isn't betting she'll love the product.",
+  "start": 56.93,
+  "end": 60.1
+ },
+ {
+  "i": 16,
+  "text": "It's betting she'll forget the date.",
+  "start": 60.42,
+  "end": 62.6
+ },
+ {
+  "i": 17,
+  "text": "When the trial ends, it doesn't ask.",
+  "start": 63.25,
+  "end": 65.73
+ },
+ {
+  "i": 18,
+  "text": "It just converts into a paid plan.",
+  "start": 66.05,
+  "end": 68.52
+ },
+ {
+  "i": 19,
+  "text": "Nothing happens that Penny has to notice.",
+  "start": 68.84,
+  "end": 71.76
+ },
+ {
+  "i": 20,
+  "text": "No new box arrives.",
+  "start": 72.08,
+  "end": 73.85
+ },
+ {
+  "i": 21,
+  "text": "No reminder pops up.",
+  "start": 74.17,
+  "end": 76.03
+ },
+ {
+  "i": 22,
+  "text": "Just one more line on a statement most people never read.",
+  "start": 76.35,
+  "end": 80.15
+ },
+ {
+  "i": 23,
+  "text": "Engine number two:",
+  "start": 80.8,
+  "end": 82.55
+ },
+ {
+  "i": 24,
+  "text": "forgetting.",
+  "start": 82.87,
+  "end": 83.85
+ },
+ {
+  "i": 25,
+  "text": "Each subscription is small on its own.",
+  "start": 84.17,
+  "end": 87.0
+ },
+ {
+  "i": 26,
+  "text": "Five dollars here.",
+  "start": 87.32,
+  "end": 88.86
+ },
+ {
+  "i": 27,
+  "text": "Ten dollars there.",
+  "start": 89.18,
+  "end": 90.65
+ },
+ {
+  "i": 28,
+  "text": "Too small to feel.",
+  "start": 90.97,
+  "end": 92.44
+ },
+ {
+  "i": 29,
+  "text": "And that's the point.",
+  "start": 92.76,
+  "end": 94.11
+ },
+ {
+  "i": 30,
+  "text": "In that same survey, forty-two percent of people said they'd forgotten they were still paying for something they no longer used.",
+  "start": 94.43,
+  "end": 102.09
+ },
+ {
+  "i": 31,
+  "text": "The industry even has a word for this kind of money:",
+  "start": 102.74,
+  "end": 106.0
+ },
+ {
+  "i": 32,
+  "text": "breakage.",
+  "start": 106.32,
+  "end": 107.28
+ },
+ {
+  "i": 33,
+  "text": "It's revenue from people who pay but don't use what they paid for.",
+  "start": 107.6,
+  "end": 111.72
+ },
+ {
+  "i": 34,
+  "text": "For a business, it's almost pure profit.",
+  "start": 112.04,
+  "end": 114.71
+ },
+ {
+  "i": 35,
+  "text": "A customer who forgets costs nothing to serve.",
+  "start": 115.03,
+  "end": 118.25
+ },
+ {
+  "i": 36,
+  "text": "Engine number three:",
+  "start": 118.9,
+  "end": 120.67
+ },
+ {
+  "i": 37,
+  "text": "friction.",
+  "start": 120.99,
+  "end": 121.86
+ },
+ {
+  "i": 38,
+  "text": "Signing up takes one click.",
+  "start": 122.18,
+  "end": 124.29
+ },
+ {
+  "i": 39,
+  "text": "Cancelling can feel like a maze.",
+  "start": 124.61,
+  "end": 126.98
+ },
+ {
+  "i": 40,
+  "text": "Are you sure?",
+  "start": 127.3,
+  "end": 128.45
+ },
+ {
+  "i": 41,
+  "text": "Here's a discount.",
+  "start": 128.77,
+  "end": 130.22
+ },
+ {
+  "i": 42,
+  "text": "Tell us why.",
+  "start": 130.54,
+  "end": 131.68
+ },
+ {
+  "i": 43,
+  "text": "Are you really sure?",
+  "start": 132.0,
+  "end": 133.42
+ },
+ {
+  "i": 44,
+  "text": "Every extra step is another chance for Penny to give up and keep paying.",
+  "start": 133.74,
+  "end": 138.37
+ },
+ {
+  "i": 45,
+  "text": "This isn't just annoying.",
+  "start": 139.02,
+  "end": 140.97
+ },
+ {
+  "i": 46,
+  "text": "In twenty twenty-five, Amazon agreed to pay two and a half billion dollars to settle the Federal Trade Commission's case over how people were signed up for Prime, and how hard it was to leave.",
+  "start": 141.29,
+  "end": 153.38
+ },
+ {
+  "i": 47,
+  "text": "According to the F T C, the cancellation process was nicknamed the Iliad.",
+  "start": 153.7,
+  "end": 159.18
+ },
+ {
+  "i": 48,
+  "text": "After a famously long war.",
+  "start": 159.5,
+  "end": 161.57
+ },
+ {
+  "i": 49,
+  "text": "Regulators tried to fix this.",
+  "start": 162.22,
+  "end": 164.68
+ },
+ {
+  "i": 50,
+  "text": "In twenty twenty-four, the F T C finalised a click-to-cancel rule:",
+  "start": 165.0,
+  "end": 169.6
+ },
+ {
+  "i": 51,
+  "text": "leaving should be as easy as joining.",
+  "start": 169.92,
+  "end": 172.4
+ },
+ {
+  "i": 52,
+  "text": "But in July twenty twenty-five, a federal appeals court threw the rule out before it took effect.",
+  "start": 172.72,
+  "end": 178.78
+ },
+ {
+  "i": 53,
+  "text": "So for now, the maze is mostly still there.",
+  "start": 179.1,
+  "end": 182.26
+ },
+ {
+  "i": 54,
+  "text": "So here's the machine.",
+  "start": 182.91,
+  "end": 184.61
+ },
+ {
+  "i": 55,
+  "text": "The free trial gets your card.",
+  "start": 184.93,
+  "end": 187.3
+ },
+ {
+  "i": 56,
+  "text": "Forgetting keeps the money coming.",
+  "start": 187.62,
+  "end": 189.86
+ },
+ {
+  "i": 57,
+  "text": "And friction makes leaving feel like work.",
+  "start": 190.18,
+  "end": 193.06
+ },
+ {
+  "i": 58,
+  "text": "Companies make the most from the customers who stopped paying attention.",
+  "start": 193.38,
+  "end": 197.75
+ },
+ {
+  "i": 59,
+  "text": "So pay attention.",
+  "start": 198.07,
+  "end": 199.57
+ },
+ {
+  "i": 60,
+  "text": "One:",
+  "start": 199.89,
+  "end": 200.72
+ },
+ {
+  "i": 61,
+  "text": "when you start a free trial, set a reminder for the day before it ends.",
+  "start": 201.04,
+  "end": 205.41
+ },
+ {
+  "i": 62,
+  "text": "Two:",
+  "start": 205.73,
+  "end": 206.44
+ },
+ {
+  "i": 63,
+  "text": "once a quarter, go through your bank statement and list every recurring charge.",
+  "start": 206.76,
+  "end": 211.83
+ },
+ {
+  "i": 64,
+  "text": "Three:",
+  "start": 212.15,
+  "end": 212.94
+ },
+ {
+  "i": 65,
+  "text": "if you wouldn't sign up for it today, cancel it today.",
+  "start": 213.26,
+  "end": 216.61
+ },
+ {
+  "i": 66,
+  "text": "Subscriptions charge you a little, forever.",
+  "start": 217.26,
+  "end": 220.08
+ },
+ {
+  "i": 67,
+  "text": "But there's a new way to buy that splits the price into tiny pieces and calls it free.",
+  "start": 220.4,
+  "end": 225.97
+ },
+ {
+  "i": 68,
+  "text": "How buy now, pay later makes money, next on Money Mechanics.",
+  "start": 226.29,
+  "end": 230.51
+ }
+]

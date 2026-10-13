@@ -1,0 +1,368 @@
+[
+ {
+  "i": 0,
+  "text": "Penny buys lunch for twenty-four dollars.",
+  "start": 0.0,
+  "end": 2.94
+ },
+ {
+  "i": 1,
+  "text": "Her account is a few dollars short.",
+  "start": 3.26,
+  "end": 5.67
+ },
+ {
+  "i": 2,
+  "text": "The bank pays it anyway, and charges her thirty-four dollars for the favour.",
+  "start": 5.99,
+  "end": 10.73
+ },
+ {
+  "i": 3,
+  "text": "She pays it back three days later.",
+  "start": 11.05,
+  "end": 13.4
+ },
+ {
+  "i": 4,
+  "text": "If that were a loan, it would cost about seventeen thousand percent a year.",
+  "start": 13.72,
+  "end": 18.47
+ },
+ {
+  "i": 5,
+  "text": "Last episode, pay later made small debts feel free.",
+  "start": 19.12,
+  "end": 22.79
+ },
+ {
+  "i": 6,
+  "text": "Today, the opposite.",
+  "start": 23.11,
+  "end": 24.69
+ },
+ {
+  "i": 7,
+  "text": "Here are three ways the system charges the most to the people who have the least.",
+  "start": 25.01,
+  "end": 30.0
+ },
+ {
+  "i": 8,
+  "text": "Engine number one:",
+  "start": 30.65,
+  "end": 32.38
+ },
+ {
+  "i": 9,
+  "text": "overdraft.",
+  "start": 32.7,
+  "end": 33.81
+ },
+ {
+  "i": 10,
+  "text": "When an account dips below zero, many banks will cover the purchase and charge a fee.",
+  "start": 34.13,
+  "end": 39.68
+ },
+ {
+  "i": 11,
+  "text": "The government's consumer watchdog found the typical fee was thirty-four dollars, and most were triggered by purchases of twenty-four dollars or less.",
+  "start": 40.0,
+  "end": 49.49
+ },
+ {
+  "i": 12,
+  "text": "More than half of those negative balances were paid back within three days.",
+  "start": 49.81,
+  "end": 54.83
+ },
+ {
+  "i": 13,
+  "text": "And it isn't spread evenly.",
+  "start": 55.48,
+  "end": 57.44
+ },
+ {
+  "i": 14,
+  "text": "Roughly eight percent of accounts generate most of the overdraft fees.",
+  "start": 57.76,
+  "end": 62.52
+ },
+ {
+  "i": 15,
+  "text": "People living closest to zero.",
+  "start": 62.84,
+  "end": 65.16
+ },
+ {
+  "i": 16,
+  "text": "Even after many banks cut these fees, Americans still paid more than five point eight billion dollars in overdraft and bounced-payment fees in twenty twenty-three.",
+  "start": 65.48,
+  "end": 76.13
+ },
+ {
+  "i": 17,
+  "text": "And that's after the fees came down.",
+  "start": 76.78,
+  "end": 79.25
+ },
+ {
+  "i": 18,
+  "text": "Before the pandemic, big banks were collecting eleven to twelve billion dollars a year from these fees.",
+  "start": 79.57,
+  "end": 86.01
+ },
+ {
+  "i": 19,
+  "text": "Engine number two:",
+  "start": 86.66,
+  "end": 88.41
+ },
+ {
+  "i": 20,
+  "text": "fast cash.",
+  "start": 88.73,
+  "end": 89.86
+ },
+ {
+  "i": 21,
+  "text": "When rent is due before payday, and there's no savings to fall back on, a payday loan can look like a lifeline.",
+  "start": 90.18,
+  "end": 97.52
+ },
+ {
+  "i": 22,
+  "text": "A typical one charges fifteen dollars for every hundred borrowed, due in two weeks.",
+  "start": 97.84,
+  "end": 103.41
+ },
+ {
+  "i": 23,
+  "text": "Fifteen percent doesn't sound outrageous.",
+  "start": 103.73,
+  "end": 106.78
+ },
+ {
+  "i": 24,
+  "text": "But that's for just two weeks.",
+  "start": 107.43,
+  "end": 109.18
+ },
+ {
+  "i": 25,
+  "text": "Stretched across a year, it works out to almost four hundred percent.",
+  "start": 109.5,
+  "end": 113.7
+ },
+ {
+  "i": 26,
+  "text": "And if Penny can't repay it all on payday, she can pay another fee to roll it over, and the clock starts again.",
+  "start": 114.02,
+  "end": 120.85
+ },
+ {
+  "i": 27,
+  "text": "The loan was supposed to bridge the gap.",
+  "start": 121.17,
+  "end": 123.77
+ },
+ {
+  "i": 28,
+  "text": "Instead, the gap gets wider.",
+  "start": 124.09,
+  "end": 126.27
+ },
+ {
+  "i": 29,
+  "text": "Engine number three:",
+  "start": 126.92,
+  "end": 128.69
+ },
+ {
+  "i": 30,
+  "text": "not having a bank at all.",
+  "start": 129.01,
+  "end": 130.74
+ },
+ {
+  "i": 31,
+  "text": "In twenty twenty-three, about five point six million American households had no bank account.",
+  "start": 131.06,
+  "end": 137.35
+ },
+ {
+  "i": 32,
+  "text": "The most common reason?",
+  "start": 137.67,
+  "end": 139.33
+ },
+ {
+  "i": 33,
+  "text": "They didn't have enough money to meet the minimum balance.",
+  "start": 139.65,
+  "end": 143.07
+ },
+ {
+  "i": 34,
+  "text": "So the people with the least money end up paying to use their own.",
+  "start": 143.72,
+  "end": 147.71
+ },
+ {
+  "i": 35,
+  "text": "A fee to cash a paycheck.",
+  "start": 148.03,
+  "end": 150.14
+ },
+ {
+  "i": 36,
+  "text": "A fee to pay a bill.",
+  "start": 150.46,
+  "end": 152.08
+ },
+ {
+  "i": 37,
+  "text": "A fee to load a prepaid card.",
+  "start": 152.4,
+  "end": 154.9
+ },
+ {
+  "i": 38,
+  "text": "Each one is small.",
+  "start": 155.22,
+  "end": 156.67
+ },
+ {
+  "i": 39,
+  "text": "Together, they're a tax on being broke that people with a little cushion never pay.",
+  "start": 156.99,
+  "end": 162.04
+ },
+ {
+  "i": 40,
+  "text": "The novelist Terry Pratchett had a name for this.",
+  "start": 162.69,
+  "end": 165.68
+ },
+ {
+  "i": 41,
+  "text": "The boots theory.",
+  "start": 166.0,
+  "end": 167.26
+ },
+ {
+  "i": 42,
+  "text": "A rich person buys one good pair of boots that lasts for years.",
+  "start": 167.58,
+  "end": 171.89
+ },
+ {
+  "i": 43,
+  "text": "A poor person can only afford cheap boots, which fall apart, so they keep buying them, and end up spending more and still have wet feet.",
+  "start": 172.21,
+  "end": 180.85
+ },
+ {
+  "i": 44,
+  "text": "It's fiction.",
+  "start": 181.17,
+  "end": 182.19
+ },
+ {
+  "i": 45,
+  "text": "But overdrafts, payday loans and check-cashing fees are the real-world version.",
+  "start": 182.51,
+  "end": 187.65
+ },
+ {
+  "i": 46,
+  "text": "So here's the machine.",
+  "start": 188.3,
+  "end": 190.01
+ },
+ {
+  "i": 47,
+  "text": "Overdraft charges you for being a little short.",
+  "start": 190.33,
+  "end": 193.34
+ },
+ {
+  "i": 48,
+  "text": "Fast cash charges you for being short on time.",
+  "start": 193.66,
+  "end": 196.99
+ },
+ {
+  "i": 49,
+  "text": "And no bank charges you for being short, full stop.",
+  "start": 197.31,
+  "end": 200.63
+ },
+ {
+  "i": 50,
+  "text": "The cheapest thing you can own is a small cushion.",
+  "start": 200.95,
+  "end": 204.13
+ },
+ {
+  "i": 51,
+  "text": "One:",
+  "start": 204.45,
+  "end": 205.28
+ },
+ {
+  "i": 52,
+  "text": "turn off overdraft coverage, so a short balance means a declined card, not a thirty-four dollar fee.",
+  "start": 205.6,
+  "end": 212.58
+ },
+ {
+  "i": 53,
+  "text": "Two:",
+  "start": 212.9,
+  "end": 213.6
+ },
+ {
+  "i": 54,
+  "text": "look for a free checking account with no minimum balance.",
+  "start": 213.92,
+  "end": 217.57
+ },
+ {
+  "i": 55,
+  "text": "Three:",
+  "start": 217.89,
+  "end": 218.68
+ },
+ {
+  "i": 56,
+  "text": "start an emergency fund, even if it's just ten dollars a week.",
+  "start": 219.0,
+  "end": 223.23
+ },
+ {
+  "i": 57,
+  "text": "The first five hundred dollars does the most work.",
+  "start": 223.55,
+  "end": 226.79
+ },
+ {
+  "i": 58,
+  "text": "Being broke is expensive because the system prices in your lack of options.",
+  "start": 227.44,
+  "end": 232.6
+ },
+ {
+  "i": 59,
+  "text": "But there's one con that starts with a simple wrong-number text.",
+  "start": 232.92,
+  "end": 236.93
+ },
+ {
+  "i": 60,
+  "text": "How the pig-butchering scam works, next on Money Mechanics.",
+  "start": 237.25,
+  "end": 241.05
+ }
+]
