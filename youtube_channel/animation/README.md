@@ -34,7 +34,7 @@ In the cloud container, Chrome must be pointed at the pre-installed headless she
 
 ## Making a new episode
 1. Final script → voiceover MP3 into `public/`.
-2. Generate `timing.json` for it. The alignment script in the session notes matches sentence ends to pauses in the audio. If Whisper is available, word-level timings are even better.
+2. Generate `timing.json` for it. `python3 scripts/align_timing.py VOICEOVER.txt vo.mp3 timing.json` matches sentence ends to pauses in the audio. If Whisper is available, word-level timings are even better.
 3. Copy `src/ep01/` to `src/epNN/` and rewrite the scenes. Reuse Penny, the props and the palette, and add only the new props the story needs.
 4. Register the composition in `src/Root.tsx`, preview in Studio, then render.
 

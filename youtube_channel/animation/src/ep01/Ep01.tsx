@@ -700,7 +700,7 @@ const HouseWins: React.FC = () => {
 			{part === 4 && (
 				<G x={960} y={560} o={(t * 30) % 23 < 2 ? 0.4 : 1}>
 					<R s={{kind: 'rect', x: -620, y: -150, w: 1240, h: 300}} o={{stroke: C.green, strokeWidth: 8}} draw={p(169.4, 0.5)} seed={7400} />
-					<T x={0} y={8} size={150} font="marker" color={C.green} scale={pop(169.6)}>
+					<T x={0} y={8} size={128} font="marker" color={C.green} scale={pop(169.6)}>
 						THE HOUSE WINS
 					</T>
 				</G>
