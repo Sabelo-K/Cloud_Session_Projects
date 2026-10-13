@@ -1,0 +1,374 @@
+[
+ {
+  "i": 0,
+  "text": "Penny owes five thousand dollars on her credit card.",
+  "start": 0.0,
+  "end": 3.35
+ },
+ {
+  "i": 1,
+  "text": "If she only ever pays the minimum, she'll be paying it off for nineteen years.",
+  "start": 3.67,
+  "end": 8.38
+ },
+ {
+  "i": 2,
+  "text": "And she'll hand over more than eight thousand dollars in interest on top of the five thousand she borrowed.",
+  "start": 8.7,
+  "end": 15.53
+ },
+ {
+  "i": 3,
+  "text": "Last episode, we saw how pawn shops profit from time.",
+  "start": 16.18,
+  "end": 19.96
+ },
+ {
+  "i": 4,
+  "text": "Credit card companies play the same game, just at a much bigger scale.",
+  "start": 20.28,
+  "end": 24.82
+ },
+ {
+  "i": 5,
+  "text": "Here are the three ways they make money every time that card leaves your wallet.",
+  "start": 25.14,
+  "end": 30.2
+ },
+ {
+  "i": 6,
+  "text": "Engine number one:",
+  "start": 30.85,
+  "end": 32.57
+ },
+ {
+  "i": 7,
+  "text": "the swipe.",
+  "start": 32.89,
+  "end": 33.85
+ },
+ {
+  "i": 8,
+  "text": "Every time Penny taps her card, the shop doesn't get the full price.",
+  "start": 34.17,
+  "end": 38.46
+ },
+ {
+  "i": 9,
+  "text": "A cut goes to the banks and networks behind the card.",
+  "start": 38.78,
+  "end": 42.2
+ },
+ {
+  "i": 10,
+  "text": "On a typical Visa or Mastercard credit card, that's around two to three dollars of every hundred.",
+  "start": 42.52,
+  "end": 48.83
+ },
+ {
+  "i": 11,
+  "text": "It sounds tiny.",
+  "start": 49.48,
+  "end": 50.93
+ },
+ {
+  "i": 12,
+  "text": "But across the US, merchants paid more than a hundred and eighty-seven billion dollars in card fees in a single year.",
+  "start": 51.25,
+  "end": 59.04
+ },
+ {
+  "i": 13,
+  "text": "And the shop doesn't really eat that cost.",
+  "start": 59.36,
+  "end": 61.85
+ },
+ {
+  "i": 14,
+  "text": "It quietly gets built into the prices everyone pays, even people paying with cash.",
+  "start": 62.17,
+  "end": 67.74
+ },
+ {
+  "i": 15,
+  "text": "That's also where your cash back and points come from.",
+  "start": 68.06,
+  "end": 71.24
+ },
+ {
+  "i": 16,
+  "text": "The rewards are paid for, in part, by those swipe fees.",
+  "start": 71.56,
+  "end": 75.06
+ },
+ {
+  "i": 17,
+  "text": "The card company hands you a little back, so you swipe more, and it takes a cut every single time.",
+  "start": 75.38,
+  "end": 81.76
+ },
+ {
+  "i": 18,
+  "text": "Engine number two is the big one:",
+  "start": 82.41,
+  "end": 84.9
+ },
+ {
+  "i": 19,
+  "text": "interest.",
+  "start": 85.22,
+  "end": 86.12
+ },
+ {
+  "i": 20,
+  "text": "Here's the secret most people miss.",
+  "start": 86.44,
+  "end": 88.89
+ },
+ {
+  "i": 21,
+  "text": "If you pay your full balance every month, most cards charge you no interest at all.",
+  "start": 89.21,
+  "end": 94.57
+ },
+ {
+  "i": 22,
+  "text": "You're basically borrowing for free.",
+  "start": 94.89,
+  "end": 97.13
+ },
+ {
+  "i": 23,
+  "text": "But the moment you carry a balance, the meter starts running.",
+  "start": 97.78,
+  "end": 101.36
+ },
+ {
+  "i": 24,
+  "text": "And it doesn't tick once a year.",
+  "start": 101.68,
+  "end": 103.77
+ },
+ {
+  "i": 25,
+  "text": "Most cards work out your interest every day and add it to what you owe, so next month, you're paying interest on last month's interest.",
+  "start": 104.09,
+  "end": 112.43
+ },
+ {
+  "i": 26,
+  "text": "The average rate for people who carry a balance is now about twenty-two percent a year.",
+  "start": 112.75,
+  "end": 118.47
+ },
+ {
+  "i": 27,
+  "text": "And plenty of people carry one.",
+  "start": 118.79,
+  "end": 120.92
+ },
+ {
+  "i": 28,
+  "text": "Americans now owe about one point two six trillion dollars on their credit cards.",
+  "start": 121.24,
+  "end": 127.05
+ },
+ {
+  "i": 29,
+  "text": "In fact, one government report found that cardholders who carry a balance pay ninety-four percent of all the interest and fees.",
+  "start": 127.7,
+  "end": 135.93
+ },
+ {
+  "i": 30,
+  "text": "The people paying in full are getting their rewards funded by everyone else.",
+  "start": 136.25,
+  "end": 141.03
+ },
+ {
+  "i": 31,
+  "text": "Which brings us back to Penny's minimum payment.",
+  "start": 141.68,
+  "end": 144.67
+ },
+ {
+  "i": 32,
+  "text": "It's designed to feel easy.",
+  "start": 144.99,
+  "end": 147.16
+ },
+ {
+  "i": 33,
+  "text": "Her first one is about a hundred and forty dollars, and more than ninety of that is just interest.",
+  "start": 147.48,
+  "end": 153.5
+ },
+ {
+  "i": 34,
+  "text": "She's running on a treadmill.",
+  "start": 153.82,
+  "end": 155.82
+ },
+ {
+  "i": 35,
+  "text": "And as her balance slowly shrinks, so does her minimum payment, which keeps the treadmill running even longer.",
+  "start": 156.14,
+  "end": 162.72
+ },
+ {
+  "i": 36,
+  "text": "Now watch what happens if she pays a flat two hundred dollars a month instead.",
+  "start": 163.37,
+  "end": 168.59
+ },
+ {
+  "i": 37,
+  "text": "She's debt-free in under three years, and pays about seventeen hundred dollars in interest instead of eight thousand.",
+  "start": 168.91,
+  "end": 176.34
+ },
+ {
+  "i": 38,
+  "text": "Same card.",
+  "start": 176.66,
+  "end": 177.74
+ },
+ {
+  "i": 39,
+  "text": "Same rate.",
+  "start": 178.06,
+  "end": 179.13
+ },
+ {
+  "i": 40,
+  "text": "Completely different outcome.",
+  "start": 179.45,
+  "end": 181.35
+ },
+ {
+  "i": 41,
+  "text": "Engine number three:",
+  "start": 182.0,
+  "end": 183.77
+ },
+ {
+  "i": 42,
+  "text": "fees.",
+  "start": 184.09,
+  "end": 184.9
+ },
+ {
+  "i": 43,
+  "text": "Annual fees, cash advance fees, foreign transaction fees, and the biggest of all:",
+  "start": 185.22,
+  "end": 190.75
+ },
+ {
+  "i": 44,
+  "text": "late fees.",
+  "start": 191.07,
+  "end": 192.15
+ },
+ {
+  "i": 45,
+  "text": "In one year, Americans paid around fourteen and a half billion dollars just in credit card late fees.",
+  "start": 192.47,
+  "end": 199.36
+ },
+ {
+  "i": 46,
+  "text": "And on many cards, missing a payment can also trigger a penalty interest rate, even higher than the normal one.",
+  "start": 199.68,
+  "end": 206.85
+ },
+ {
+  "i": 47,
+  "text": "So here's the machine.",
+  "start": 207.5,
+  "end": 209.21
+ },
+ {
+  "i": 48,
+  "text": "The swipe fee pays the card company when you spend.",
+  "start": 209.53,
+  "end": 212.92
+ },
+ {
+  "i": 49,
+  "text": "Interest pays it when you can't pay it back.",
+  "start": 213.24,
+  "end": 215.93
+ },
+ {
+  "i": 50,
+  "text": "And fees catch you when you slip.",
+  "start": 216.25,
+  "end": 218.64
+ },
+ {
+  "i": 51,
+  "text": "The best customer, for the bank, is someone who spends a lot and pays slowly.",
+  "start": 218.96,
+  "end": 223.76
+ },
+ {
+  "i": 52,
+  "text": "So don't be that customer.",
+  "start": 224.08,
+  "end": 225.89
+ },
+ {
+  "i": 53,
+  "text": "One:",
+  "start": 226.21,
+  "end": 227.04
+ },
+ {
+  "i": 54,
+  "text": "pay the full statement balance every month if you can.",
+  "start": 227.36,
+  "end": 231.05
+ },
+ {
+  "i": 55,
+  "text": "Two:",
+  "start": 231.37,
+  "end": 232.08
+ },
+ {
+  "i": 56,
+  "text": "if you can't, pay way more than the minimum.",
+  "start": 232.4,
+  "end": 235.04
+ },
+ {
+  "i": 57,
+  "text": "Three:",
+  "start": 235.36,
+  "end": 236.15
+ },
+ {
+  "i": 58,
+  "text": "set up autopay, so a late fee never catches you.",
+  "start": 236.47,
+  "end": 239.76
+ },
+ {
+  "i": 59,
+  "text": "Credit cards make money when you spend and when you wait.",
+  "start": 240.41,
+  "end": 243.91
+ },
+ {
+  "i": 60,
+  "text": "But there's one store that charges you before you can spend a single dollar.",
+  "start": 244.23,
+  "end": 248.66
+ },
+ {
+  "i": 61,
+  "text": "How Costco makes money, next on Money Mechanics.",
+  "start": 248.98,
+  "end": 252.36
+ }
+]

@@ -1,0 +1,216 @@
+1
+00:00:00,000 --> 00:00:03,350
+Penny owes five thousand dollars on her credit card.
+
+2
+00:00:03,669 --> 00:00:08,380
+If she only ever pays the minimum, she'll be paying it off for nineteen years.
+
+3
+00:00:08,699 --> 00:00:15,529
+And she'll hand over more than eight thousand dollars in interest on top of the five thousand she borrowed.
+
+4
+00:00:16,179 --> 00:00:19,960
+Last episode, we saw how pawn shops profit from time.
+
+5
+00:00:20,280 --> 00:00:24,820
+Credit card companies play the same game, just at a much bigger scale.
+
+6
+00:00:25,140 --> 00:00:30,199
+Here are the three ways they make money every time that card leaves your wallet.
+
+7
+00:00:30,850 --> 00:00:32,570
+Engine number one:
+
+8
+00:00:32,890 --> 00:00:38,460
+the swipe. Every time Penny taps her card, the shop doesn't get the full price.
+
+9
+00:00:38,780 --> 00:00:42,200
+A cut goes to the banks and networks behind the card.
+
+10
+00:00:42,520 --> 00:00:48,829
+On a typical Visa or Mastercard credit card, that's around two to three dollars of every hundred.
+
+11
+00:00:49,479 --> 00:00:50,929
+It sounds tiny.
+
+12
+00:00:51,250 --> 00:00:59,039
+But across the US, merchants paid more than a hundred and eighty-seven billion dollars in card fees in a single year.
+
+13
+00:00:59,359 --> 00:01:01,850
+And the shop doesn't really eat that cost.
+
+14
+00:01:02,170 --> 00:01:07,739
+It quietly gets built into the prices everyone pays, even people paying with cash.
+
+15
+00:01:08,060 --> 00:01:11,239
+That's also where your cash back and points come from.
+
+16
+00:01:11,560 --> 00:01:15,060
+The rewards are paid for, in part, by those swipe fees.
+
+17
+00:01:15,379 --> 00:01:21,760
+The card company hands you a little back, so you swipe more, and it takes a cut every single time.
+
+18
+00:01:22,409 --> 00:01:24,900
+Engine number two is the big one:
+
+19
+00:01:25,219 --> 00:01:28,890
+interest. Here's the secret most people miss.
+
+20
+00:01:29,209 --> 00:01:34,569
+If you pay your full balance every month, most cards charge you no interest at all.
+
+21
+00:01:34,890 --> 00:01:37,129
+You're basically borrowing for free.
+
+22
+00:01:37,780 --> 00:01:41,359
+But the moment you carry a balance, the meter starts running.
+
+23
+00:01:41,680 --> 00:01:43,769
+And it doesn't tick once a year.
+
+24
+00:01:44,090 --> 00:01:52,430
+Most cards work out your interest every day and add it to what you owe, so next month, you're paying interest on last month's interest.
+
+25
+00:01:52,750 --> 00:01:58,469
+The average rate for people who carry a balance is now about twenty-two percent a year.
+
+26
+00:01:58,790 --> 00:02:00,920
+And plenty of people carry one.
+
+27
+00:02:01,239 --> 00:02:07,049
+Americans now owe about one point two six trillion dollars on their credit cards.
+
+28
+00:02:07,700 --> 00:02:15,930
+In fact, one government report found that cardholders who carry a balance pay ninety-four percent of all the interest and fees.
+
+29
+00:02:16,250 --> 00:02:21,030
+The people paying in full are getting their rewards funded by everyone else.
+
+30
+00:02:21,680 --> 00:02:24,669
+Which brings us back to Penny's minimum payment.
+
+31
+00:02:24,990 --> 00:02:27,159
+It's designed to feel easy.
+
+32
+00:02:27,479 --> 00:02:33,500
+Her first one is about a hundred and forty dollars, and more than ninety of that is just interest.
+
+33
+00:02:33,819 --> 00:02:35,819
+She's running on a treadmill.
+
+34
+00:02:36,139 --> 00:02:42,719
+And as her balance slowly shrinks, so does her minimum payment, which keeps the treadmill running even longer.
+
+35
+00:02:43,370 --> 00:02:48,590
+Now watch what happens if she pays a flat two hundred dollars a month instead.
+
+36
+00:02:48,909 --> 00:02:56,340
+She's debt-free in under three years, and pays about seventeen hundred dollars in interest instead of eight thousand.
+
+37
+00:02:56,659 --> 00:02:59,129
+Same card. Same rate.
+
+38
+00:02:59,449 --> 00:03:01,349
+Completely different outcome.
+
+39
+00:03:02,000 --> 00:03:03,770
+Engine number three:
+
+40
+00:03:04,090 --> 00:03:10,750
+fees. Annual fees, cash advance fees, foreign transaction fees, and the biggest of all:
+
+41
+00:03:11,069 --> 00:03:19,360
+late fees. In one year, Americans paid around fourteen and a half billion dollars just in credit card late fees.
+
+42
+00:03:19,680 --> 00:03:26,849
+And on many cards, missing a payment can also trigger a penalty interest rate, even higher than the normal one.
+
+43
+00:03:27,500 --> 00:03:29,210
+So here's the machine.
+
+44
+00:03:29,530 --> 00:03:32,919
+The swipe fee pays the card company when you spend.
+
+45
+00:03:33,240 --> 00:03:35,930
+Interest pays it when you can't pay it back.
+
+46
+00:03:36,250 --> 00:03:38,639
+And fees catch you when you slip.
+
+47
+00:03:38,960 --> 00:03:43,759
+The best customer, for the bank, is someone who spends a lot and pays slowly.
+
+48
+00:03:44,080 --> 00:03:45,889
+So don't be that customer.
+
+49
+00:03:46,210 --> 00:03:51,050
+One: pay the full statement balance every month if you can.
+
+50
+00:03:51,370 --> 00:03:55,039
+Two: if you can't, pay way more than the minimum.
+
+51
+00:03:55,360 --> 00:03:59,759
+Three: set up autopay, so a late fee never catches you.
+
+52
+00:04:00,409 --> 00:04:03,909
+Credit cards make money when you spend and when you wait.
+
+53
+00:04:04,229 --> 00:04:08,659
+But there's one store that charges you before you can spend a single dollar.
+
+54
+00:04:08,979 --> 00:04:12,360
+How Costco makes money, next on Money Mechanics.
+
