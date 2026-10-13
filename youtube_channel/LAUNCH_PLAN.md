@@ -97,7 +97,18 @@ Before scripting each video, re-check its title with vidIQ title scoring and loo
 5. **Sound and edit** (2 hrs): music bed, SFX on every reveal, captions.
 6. **Packaging** (1 hr): 3 thumbnail concepts and 3 titles, then pick the best.
 
-**Tools (pick one per row):** animation in Adobe Animate / Toon Boom Harmony / Moho / Blender Grease Pencil (free); editing in DaVinci Resolve (free) / Premiere; drawing in Procreate / Krita (free).
+**$0 toolkit (no subscriptions):**
+| Job | Free tool |
+|---|---|
+| Drawing and frame animation | **Krita** (has an animation timeline) or **OpenToonz** (the free studio tool used on Studio Ghibli productions) |
+| Rigged / cut-out animation (fastest for reusable poses) | **Blender** (Grease Pencil) or **Synfig** |
+| Editing, captions, audio mix | **DaVinci Resolve** (free version) |
+| Voiceover | **Kokoro TTS** (open-source, Apache-2.0, free for commercial use, runs on your own computer). Ep. 1 already has a voiceover from vidIQ bonus credits |
+| Music and SFX | **YouTube Audio Library** (free, cleared for monetization) |
+| Thumbnails | **Canva free** plan, or Krita / GIMP / Photopea |
+| Research and keywords | YouTube search autocomplete, Google Trends, vidIQ free tier |
+
+Hardware: a mouse works for flat limited-animation styles. A basic drawing tablet helps but isn't required.
 
 **Buffer rule:** have 5 finished videos before launch, and never let the buffer drop below 2.
 

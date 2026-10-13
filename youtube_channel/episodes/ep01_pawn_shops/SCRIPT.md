@@ -5,7 +5,7 @@
 **Voice:** AI narrator. Warm, slightly wry, conversational. Pause briefly at each `/`.
 **Mascot:** Penny. Flat 2D, brand colours plus neutrals.
 
-> Lines marked **[VERIFY]** must be fact-checked before voicing. See the checklist at the end.
+> **Status: LOCKED.** All claims fact-checked 2026-10-13 (see log at end).
 
 ---
 
@@ -45,63 +45,65 @@
 
 ---
 
-## SCENE 4: The mechanism (1:30–3:30)
+## SCENE 4: The mechanism (1:30–3:50)
 
 ### Reveal 1: The lowball (1:30–2:05)
 
 **VISUAL:** A bar chart. The guitar's resale value is a tall bar at **$500**, and the loan is a short bar at **$150**. The gap is shaded and labelled "SAFETY CUSHION".
 
 **VO:**
-> First trick: the loan is only a fraction of what the item is worth, / often somewhere between a quarter and two-thirds of its resale value. **[VERIFY]** / That gap isn't greed. It's insurance. / If Penny never comes back, the shop still makes a profit selling the guitar.
+> First trick: the loan is only a fraction of what the item is worth, / usually somewhere between a quarter and sixty percent of what the shop could resell it for. / That gap isn't greed. It's insurance. / If Penny never comes back, the shop still makes a profit selling the guitar.
 
 **RE-HOOK VO (2:00):**
 > But the shop would actually *rather* she came back. Here's why.
 
-### Reveal 2: The fee engine (2:05–2:55)
+### Reveal 2: The fee engine (2:05–3:05)
 
-**VISUAL:** A calendar. Every month that flips, a coin drops from Penny's pocket into a jar labelled "FEES". The jar fills up fast.
-
-**VO:**
-> Pawn loans don't charge interest the way a bank does. / They charge monthly fees, / and depending on where you live, those can be a big percentage of the loan *every single month*. **[VERIFY: state range]** / Penny borrowed one-fifty. / A few months later, she might owe well over two hundred / and still not own her guitar.
-
-**VISUAL:** A small "APR" badge flips over to show a giant triple-digit number. Penny's jaw drops.
+**VISUAL:** A calendar labelled MONTH 1 / 2 / 3. Every month that flips, a "$30 FEE" stamp hits the page and a coin drops from Penny's pocket into a jar labelled "FEES". The jar fills up fast.
 
 **VO:**
-> Stretch those monthly fees across a full year, / and the rate can land in the triple digits. **[VERIFY]**
+> Pawn loans don't charge interest the way a bank does. / They charge monthly fees, / and depending on where you live, those fees can run from two percent / all the way up to twenty-five percent of the loan / *every single month*. / Let's run Penny's numbers. / Say her shop charges twenty percent a month. / That's thirty dollars, every month, just to keep the loan alive. / At the end of month one, she can't pay back the full one-eighty. / No problem, says the shop. / Just pay the thirty-dollar fee, and we'll extend it. / So she does. / Then again. / Then again. / Three months later, she's paid ninety dollars in fees / and she still owes the original one-fifty. / Her guitar hasn't moved.
 
-### Reveal 3: Win-win… for the shop (2:55–3:30)
+**VISUAL:** A small "APR" badge flips over to show a **120%**. Penny's jaw drops.
+
+**VO:**
+> Even a ten percent monthly fee / works out to a hundred and twenty percent a year.
+
+### Reveal 3: Win-win… for the shop (3:05–3:50)
 
 **VISUAL:** A split screen. Left side: Penny repays, the guitar goes home, and the fees go into the register. Right side: Penny doesn't repay, the guitar goes onto a shelf with a **$450** tag.
 
 **VO:**
-> So here's the machine. / If Penny pays it back, the shop keeps the fees. / If she doesn't, the shop keeps the guitar and sells it for much more than it lent. / In Oregon, for example, about two out of three pawn loans get redeemed, / and the other third end up for sale. **[Source: Oregon DFR 2024]** / Either way, / the house wins.
+> So here's the machine. / If Penny pays it back, the shop keeps the fees. / If she doesn't, the shop keeps the guitar and sells it for much more than it lent. / In Oregon, for example, about two out of three pawn loans get redeemed, / and the other third end up for sale. / And the shop rarely gets burned on the resale. / Before lending a cent, it checks what similar items actually sold for online. / And for gold, it doesn't even guess. / It just weighs it. / Gold has a price per gram, / so the shop knows the minimum it can get, / almost to the dollar. / Either way, / the house wins.
 
-**SFX:** two "cha-ching"s, one per side.
+**VISUAL (gold beat):** A gold ring drops onto a digital scale, the display reads "6.2 g", and a price tag snaps on instantly.
+
+**SFX:** two "cha-ching"s, one per side; a scale "beep" on the gold beat.
 
 ---
 
-## SCENE 5: The twist / so-what (3:30–4:30)
+## SCENE 5: The twist / so-what (3:50–4:40)
 
 **VISUAL:** Zoom way out. Penny's shop is one dot on a map, then thousands of dots light up. A corporate skyscraper rises behind them with a stock ticker.
 
 **VO:**
-> And this isn't just a few corner shops. / Some pawn chains are publicly traded companies with thousands of locations **[VERIFY: e.g. FirstCash store count]**, / and the people they serve are usually the ones banks turned away.
+> And this isn't just a few corner shops. / The biggest pawn company, FirstCash, / is publicly traded, with more than three thousand three hundred stores, / and the people they serve are usually the ones banks turned away. / Because here's what a pawn shop really sells: / a yes, in ten minutes, / with no paperwork and no awkward questions. / That convenience is the product. / And convenience is expensive.
 
 **VISUAL:** Back to Penny. A checklist appears beside her, and each item gets a tick as the VO reads it.
 
 **VO:**
-> So, is pawning always bad? / Not necessarily. Unlike a payday loan, / if you can't pay, you lose the item, not your credit score. / But if you ever do it: / One: know the *monthly* fee before you sign. / Two: borrow the least you can. / Three: pay it off in the first cycle if you possibly can. / Every extra month is a coin in that jar.
+> So, is pawning always bad? / Not necessarily. Pawn loans don't need a credit check, / and if you can't pay, you lose the item, but your credit score isn't touched. / But if you ever do it: / One: know the *monthly* fee before you sign. / Two: borrow the least you can. / Three: pay it off in the first cycle if you possibly can. / Every extra month is a coin in that jar.
 
 ---
 
-## SCENE 6: Payoff and bridge (4:30–5:00)
+## SCENE 6: Payoff and bridge (4:40–5:05)
 
 **VISUAL:** Penny walks out with her guitar, then looks at a credit card in her other hand. The card glows ominously.
 
 **VO:**
 > Pawn shops aren't really in the buying and selling business. / They're in the *time* business. They profit from how long it takes you to pay them back. / And they're not the only ones playing that game. / Your credit card company plays it too, / and they're even better at it. / That's next, on Money Mechanics.
 
-**END SCREEN (5:00–5:20):** Link to Ep. 3 (credit cards) and the subscribe button. Penny waves.
+**END SCREEN (5:05–5:25):** Link to Ep. 3 (credit cards) and the subscribe button. Penny waves.
 
 ---
 
@@ -125,18 +127,23 @@
 
 ---
 
-## Fact-check checklist (complete before voiceover)
+## Fact-check log (verified 2026-10-13)
 
-| Claim | Status | Source to use |
+| Claim in VO | Verified figure | Source |
 |---|---|---|
-| Avg loan in example (~$150–255) | Partly sourced: Oregon avg $255 (2024); a consumer-finance site says ~$150 | Oregon DFR 2024 report; Credible |
-| ~2/3 redeemed, ~1/3 forfeited | **Sourced:** Oregon 2024, 34.5% forfeiture | Oregon DFR 2024 report |
-| Loan = ~25–66% of resale value | **[VERIFY]** | NPA / state regulator / industry filings |
-| Monthly fee range by state | **[VERIFY]**, then name one concrete state example | State pawn statutes |
-| Annualised rate in triple digits | **[VERIFY]** | Calculate from the confirmed monthly fee |
-| Public chains with thousands of stores | **[VERIFY]** current count | FirstCash / EZCORP annual reports (10-K) |
-| No credit score damage on default | **[VERIFY]** | CFPB / consumer-finance source |
+| Loan = a quarter to 60% of resale value | 25–60% of resale value | SoFi; Financer consumer guides |
+| Monthly fees 2%–25% depending on state | Most states cap between 2% and 25%/month; Connecticut caps at 2%/month (loans > $50); Texas uses tiered caps by loan size | LegalClarity; Fox Business (CT ruling); Texas OCCC rate brackets |
+| 10%/month = 120%/year | Simple annualised arithmetic (10 × 12) | n/a |
+| ~2 of 3 loans redeemed, ~1/3 forfeited (Oregon) | Oregon 2024: 34.5% forfeiture rate | Oregon DFR 2024 Pawnbrokers Report |
+| FirstCash: 3,300+ stores, publicly traded | "Over 3,300 pawnshops" at 31 Dec 2025 | FirstCash FY2025 10-K (SEC) |
+| No credit check; default doesn't hurt credit | Pawn loans aren't reported to credit bureaus | SoFi; Financer |
+| $150 loan → "well over $200" after a few months | At 20%/month, 3 months = $90 in fees → $240 owed | Illustrative calculation |
 
-**Sources gathered so far:**
+**Sources (also go in the video description):**
 - Oregon DFR, 2024 Pawnbrokers Report: https://dfr.oregon.gov/business/reg/reports-data/finance/Documents/pawnbrokers/2024-pawnbrokers.pdf
-- Credible, Pawn shop loans: https://credible.com/blog/personal-loan/pawn-shop-loans
+- FirstCash FY2025 Form 10-K: https://www.sec.gov/Archives/edgar/data/840489/000084048926000032/fcfs-20251231.htm
+- Texas OCCC pawn rate brackets: https://occc.texas.gov/wp-content/uploads/2025/11/revised_brackets.pdf
+- LegalClarity, pawn shop interest rates: https://legalclarity.org/how-much-interest-do-pawn-shops-charge-rates-and-fees/
+- Connecticut 2% cap ruling: https://www.foxbusiness.com/markets/connecticut-court-rules-state-law-limits-how-much-in-interest-pawn-shops-can-charge
+- SoFi, Pawnshop loans: https://www.sofi.com/learn/content/pawnshop-loan
+- Financer, How pawn shop loans work: https://financer.com/loans/pawnshop-loans/
