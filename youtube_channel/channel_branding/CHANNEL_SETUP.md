@@ -14,7 +14,7 @@ Everything to paste or upload is in this folder. Steps marked **👤** need you,
 ## 1. Create the channel 👤
 1. Go to **youtube.com** and sign in with the Google account you want to own the channel.
 2. Click your profile icon, then **Create a channel**. Use a **Brand Account** (Settings → Add or manage channels → *Create a channel*). That way the channel isn't tied to your personal name, and you can add managers later.
-3. **Name:** `Money Mechanics`
+3. **Name:** ✅ **`Money Mechanics Animated`** (YouTube rejected plain "Money Mechanics")
 4. **Handle:** ✅ **`@MoneyMechanicsAnimated`** (claimed). Channel URL: https://www.youtube.com/@MoneyMechanicsAnimated
 
    Claim the same handle on TikTok and Instagram for the Shorts.
