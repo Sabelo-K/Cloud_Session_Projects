@@ -31,8 +31,9 @@ Educational content only, not financial advice. The $100 to ~$1,400 example is a
 If gambling stops being fun, help is free and confidential: 1-800-GAMBLER (US).
 
 Money Mechanics explains how the money machines around you actually work, in 5 animated minutes. New videos every Tuesday and Friday.
+🔔 Subscribe: https://www.youtube.com/@MoneyMechanicsAnimated?sub_confirmation=1
 
-#Casinos #PersonalFinance #MoneyMechanics
+#Casinos #PersonalFinance #MoneyMechanics #MoneyMechanicsAnimated
 ```
 
 ## Tags
