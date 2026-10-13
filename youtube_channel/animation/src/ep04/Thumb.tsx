@@ -1,7 +1,7 @@
 import React from 'react';
 import {Penny} from '../lib/characters';
 import {G} from '../lib/rough';
-import {Burst, Glow, Headline, ThumbPenny, ThumbFrame} from '../lib/thumbkit';
+import {Burst, Glow, Headline, ThumbPenny, Ribbon, ThumbFrame} from '../lib/thumbkit';
 import {SlotMachine} from './Ep04';
 
 /** Ep. 4 thumbnail: shocked Penny, jackpot slot machine, "RIGGED BY MATH". */
@@ -21,5 +21,6 @@ export const Ep04Thumb: React.FC = () => (
 		<Headline x={800} y={225} size={110} color={'#FFFFFF'}>
 			BY MATH
 		</Headline>
+		<Ribbon x={640} y={660} w={700} text="THE HOUSE NEVER LOSES" bg="#C62F35" color="#FFFFFF" />
 	</ThumbFrame>
 );

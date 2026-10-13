@@ -2,7 +2,7 @@ import React from 'react';
 import {Broker, Penny} from '../lib/characters';
 import {Cash} from '../lib/props';
 import {G} from '../lib/rough';
-import {Arrow, Burst, Glow, Headline, ThumbPenny, ThumbFrame} from '../lib/thumbkit';
+import {Arrow, Burst, Glow, Headline, ThumbPenny, Ribbon, ThumbFrame} from '../lib/thumbkit';
 
 /** Ep. 1 thumbnail: shocked Penny, smirking broker, tiny cash for her guitar, "$150?!". */
 export const Ep01Thumb: React.FC = () => (
@@ -22,5 +22,6 @@ export const Ep01Thumb: React.FC = () => (
 		<Headline x={870} y={150} size={200}>
 			$150?!
 		</Headline>
+		<Ribbon x={860} y={655} w={760} text="THE PAWN SHOP TRICK" />
 	</ThumbFrame>
 );

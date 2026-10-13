@@ -1,7 +1,7 @@
 import React from 'react';
 import {Penny} from '../lib/characters';
 import {G} from '../lib/rough';
-import {Burst, Glow, Headline, ThumbPenny, Ring, ThumbFrame} from '../lib/thumbkit';
+import {Burst, Glow, Headline, ThumbPenny, Ring, Ribbon, ThumbFrame} from '../lib/thumbkit';
 import {CreditCard} from './Ep03';
 
 /** Ep. 3 thumbnail: glowing credit card, "19 YEARS?!" to pay off the minimum. */
@@ -19,8 +19,6 @@ export const Ep03Thumb: React.FC = () => (
 		<Headline x={880} y={110} size={150}>
 			19 YEARS?!
 		</Headline>
-		<Headline x={900} y={672} size={62} color={'#FFFFFF'} rotate={-3}>
-			THE MINIMUM TRAP
-		</Headline>
+		<Ribbon x={860} y={660} w={740} text="DON'T PAY THE MINIMUM" size={50} />
 	</ThumbFrame>
 );

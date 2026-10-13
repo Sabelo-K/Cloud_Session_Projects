@@ -95,3 +95,23 @@ export const ThumbPenny: React.FC<{children: React.ReactNode}> = ({children}) =>
 		{children}
 	</g>
 );
+
+/** Tilted ribbon banner with a catchphrase, centred at (x,y). */
+export const Ribbon: React.FC<{x: number; y: number; w: number; text: string; bg?: string; color?: string; size?: number; rotate?: number}> = ({
+	x,
+	y,
+	w,
+	text,
+	bg = C.ink,
+	color = C.yellow,
+	size = 54,
+	rotate = -3,
+}) => (
+	<g transform={`translate(${x} ${y}) rotate(${rotate})`}>
+		<rect x={-w / 2 + 8} y={-size * 0.75 + 10} width={w} height={size * 1.5} fill="#000" opacity={0.35} />
+		<rect x={-w / 2} y={-size * 0.75} width={w} height={size * 1.5} fill={bg} stroke={C.white} strokeWidth={6} />
+		<text textAnchor="middle" dominantBaseline="middle" fontFamily={MARKER} fontSize={size} fill={color} y={4}>
+			{text}
+		</text>
+	</g>
+);
