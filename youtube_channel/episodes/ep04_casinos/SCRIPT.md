@@ -6,7 +6,7 @@
 **Voice:** Kokoro TTS, `bm_george`.
 **Mascot:** Penny.
 
-> **Status: DRAFT, fact-checked.** Every spoken figure is in the log at the end. Waiting on Sabelo's review before voiceover.
+> **Status: LOCKED.** Fact-checked 2026-10-13 (see log at end).
 
 ---
 
