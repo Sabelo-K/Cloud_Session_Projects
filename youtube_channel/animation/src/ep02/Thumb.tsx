@@ -1,27 +1,29 @@
 import React from 'react';
-import {AbsoluteFill} from 'remotion';
 import {Penny} from '../lib/characters';
 import {HotDog, MemberCard} from '../lib/props2';
-import {C, G, R, T} from '../lib/rough';
+import {C, G} from '../lib/rough';
+import {Arrow, Burst, Glow, Headline, ThumbPenny, ThumbFrame} from '../lib/thumbkit';
 
-/** Ep. 2 thumbnail: Penny holding a giant membership card, the $1.50 hot dog, "IT'S THE CARD". */
+/** Ep. 2 thumbnail: giant membership card as the real product, "$5.3B" from fees. */
 export const Ep02Thumb: React.FC = () => (
-	<AbsoluteFill style={{background: C.paper}}>
-		<svg viewBox="0 0 1280 720" width="100%" height="100%">
-			<rect x={0} y={0} width={1280} height={720} fill={C.paper} />
-			<R s={{kind: 'polygon', pts: [[640, 0], [1280, 0], [1280, 720], [520, 720]]}} o={{fill: C.red, fillStyle: 'solid'}} seed={1} boil={false} />
-			<G x={300} y={840} s={1.7}>
-				<Penny mood="shocked" />
-			</G>
-			<G x={930} y={470} s={1.25} r={-8}>
-				<MemberCard />
-			</G>
-			<G x={360} y={640} s={0.65}>
-				<HotDog />
-			</G>
-			<T x={940} y={150} size={170} font="marker" color={C.yellow} stroke={C.ink} rotate={-5}>
-				$5.3B
-			</T>
-		</svg>
-	</AbsoluteFill>
+	<ThumbFrame>
+		<Burst bg="#C62F35" ray="#D9444A" cx={880} cy={420} />
+		<G x={270} y={980} s={2.2}>
+			<ThumbPenny><Penny mood="shocked" /></ThumbPenny>
+		</G>
+		<Glow x={890} y={470} r={300} />
+		<G x={890} y={470} s={1.55} r={-8}>
+			<MemberCard />
+		</G>
+		<G x={560} y={690} s={0.8} r={8}>
+			<HotDog />
+		</G>
+		<Arrow x1={600} y1={250} x2={720} y2={390} color={C.yellow} />
+		<Headline x={900} y={115} size={170}>
+			$5.3B
+		</Headline>
+		<Headline x={930} y={672} size={70} color={C.white} rotate={-3}>
+			IT&apos;S THE CARD
+		</Headline>
+	</ThumbFrame>
 );
