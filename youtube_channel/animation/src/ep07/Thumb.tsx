@@ -1,7 +1,7 @@
 import React from 'react';
 import {Penny} from '../lib/characters';
 import {G} from '../lib/rough';
-import {Burst, Glow, Headline, Ribbon, ThumbFrame, ThumbPenny} from '../lib/thumbkit';
+import {Burst, Glow, Headline, NewsBar, ThumbFrame, ThumbPenny} from '../lib/thumbkit';
 import {PayIn4} from './Ep07';
 
 /** Ep. 7 thumbnail: the glowing Pay in 4 button, "0% INTEREST?". */
@@ -21,6 +21,6 @@ export const Ep07Thumb: React.FC = () => (
 		<Headline x={770} y={225} size={86} color={'#FFFFFF'}>
 			SO WHO PROFITS
 		</Headline>
-		<Ribbon x={640} y={660} w={700} text="BUY NOW, PAY MORE" bg="#C62F35" color="#FFFFFF" />
+		<NewsBar text="BUY NOW, PAY MORE" />
 	</ThumbFrame>
 );

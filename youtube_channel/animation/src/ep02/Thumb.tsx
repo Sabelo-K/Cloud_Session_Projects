@@ -2,7 +2,7 @@ import React from 'react';
 import {Penny} from '../lib/characters';
 import {HotDog, MemberCard} from '../lib/props2';
 import {C, G} from '../lib/rough';
-import {Arrow, Burst, Glow, Headline, ThumbPenny, Ribbon, ThumbFrame} from '../lib/thumbkit';
+import {Arrow, Burst, Glow, Headline, ThumbPenny, NewsBar, ThumbFrame} from '../lib/thumbkit';
 
 /** Ep. 2 thumbnail: giant membership card as the real product, "$5.3B" from fees. */
 export const Ep02Thumb: React.FC = () => (
@@ -22,6 +22,6 @@ export const Ep02Thumb: React.FC = () => (
 		<Headline x={900} y={115} size={170}>
 			$5.3B
 		</Headline>
-		<Ribbon x={850} y={660} w={740} text="COSTCO'S REAL PRODUCT" size={50} />
+		<NewsBar text="COSTCO'S REAL PRODUCT" />
 	</ThumbFrame>
 );
