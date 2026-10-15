@@ -115,3 +115,35 @@ export const Ribbon: React.FC<{x: number; y: number; w: number; text: string; bg
 		</text>
 	</g>
 );
+
+/** "Breaking News" lower third: red BREAKING tab, white headline strip, dark ticker, plus a LIVE badge top-right. */
+export const NewsBar: React.FC<{text: string; ticker?: string}> = ({text, ticker = 'MONEY MECHANICS  •  HOW THE MONEY REALLY MOVES  •  MONEY MECHANICS'}) => (
+	<g>
+		<g transform="translate(550 589)">
+			<rect x={-70} y={-26} width={140} height={52} rx={6} fill="#D7141A" stroke={C.white} strokeWidth={4} />
+			<circle cx={-40} cy={0} r={10} fill={C.white} />
+			<text x={14} y={3} textAnchor="middle" dominantBaseline="middle" fontFamily="Arial Black, Arial, sans-serif" fontWeight={900} fontSize={30} fill={C.white}>
+				LIVE
+			</text>
+		</g>
+		<rect x={0} y={556} width={1280} height={164} fill="#000" opacity={0.25} />
+		<rect x={0} y={560} width={430} height={58} fill="#D7141A" />
+		<polygon points="430,560 462,560 430,618" fill="#D7141A" />
+		<text x={24} y={591} dominantBaseline="middle" fontFamily="Arial Black, Arial, sans-serif" fontWeight={900} fontSize={40} fill={C.white} fontStyle="italic">
+			BREAKING NEWS
+		</text>
+		<rect x={0} y={618} width={1280} height={66} fill={C.white} />
+		<rect x={0} y={618} width={14} height={66} fill="#D7141A" />
+		<text x={36} y={653} dominantBaseline="middle" fontFamily="Arial Black, Arial, sans-serif" fontWeight={900} fontSize={text.length > 24 ? 44 : 50} fill={C.ink}>
+			{text}
+		</text>
+		<rect x={0} y={684} width={1280} height={36} fill="#111" />
+		<rect x={0} y={684} width={150} height={36} fill={C.yellow} />
+		<text x={75} y={703} textAnchor="middle" dominantBaseline="middle" fontFamily="Arial Black, Arial, sans-serif" fontWeight={900} fontSize={20} fill={C.ink}>
+			MARKETS
+		</text>
+		<text x={170} y={703} dominantBaseline="middle" fontFamily="Arial, sans-serif" fontWeight={700} fontSize={20} fill={C.white}>
+			{ticker}
+		</text>
+	</g>
+);

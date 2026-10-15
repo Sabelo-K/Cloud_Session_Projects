@@ -2,7 +2,7 @@ import React from 'react';
 import {Penny} from '../lib/characters';
 import {Card} from '../lib/props';
 import {C, G, T} from '../lib/rough';
-import {Burst, Glow, Headline, Ribbon, ThumbFrame, ThumbPenny} from '../lib/thumbkit';
+import {Burst, Glow, Headline, NewsBar, ThumbFrame, ThumbPenny} from '../lib/thumbkit';
 
 /** Ep. 6 thumbnail: a pile of monthly charges, "FORGOT TO CANCEL?". */
 export const Ep06Thumb: React.FC = () => {
@@ -15,7 +15,7 @@ export const Ep06Thumb: React.FC = () => {
 			</G>
 			<Glow x={1000} y={560} r={330} />
 			{subs.map((s, i) => (
-				<G key={s} x={900 + (i % 2) * 260} y={430 + Math.floor(i / 2) * 200} r={(i % 2 ? 6 : -6)}>
+				<G key={s} x={900 + (i % 2) * 260} y={390 + Math.floor(i / 2) * 170} r={(i % 2 ? 6 : -6)}>
 					<Card w={240} h={150} seed={i + 3} fill={i % 3 ? C.white : C.yellow}>
 						<T x={0} y={-30} size={30}>every month</T>
 						<T x={0} y={30} size={56} font="marker" color={C.red}>{s}</T>
@@ -28,7 +28,7 @@ export const Ep06Thumb: React.FC = () => {
 			<Headline x={780} y={225} size={120} color={'#FFFFFF'}>
 				CANCEL?
 			</Headline>
-			<Ribbon x={640} y={660} w={700} text="THE SUBSCRIPTION TRAP" bg="#C62F35" color="#FFFFFF" />
+			<NewsBar text="THE SUBSCRIPTION TRAP" />
 		</ThumbFrame>
 	);
 };

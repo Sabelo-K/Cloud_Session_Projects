@@ -2,7 +2,7 @@ import React from 'react';
 import {Penny} from '../lib/characters';
 import {Phone} from '../lib/props';
 import {G} from '../lib/rough';
-import {Burst, Glow, Headline, Ribbon, ThumbFrame, ThumbPenny} from '../lib/thumbkit';
+import {Burst, Glow, Headline, NewsBar, ThumbFrame, ThumbPenny} from '../lib/thumbkit';
 import {Feed} from './Ep05';
 
 /** Ep. 5 thumbnail: Penny inside the phone, "YOU'RE THE PRODUCT". */
@@ -22,6 +22,6 @@ export const Ep05Thumb: React.FC = () => (
 		<Headline x={760} y={225} size={78} color={'#FFFFFF'}>
 			YOU&apos;RE THE PRODUCT
 		</Headline>
-		<Ribbon x={640} y={660} w={700} text="WHO PAYS FOR FREE APPS" bg="#C62F35" color="#FFFFFF" />
+		<NewsBar text="WHO PAYS FOR FREE APPS" />
 	</ThumbFrame>
 );
