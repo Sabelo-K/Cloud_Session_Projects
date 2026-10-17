@@ -7,7 +7,7 @@ COMP=$1; OUTDIR=$2; NAME=$3
 BROWSER=${REMOTION_BROWSER:-/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell}
 mkdir -p out "$OUTDIR"
 ARGS=(); [ -x "$BROWSER" ] && ARGS=(--browser-executable="$BROWSER")
-npx remotion render "$COMP" "out/${NAME}_raw.mp4" "${ARGS[@]}" --concurrency=100% --log=error
+npx remotion render "$COMP" "out/${NAME}_raw.mp4" "${ARGS[@]}" --concurrency=100% --timeout=120000 --log=error
 ffmpeg -hide_banner -loglevel error -y -i "out/${NAME}_raw.mp4" -c:v libx264 -preset slow -crf 24 -pix_fmt yuv420p \
   -movflags +faststart -af loudnorm=I=-14:TP=-1:LRA=11 -c:a aac -b:a 192k -ar 48000 "$OUTDIR/${NAME}_1080p.mp4"
 ffmpeg -hide_banner -loglevel error -y -i "$OUTDIR/${NAME}_1080p.mp4" -c:v libx264 -preset medium -crf 30 \
