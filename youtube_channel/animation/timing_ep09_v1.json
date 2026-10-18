@@ -1,0 +1,602 @@
+[
+ {
+  "i": 0,
+  "text": "It's eleven forty-eight on a Thursday night.",
+  "start": 0.0,
+  "end": 2.9
+ },
+ {
+  "i": 1,
+  "text": "Your friend Marcus is on your couch, phone in both hands.",
+  "start": 3.22,
+  "end": 7.13
+ },
+ {
+  "i": 2,
+  "text": "His trading app says one hundred and eighty-four thousand dollars.",
+  "start": 7.45,
+  "end": 11.63
+ },
+ {
+  "i": 3,
+  "text": "He taps withdraw.",
+  "start": 11.95,
+  "end": 13.44
+ },
+ {
+  "i": 4,
+  "text": "A message appears.",
+  "start": 13.76,
+  "end": 15.32
+ },
+ {
+  "i": 5,
+  "text": "Before we can release your funds, please pay a fifteen percent tax.",
+  "start": 15.64,
+  "end": 19.73
+ },
+ {
+  "i": 6,
+  "text": "Twenty-seven thousand six hundred dollars.",
+  "start": 20.05,
+  "end": 22.81
+ },
+ {
+  "i": 7,
+  "text": "He's already put in everything he has.",
+  "start": 23.13,
+  "end": 25.77
+ },
+ {
+  "i": 8,
+  "text": "He's about to pay it.",
+  "start": 26.09,
+  "end": 27.61
+ },
+ {
+  "i": 9,
+  "text": "You're the only person in the room who knows what happens next.",
+  "start": 27.93,
+  "end": 31.83
+ },
+ {
+  "i": 10,
+  "text": "Because ninety days ago, you got the same text.",
+  "start": 32.15,
+  "end": 35.35
+ },
+ {
+  "i": 11,
+  "text": "This is a Money Mechanics Friday special.",
+  "start": 36.0,
+  "end": 38.96
+ },
+ {
+  "i": 12,
+  "text": "The story is made up.",
+  "start": 39.28,
+  "end": 41.03
+ },
+ {
+  "i": 13,
+  "text": "The playbook is real.",
+  "start": 41.35,
+  "end": 43.12
+ },
+ {
+  "i": 14,
+  "text": "It's called pig butchering.",
+  "start": 43.44,
+  "end": 45.11
+ },
+ {
+  "i": 15,
+  "text": "The name comes from the scammers themselves.",
+  "start": 45.43,
+  "end": 48.27
+ },
+ {
+  "i": 16,
+  "text": "First, you fatten the pig.",
+  "start": 48.59,
+  "end": 50.42
+ },
+ {
+  "i": 17,
+  "text": "Then, you take everything.",
+  "start": 50.74,
+  "end": 52.7
+ },
+ {
+  "i": 18,
+  "text": "Here's how it works, and how you saw it coming.",
+  "start": 53.02,
+  "end": 55.97
+ },
+ {
+  "i": 19,
+  "text": "Day one.",
+  "start": 56.62,
+  "end": 57.58
+ },
+ {
+  "i": 20,
+  "text": "Ten past seven on a Tuesday morning.",
+  "start": 57.9,
+  "end": 60.65
+ },
+ {
+  "i": 21,
+  "text": "A text from a number you don't know.",
+  "start": 60.97,
+  "end": 63.27
+ },
+ {
+  "i": 22,
+  "text": "Hi Anna, are we still on for golf on Saturday?",
+  "start": 63.59,
+  "end": 66.67
+ },
+ {
+  "i": 23,
+  "text": "You're not Anna.",
+  "start": 66.99,
+  "end": 68.2
+ },
+ {
+  "i": 24,
+  "text": "Marcus, two desks over, gets one too.",
+  "start": 68.52,
+  "end": 71.42
+ },
+ {
+  "i": 25,
+  "text": "Different name, same message.",
+  "start": 71.74,
+  "end": 73.81
+ },
+ {
+  "i": 26,
+  "text": "He replies, sorry, wrong number.",
+  "start": 74.13,
+  "end": 76.59
+ },
+ {
+  "i": 27,
+  "text": "You don't reply at all.",
+  "start": 76.91,
+  "end": 78.42
+ },
+ {
+  "i": 28,
+  "text": "The wrong number isn't a mistake.",
+  "start": 78.74,
+  "end": 81.15
+ },
+ {
+  "i": 29,
+  "text": "It's a filter.",
+  "start": 81.47,
+  "end": 82.62
+ },
+ {
+  "i": 30,
+  "text": "Anyone polite enough to answer has just become a lead.",
+  "start": 82.94,
+  "end": 86.59
+ },
+ {
+  "i": 31,
+  "text": "Day twelve.",
+  "start": 87.24,
+  "end": 88.35
+ },
+ {
+  "i": 32,
+  "text": "Marcus shows you his phone at lunch.",
+  "start": 88.67,
+  "end": 90.93
+ },
+ {
+  "i": 33,
+  "text": "Her name is Grace.",
+  "start": 91.25,
+  "end": 92.94
+ },
+ {
+  "i": 34,
+  "text": "She texts him good morning, every single day.",
+  "start": 93.26,
+  "end": 96.24
+ },
+ {
+  "i": 35,
+  "text": "She remembers his sister's name, and the job he hates.",
+  "start": 96.56,
+  "end": 100.06
+ },
+ {
+  "i": 36,
+  "text": "She's never asked for money.",
+  "start": 100.38,
+  "end": 102.13
+ },
+ {
+  "i": 37,
+  "text": "Not once.",
+  "start": 102.45,
+  "end": 103.43
+ },
+ {
+  "i": 38,
+  "text": "Then, almost by accident, she mentions that her uncle taught her to trade crypto.",
+  "start": 103.75,
+  "end": 109.06
+ },
+ {
+  "i": 39,
+  "text": "And she asks to move the chat to another app.",
+  "start": 109.38,
+  "end": 112.2
+ },
+ {
+  "i": 40,
+  "text": "You notice that.",
+  "start": 112.52,
+  "end": 113.84
+ },
+ {
+  "i": 41,
+  "text": "Fewer people watching.",
+  "start": 114.16,
+  "end": 115.7
+ },
+ {
+  "i": 42,
+  "text": "Here's the mechanism.",
+  "start": 116.02,
+  "end": 117.6
+ },
+ {
+  "i": 43,
+  "text": "The scammer doesn't sell an investment.",
+  "start": 117.92,
+  "end": 120.44
+ },
+ {
+  "i": 44,
+  "text": "They sell a person.",
+  "start": 120.76,
+  "end": 122.27
+ },
+ {
+  "i": 45,
+  "text": "The trust comes first.",
+  "start": 122.59,
+  "end": 124.38
+ },
+ {
+  "i": 46,
+  "text": "The money comes later.",
+  "start": 124.7,
+  "end": 126.41
+ },
+ {
+  "i": 47,
+  "text": "Day thirty.",
+  "start": 127.06,
+  "end": 128.19
+ },
+ {
+  "i": 48,
+  "text": "Grace sends Marcus a link to an app.",
+  "start": 128.51,
+  "end": 131.22
+ },
+ {
+  "i": 49,
+  "text": "It looks real.",
+  "start": 131.54,
+  "end": 132.71
+ },
+ {
+  "i": 50,
+  "text": "Candle charts, a support chat, a logo.",
+  "start": 133.03,
+  "end": 136.06
+ },
+ {
+  "i": 51,
+  "text": "He puts in five hundred dollars.",
+  "start": 136.38,
+  "end": 138.56
+ },
+ {
+  "i": 52,
+  "text": "By Friday, it says six hundred and forty.",
+  "start": 138.88,
+  "end": 141.84
+ },
+ {
+  "i": 53,
+  "text": "He withdraws a hundred, just to test it, and it lands in his bank account.",
+  "start": 142.16,
+  "end": 147.18
+ },
+ {
+  "i": 54,
+  "text": "He's convinced.",
+  "start": 147.5,
+  "end": 148.73
+ },
+ {
+  "i": 55,
+  "text": "You're not.",
+  "start": 149.05,
+  "end": 149.97
+ },
+ {
+  "i": 56,
+  "text": "Because that hundred dollars is the bait.",
+  "start": 150.29,
+  "end": 153.06
+ },
+ {
+  "i": 57,
+  "text": "The app is a stage set.",
+  "start": 153.38,
+  "end": 155.26
+ },
+ {
+  "i": 58,
+  "text": "The numbers on the screen are whatever the scammers type.",
+  "start": 155.58,
+  "end": 159.08
+ },
+ {
+  "i": 59,
+  "text": "Letting him take out a little is how they buy the big deposit.",
+  "start": 159.4,
+  "end": 163.52
+ },
+ {
+  "i": 60,
+  "text": "Day sixty.",
+  "start": 164.17,
+  "end": 165.36
+ },
+ {
+  "i": 61,
+  "text": "Marcus moves his savings.",
+  "start": 165.68,
+  "end": 167.64
+ },
+ {
+  "i": 62,
+  "text": "Then his retirement account.",
+  "start": 167.96,
+  "end": 169.88
+ },
+ {
+  "i": 63,
+  "text": "Then a loan against his car.",
+  "start": 170.2,
+  "end": 172.4
+ },
+ {
+  "i": 64,
+  "text": "One hundred and twenty thousand dollars in.",
+  "start": 172.72,
+  "end": 175.64
+ },
+ {
+  "i": 65,
+  "text": "He stops coming to lunch.",
+  "start": 175.96,
+  "end": 177.71
+ },
+ {
+  "i": 66,
+  "text": "You ask him why.",
+  "start": 178.03,
+  "end": 179.46
+ },
+ {
+  "i": 67,
+  "text": "He says he's busy.",
+  "start": 179.78,
+  "end": 181.47
+ },
+ {
+  "i": 68,
+  "text": "That silence is part of the design.",
+  "start": 181.79,
+  "end": 184.31
+ },
+ {
+  "i": 69,
+  "text": "The scam works best when nobody else is looking.",
+  "start": 184.63,
+  "end": 187.93
+ },
+ {
+  "i": 70,
+  "text": "Which brings us back to Thursday night.",
+  "start": 188.58,
+  "end": 190.97
+ },
+ {
+  "i": 71,
+  "text": "And the tax.",
+  "start": 191.29,
+  "end": 192.34
+ },
+ {
+  "i": 72,
+  "text": "You say the one sentence that matters.",
+  "start": 192.66,
+  "end": 195.41
+ },
+ {
+  "i": 73,
+  "text": "A real exchange doesn't make you send money to get your own money out.",
+  "start": 195.73,
+  "end": 200.38
+ },
+ {
+  "i": 74,
+  "text": "Marcus stops.",
+  "start": 200.7,
+  "end": 201.92
+ },
+ {
+  "i": 75,
+  "text": "He doesn't pay.",
+  "start": 202.24,
+  "end": 203.43
+ },
+ {
+  "i": 76,
+  "text": "Grace stops replying within the hour.",
+  "start": 203.75,
+  "end": 206.35
+ },
+ {
+  "i": 77,
+  "text": "Two days later, the app's website disappears.",
+  "start": 206.67,
+  "end": 209.89
+ },
+ {
+  "i": 78,
+  "text": "The hundred and twenty thousand is gone.",
+  "start": 210.21,
+  "end": 213.01
+ },
+ {
+  "i": 79,
+  "text": "But the twenty-seven thousand six hundred isn't.",
+  "start": 213.33,
+  "end": 216.27
+ },
+ {
+  "i": 80,
+  "text": "Most people don't have someone on the couch.",
+  "start": 216.59,
+  "end": 219.35
+ },
+ {
+  "i": 81,
+  "text": "In twenty twenty-four, the FBI counted five point eight billion dollars lost to crypto investment fraud in America, much of it in schemes exactly like this.",
+  "start": 219.67,
+  "end": 230.37
+ },
+ {
+  "i": 82,
+  "text": "People over sixty reported more than two point eight billion dollars lost to crypto-related scams.",
+  "start": 230.69,
+  "end": 237.52
+ },
+ {
+  "i": 83,
+  "text": "And Grace?",
+  "start": 237.84,
+  "end": 238.82
+ },
+ {
+  "i": 84,
+  "text": "Grace might not exist.",
+  "start": 239.14,
+  "end": 240.93
+ },
+ {
+  "i": 85,
+  "text": "United Nations investigators estimated at least one hundred and twenty thousand people in Myanmar, and around one hundred thousand in Cambodia, may be held in compounds and forced to run online scams.",
+  "start": 241.25,
+  "end": 255.31
+ },
+ {
+  "i": 86,
+  "text": "Some of the people typing good morning are prisoners too.",
+  "start": 255.63,
+  "end": 259.13
+ },
+ {
+  "i": 87,
+  "text": "So, how do you jam the machine?",
+  "start": 259.78,
+  "end": 261.83
+ },
+ {
+  "i": 88,
+  "text": "Rule one.",
+  "start": 262.15,
+  "end": 263.17
+ },
+ {
+  "i": 89,
+  "text": "A stranger who drifts from small talk to investing is a red flag, every single time.",
+  "start": 263.49,
+  "end": 269.55
+ },
+ {
+  "i": 90,
+  "text": "Rule two.",
+  "start": 269.87,
+  "end": 270.96
+ },
+ {
+  "i": 91,
+  "text": "If you have to pay to withdraw, the money was never there.",
+  "start": 271.28,
+  "end": 275.01
+ },
+ {
+  "i": 92,
+  "text": "Rule three.",
+  "start": 275.33,
+  "end": 276.46
+ },
+ {
+  "i": 93,
+  "text": "Before you send anything, tell one person you trust.",
+  "start": 276.78,
+  "end": 280.07
+ },
+ {
+  "i": 94,
+  "text": "Or better, be that person for someone else.",
+  "start": 280.39,
+  "end": 283.16
+ },
+ {
+  "i": 95,
+  "text": "Pig butchering doesn't hack your phone.",
+  "start": 283.81,
+  "end": 286.48
+ },
+ {
+  "i": 96,
+  "text": "It hacks loneliness, and hope.",
+  "start": 286.8,
+  "end": 288.98
+ },
+ {
+  "i": 97,
+  "text": "The best defence is someone who knows the playbook.",
+  "start": 289.3,
+  "end": 292.45
+ },
+ {
+  "i": 98,
+  "text": "Now, that's you.",
+  "start": 292.77,
+  "end": 294.14
+ },
+ {
+  "i": 99,
+  "text": "Next time on Money Mechanics, how airlines really make money, and why it's not the flights.",
+  "start": 294.46,
+  "end": 300.39
+ }
+]
