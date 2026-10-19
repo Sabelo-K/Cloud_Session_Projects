@@ -21,3 +21,5 @@ Educational content only, not financial advice.
 ```
 
 **Settings:** Education; not made for kids. Altered or synthetic content: the narration is an open-source AI voice (Kokoro). Music and sound effects are original (synthesised for the channel).
+
+**Thumbnails:** each folder has `short0N_thumbnail.png` (1080x1920, Breaking News style). In the YouTube mobile app, tap the Short's thumbnail before posting and choose "Upload" (or "Add") to use it.
