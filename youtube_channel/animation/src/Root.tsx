@@ -16,6 +16,7 @@ import {EP05_SECONDS, Ep05} from './ep05/Ep05';
 import {EP06_SECONDS, Ep06} from './ep06/Ep06';
 import {EP07_SECONDS, Ep07} from './ep07/Ep07';
 import {EP08_SECONDS, Ep08} from './ep08/Ep08';
+import {SHORTS, ShortComp, shortSeconds} from './shorts/Shorts';
 
 import {Avatar, Banner, Watermark} from './brand/Brand';
 
@@ -39,6 +40,9 @@ export const RemotionRoot: React.FC = () => (
 	<Composition id="Ep06Thumb" component={Ep06Thumb} durationInFrames={1} fps={FPS} width={1280} height={720} />
 	<Composition id="Ep07Thumb" component={Ep07Thumb} durationInFrames={1} fps={FPS} width={1280} height={720} />
 	<Composition id="Ep08Thumb" component={Ep08Thumb} durationInFrames={1} fps={FPS} width={1280} height={720} />
+	{SHORTS.map((d, i) => (
+		<Composition key={d.id} id={d.id} component={ShortComp} defaultProps={{i}} durationInFrames={Math.round(shortSeconds(d) * FPS)} fps={FPS} width={1080} height={1920} />
+	))}
 	<Composition id="Avatar" component={Avatar} durationInFrames={1} fps={FPS} width={800} height={800} />
 	<Composition id="Banner" component={Banner} durationInFrames={1} fps={FPS} width={2560} height={1440} />
 	<Composition id="Watermark" component={Watermark} durationInFrames={1} fps={FPS} width={150} height={150} />

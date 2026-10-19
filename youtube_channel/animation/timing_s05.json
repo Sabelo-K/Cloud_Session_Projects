@@ -1,0 +1,56 @@
+[
+ {
+  "i": 0,
+  "text": "Penny buys lunch for twenty-four dollars.",
+  "start": 0.0,
+  "end": 2.79
+ },
+ {
+  "i": 1,
+  "text": "Her account is a few dollars short.",
+  "start": 3.44,
+  "end": 5.79
+ },
+ {
+  "i": 2,
+  "text": "The bank pays it anyway, and charges her thirty-four dollars for the favour.",
+  "start": 6.44,
+  "end": 11.18
+ },
+ {
+  "i": 3,
+  "text": "She pays it back three days later.",
+  "start": 11.83,
+  "end": 14.07
+ },
+ {
+  "i": 4,
+  "text": "If that were a loan, it would cost about seventeen thousand percent a year.",
+  "start": 14.72,
+  "end": 19.3
+ },
+ {
+  "i": 5,
+  "text": "And it isn't spread evenly.",
+  "start": 19.95,
+  "end": 21.85
+ },
+ {
+  "i": 6,
+  "text": "Roughly eight percent of accounts generate most of the overdraft fees.",
+  "start": 22.5,
+  "end": 27.03
+ },
+ {
+  "i": 7,
+  "text": "Being broke is expensive.",
+  "start": 27.68,
+  "end": 29.72
+ },
+ {
+  "i": 8,
+  "text": "Follow Money Mechanics for how the money really moves.",
+  "start": 30.37,
+  "end": 33.89
+ }
+]
