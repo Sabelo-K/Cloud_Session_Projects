@@ -1,0 +1,68 @@
+[
+ {
+  "i": 0,
+  "text": "Penny buys a new TV.",
+  "start": 0.0,
+  "end": 2.2
+ },
+ {
+  "i": 1,
+  "text": "At the till:",
+  "start": 2.85,
+  "end": 3.87
+ },
+ {
+  "i": 2,
+  "text": "want to add an extended warranty?",
+  "start": 4.19,
+  "end": 6.41
+ },
+ {
+  "i": 3,
+  "text": "In one study, warranties cost about a quarter of the product's price.",
+  "start": 7.06,
+  "end": 11.24
+ },
+ {
+  "i": 4,
+  "text": "But TVs in that study failed only five to eight percent of the time.",
+  "start": 11.89,
+  "end": 16.76
+ },
+ {
+  "i": 5,
+  "text": "Researchers found buyers acted like the risk was thirteen percent.",
+  "start": 17.41,
+  "end": 21.69
+ },
+ {
+  "i": 6,
+  "text": "That gap is the profit.",
+  "start": 22.34,
+  "end": 24.03
+ },
+ {
+  "i": 7,
+  "text": "Margins on these warranties were estimated at over fifty percent.",
+  "start": 24.68,
+  "end": 29.35
+ },
+ {
+  "i": 8,
+  "text": "The fear sells the warranty.",
+  "start": 30.0,
+  "end": 32.05
+ },
+ {
+  "i": 9,
+  "text": "The math keeps the money.",
+  "start": 32.37,
+  "end": 33.95
+ },
+ {
+  "i": 10,
+  "text": "Follow Money Mechanics for how the money really moves.",
+  "start": 34.6,
+  "end": 38.12
+ }
+]
