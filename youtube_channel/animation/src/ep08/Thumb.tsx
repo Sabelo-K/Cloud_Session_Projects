@@ -7,7 +7,7 @@ import {Burst, Glow, Headline, NewsBar, ThumbFrame, ThumbPenny} from '../lib/thu
 /** Ep. 8 thumbnail: a $34 fee on a $24 lunch, "17,000%". */
 export const Ep08Thumb: React.FC = () => (
 	<ThumbFrame>
-		<Burst bg="#8A2A12" ray="#A0371C" cx={960} cy={420} />
+		<Burst scene="broke" bg="#8A2A12" ray="#A0371C" cx={960} cy={420} />
 		<G x={270} y={980} s={2.2}>
 			<ThumbPenny><Penny mood="shocked" /></ThumbPenny>
 		</G>

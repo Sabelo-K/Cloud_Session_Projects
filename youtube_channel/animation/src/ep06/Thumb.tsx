@@ -9,7 +9,7 @@ export const Ep06Thumb: React.FC = () => {
 	const subs = ['$9.99', '$14.99', '$6.99', '$12.99'];
 	return (
 		<ThumbFrame>
-			<Burst bg="#6B1F7A" ray="#80308F" cx={960} cy={420} />
+			<Burst scene="subs" bg="#6B1F7A" ray="#80308F" cx={960} cy={420} />
 			<G x={270} y={980} s={2.2}>
 				<ThumbPenny><Penny mood="worried" /></ThumbPenny>
 			</G>
