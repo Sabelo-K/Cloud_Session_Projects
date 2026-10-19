@@ -7,7 +7,7 @@ import {PayIn4} from './Ep07';
 /** Ep. 7 thumbnail: the glowing Pay in 4 button, "0% INTEREST?". */
 export const Ep07Thumb: React.FC = () => (
 	<ThumbFrame>
-		<Burst bg="#0B6E73" ray="#138489" cx={960} cy={420} />
+		<Burst scene="bnpl" bg="#0B6E73" ray="#138489" cx={960} cy={420} />
 		<G x={270} y={980} s={2.2}>
 			<ThumbPenny><Penny mood="thinking" /></ThumbPenny>
 		</G>

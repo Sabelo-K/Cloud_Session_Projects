@@ -7,7 +7,7 @@ import {Arrow, Burst, Glow, Headline, ThumbPenny, NewsBar, ThumbFrame} from '../
 /** Ep. 1 thumbnail: shocked Penny, smirking broker, tiny cash for her guitar, "$150?!". */
 export const Ep01Thumb: React.FC = () => (
 	<ThumbFrame>
-		<Burst bg="#1B3A8C" ray="#24489F" cx={300} cy={420} />
+		<Burst scene="pawn" bg="#1B3A8C" ray="#24489F" cx={300} cy={420} />
 		<G x={290} y={980} s={2.2}>
 			<ThumbPenny><Penny mood="shocked" holdGuitar /></ThumbPenny>
 		</G>

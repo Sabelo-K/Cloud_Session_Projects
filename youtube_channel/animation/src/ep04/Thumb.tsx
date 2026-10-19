@@ -7,7 +7,7 @@ import {SlotMachine} from './Ep04';
 /** Ep. 4 thumbnail: shocked Penny, jackpot slot machine, "RIGGED BY MATH". */
 export const Ep04Thumb: React.FC = () => (
 	<ThumbFrame>
-		<Burst bg="#0E6B3E" ray="#14804C" cx={960} cy={400} />
+		<Burst scene="casino" bg="#0E6B3E" ray="#14804C" cx={960} cy={400} />
 		<G x={270} y={980} s={2.2}>
 			<ThumbPenny><Penny mood="shocked" /></ThumbPenny>
 		</G>

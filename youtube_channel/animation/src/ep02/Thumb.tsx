@@ -7,7 +7,7 @@ import {Arrow, Burst, Glow, Headline, ThumbPenny, NewsBar, ThumbFrame} from '../
 /** Ep. 2 thumbnail: giant membership card as the real product, "$5.3B" from fees. */
 export const Ep02Thumb: React.FC = () => (
 	<ThumbFrame>
-		<Burst bg="#C62F35" ray="#D9444A" cx={880} cy={420} />
+		<Burst scene="warehouse" bg="#C62F35" ray="#D9444A" cx={880} cy={420} />
 		<G x={270} y={980} s={2.2}>
 			<ThumbPenny><Penny mood="shocked" /></ThumbPenny>
 		</G>

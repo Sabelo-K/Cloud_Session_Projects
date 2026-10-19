@@ -8,7 +8,7 @@ import {Feed} from './Ep05';
 /** Ep. 5 thumbnail: Penny inside the phone, "YOU'RE THE PRODUCT". */
 export const Ep05Thumb: React.FC = () => (
 	<ThumbFrame>
-		<Burst bg="#2B3FA0" ray="#3A50BA" cx={960} cy={420} />
+		<Burst scene="apps" bg="#2B3FA0" ray="#3A50BA" cx={960} cy={420} />
 		<G x={270} y={980} s={2.2}>
 			<ThumbPenny><Penny mood="shocked" /></ThumbPenny>
 		</G>
