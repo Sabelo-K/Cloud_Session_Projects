@@ -2,7 +2,7 @@ import React from 'react';
 import {AbsoluteFill} from 'remotion';
 import {Penny, Mood} from '../lib/characters';
 import {C, G} from '../lib/rough';
-import {Glow, Headline, ThumbPenny} from '../lib/thumbkit';
+import {Burst, Glow, Headline, ThumbPenny} from '../lib/thumbkit';
 
 /** Vertical (1080x1920) "Breaking News" covers for the Shorts. */
 type T = {id: string; bg: string; ray: string; top: string; big: string; line2: string; strip: string; mood: Mood};
@@ -12,12 +12,7 @@ const ARIAL = 'Arial Black, Arial, sans-serif';
 const Cover: React.FC<{d: T}> = ({d}) => (
 	<AbsoluteFill>
 		<svg viewBox="0 0 1080 1920" width="100%" height="100%">
-			<rect width={1080} height={1920} fill={d.bg} />
-			{Array.from({length: 20}).map((_, i) => {
-				const a0 = (i / 20) * Math.PI * 2;
-				const a1 = a0 + Math.PI / 20;
-				return <path key={i} d={`M 540 820 L ${540 + Math.cos(a0) * 2200} ${820 + Math.sin(a0) * 2200} L ${540 + Math.cos(a1) * 2200} ${820 + Math.sin(a1) * 2200} Z`} fill={d.ray} />;
-			})}
+			<Burst bg={d.bg} ray={d.ray} cx={540} cy={760} w={1080} h={1920} />
 			{/* breaking banner */}
 			<rect x={0} y={90} width={1080} height={130} fill="#D7141A" />
 			<text x={60} y={160} dominantBaseline="middle" fontFamily={ARIAL} fontWeight={900} fontStyle="italic" fontSize={78} fill={C.white}>
