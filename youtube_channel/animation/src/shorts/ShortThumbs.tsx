@@ -37,7 +37,7 @@ const Cover: React.FC<{d: T}> = ({d}) => (
 			<Headline x={540} y={700} size={d.big.length > 6 ? 200 : 260} rotate={-4}>
 				{d.big}
 			</Headline>
-			<Headline x={540} y={930} size={d.line2.length > 14 ? 84 : 100} color={C.white} rotate={-3}>
+			<Headline x={540} y={930} size={d.line2.length > 18 ? 70 : d.line2.length > 14 ? 84 : 100} color={C.white} rotate={-3}>
 				{d.line2}
 			</Headline>
 			<G x={540} y={1650} s={1.55}>
@@ -60,11 +60,11 @@ const Cover: React.FC<{d: T}> = ({d}) => (
 );
 
 export const SHORT_THUMBS: T[] = [
-	{id: 'Short01Thumb', bg: '#1E3A8A', ray: '#2747A8', top: 'SHE PAID', big: '$90', line2: 'STILL OWES $150', strip: 'THE PAWN SHOP TRICK', mood: 'shocked'},
-	{id: 'Short02Thumb', bg: '#B91C1C', ray: '#D02A2A', top: 'SAME PRICE', big: '$1.50', line2: 'FOR 40 YEARS', strip: "COSTCO'S REAL SECRET", mood: 'shocked'},
-	{id: 'Short03Thumb', bg: '#5B21B6', ray: '#6D31CC', top: 'MINIMUM PAYMENT?', big: '19 YRS', line2: '$8,000 INTEREST', strip: "DON'T PAY THE MINIMUM", mood: 'shocked'},
-	{id: 'Short04Thumb', bg: '#065F46', ray: '#0A7A5A', top: '$100 BECOMES', big: '$1,400', line2: 'OF BETS', strip: 'THE CASINO MATH', mood: 'shocked'},
-	{id: 'Short05Thumb', bg: '#9A3412', ray: '#B4441A', top: '$24 LUNCH', big: '$34', line2: 'OVERDRAFT FEE', strip: 'BEING BROKE IS EXPENSIVE', mood: 'shocked'},
+	{id: 'Short01Thumb', bg: '#1E3A8A', ray: '#2747A8', top: 'UNSPENT GIFT CARDS', big: '$23B', line2: 'IN YOUR DRAWER', strip: 'WHERE GIFT CARDS GO', mood: 'shocked'},
+	{id: 'Short02Thumb', bg: '#B91C1C', ray: '#D02A2A', top: 'YOUR GYM WANTS', big: 'YOU', line2: 'TO STAY HOME', strip: 'HOW GYMS REALLY PROFIT', mood: 'shocked'},
+	{id: 'Short03Thumb', bg: '#5B21B6', ray: '#6D31CC', top: 'PRINTER INK COSTS', big: '7X', line2: 'THE PRICE OF CHAMPAGNE', strip: 'THE PRINTER INK SCAM', mood: 'shocked'},
+	{id: 'Short04Thumb', bg: '#065F46', ray: '#0A7A5A', top: 'EXTENDED WARRANTY?', big: '50%+', line2: 'PROFIT MARGIN', strip: 'DON\'T BUY THE WARRANTY', mood: 'shocked'},
+	{id: 'Short05Thumb', bg: '#9A3412', ray: '#B4441A', top: 'DELTA MADE', big: '$8.2B', line2: 'SELLING MILES', strip: 'AIRLINES SELL MILES', mood: 'shocked'},
 ];
 
 export const ShortThumb: React.FC<{i: number}> = ({i}) => <Cover d={SHORT_THUMBS[i]} />;
