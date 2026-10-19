@@ -4,24 +4,90 @@ import {C, MARKER, R} from './rough';
 
 /** Shared thumbnail kit: saturated sunburst backgrounds, chunky outlined headlines, arrows and glows. */
 
-export const Burst: React.FC<{bg: string; ray: string; cx?: number; cy?: number}> = ({bg, ray, cx = 900, cy = 380}) => (
-	<g>
-		<rect x={0} y={0} width={1280} height={720} fill={bg} />
-		{Array.from({length: 18}).map((_, i) => {
-			const a0 = (i / 18) * Math.PI * 2;
-			const a1 = a0 + Math.PI / 18;
-			const r = 1600;
-			return <path key={i} d={`M ${cx} ${cy} L ${cx + Math.cos(a0) * r} ${cy + Math.sin(a0) * r} L ${cx + Math.cos(a1) * r} ${cy + Math.sin(a1) * r} Z`} fill={ray} />;
-		})}
-		<defs>
-			<radialGradient id="vig" cx="50%" cy="50%" r="75%">
-				<stop offset="55%" stopColor="#000" stopOpacity={0} />
-				<stop offset="100%" stopColor="#000" stopOpacity={0.45} />
-			</radialGradient>
-		</defs>
-		<rect x={0} y={0} width={1280} height={720} fill="url(#vig)" />
-	</g>
-);
+/** Deterministic pseudo-random in [0,1). */
+const rnd = (i: number) => {
+	const x = Math.sin(i * 127.1 + 311.7) * 43758.5453;
+	return x - Math.floor(x);
+};
+
+/**
+ * Thumbnail backdrop: a lit "news studio" look. Deep gradient lit from (cx,cy),
+ * soft light beams, a perspective floor grid, a glowing market line, faint
+ * money symbols, bokeh dots and a vignette.
+ */
+export const Burst: React.FC<{bg: string; ray: string; cx?: number; cy?: number; w?: number; h?: number}> = ({bg, ray, cx = 900, cy = 380, w = 1280, h = 720}) => {
+	const id = bg.replace('#', '');
+	const k = w / 1280;
+	const horizon = h * 0.72;
+	const pts = Array.from({length: 13}).map((_, i) => {
+		const x = (i / 12) * w;
+		const y = h * 0.62 - i * h * 0.025 - (rnd(i + 3) - 0.5) * h * 0.12;
+		return `${x},${y}`;
+	});
+	return (
+		<g>
+			<defs>
+				<radialGradient id={`bgg${id}`} cx={cx / w} cy={cy / h} r={1.1} gradientUnits="objectBoundingBox">
+					<stop offset="0%" stopColor={ray} />
+					<stop offset="45%" stopColor={bg} />
+					<stop offset="100%" stopColor="#05060A" />
+				</radialGradient>
+				<linearGradient id={`beam${id}`} x1="0" y1="0" x2="0" y2="1">
+					<stop offset="0%" stopColor="#FFFFFF" stopOpacity={0.22} />
+					<stop offset="100%" stopColor="#FFFFFF" stopOpacity={0} />
+				</linearGradient>
+				<linearGradient id={`floor${id}`} x1="0" y1="0" x2="0" y2="1">
+					<stop offset="0%" stopColor="#000" stopOpacity={0} />
+					<stop offset="100%" stopColor="#000" stopOpacity={0.55} />
+				</linearGradient>
+				<filter id={`blur${id}`}>
+					<feGaussianBlur stdDeviation={6 * k} />
+				</filter>
+				<radialGradient id={`vig${id}`} cx="50%" cy="50%" r="75%">
+					<stop offset="50%" stopColor="#000" stopOpacity={0} />
+					<stop offset="100%" stopColor="#000" stopOpacity={0.6} />
+				</radialGradient>
+			</defs>
+			<rect x={0} y={0} width={w} height={h} fill={`url(#bgg${id})`} />
+			{/* light beams fanning from the top */}
+			{[-0.35, -0.12, 0.1, 0.32].map((d, i) => (
+				<polygon key={i} points={`${cx + d * w * 0.2},0 ${cx + d * w * 1.6 - w * 0.06},${h} ${cx + d * w * 1.6 + w * 0.06},${h}`} fill={`url(#beam${id})`} />
+			))}
+			{/* faint money symbols */}
+			{Array.from({length: 22}).map((_, i) => (
+				<text
+					key={i}
+					x={rnd(i) * w}
+					y={rnd(i + 50) * h * 0.85}
+					fontFamily={MARKER}
+					fontSize={(28 + rnd(i + 9) * 60) * k}
+					fill="#FFFFFF"
+					opacity={0.05 + rnd(i + 21) * 0.06}
+					transform={`rotate(${(rnd(i + 7) - 0.5) * 40} ${rnd(i) * w} ${rnd(i + 50) * h * 0.85})`}
+				>
+					{['$', '%', '$', '£', '$'][i % 5]}
+				</text>
+			))}
+			{/* glowing market line */}
+			<polyline points={pts.join(' ')} fill="none" stroke={C.yellow} strokeWidth={10 * k} opacity={0.35} filter={`url(#blur${id})`} />
+			<polyline points={pts.join(' ')} fill="none" stroke="#FFFFFF" strokeWidth={3 * k} opacity={0.35} />
+			{/* perspective studio floor */}
+			<rect x={0} y={horizon} width={w} height={h - horizon} fill={`url(#floor${id})`} />
+			{Array.from({length: 17}).map((_, i) => {
+				const x = (i / 16) * w;
+				return <line key={`v${i}`} x1={cx + (x - cx) * 0.15} y1={horizon} x2={cx + (x - cx) * 2.2} y2={h} stroke="#FFFFFF" strokeOpacity={0.1} strokeWidth={2 * k} />;
+			})}
+			{[0.04, 0.12, 0.25, 0.45, 0.75].map((f, i) => (
+				<line key={`h${i}`} x1={0} x2={w} y1={horizon + (h - horizon) * f} y2={horizon + (h - horizon) * f} stroke="#FFFFFF" strokeOpacity={0.1} strokeWidth={2 * k} />
+			))}
+			{/* bokeh */}
+			{Array.from({length: 14}).map((_, i) => (
+				<circle key={`b${i}`} cx={rnd(i + 80) * w} cy={rnd(i + 99) * h * 0.7} r={(8 + rnd(i + 5) * 26) * k} fill={i % 3 ? '#FFFFFF' : C.yellow} opacity={0.06 + rnd(i + 3) * 0.08} filter={`url(#blur${id})`} />
+			))}
+			<rect x={0} y={0} width={w} height={h} fill={`url(#vig${id})`} />
+		</g>
+	);
+};
 
 /** Soft glow behind the hero object. */
 export const Glow: React.FC<{x: number; y: number; r: number; color?: string}> = ({x, y, r, color = C.yellow}) => (
